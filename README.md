@@ -15,12 +15,12 @@
 
 | Student      | Student Full Name |Student SFSU Email | GitHub Username |  Discord Username  |           Role           |
 |    :---:     |   :---:           |       :---:       |     :---:       |        :---:       |          :---:           | 
-|      #1      |Lennart                   |                   |                 |                    |       Team-lead          |
-|      #2      |Edmund                   |                   |                 |                    |       Frontend-lead      |
-|      #3      |Rafael                   |                   |                 |                    |       Backend-lead       |
-|      #4      |Jamie                   |                   |                 |                    |       Database-admin     |
-|      #5      |Conrad                   |                   |                 |                    |       Github-master      |
-|      #6      |Julio                   |                   |                 |                    |       Docs-editor        |
+|      #1      |Lennart Richter                  |lrichter@sfsu.edu                   |len898                 |lenni_r                    |       Team-lead          |
+|      #2      |Edmund Huang                  |ehuang6@mail.sfsu.edu                   |EdmUUUndo                 |edmuuundo                    |       Frontend-lead      |
+|      #3      |Rafael Fabiani                  |rfabiani@sfsu.edu                   |rf922                 |OrangeTree3340                    |       Backend-lead       |
+|      #4      |Vacant                   |                   |                 |                    |       Database-admin     |
+|      #5      |Conrad Choi                  |cchoi5@sfsu.edu                   |ChoiConrad                 |choiconrad                    |       Github-master      |
+|      #6      |Julio Reyes Tena                  |jreyestena@sfsu.edu                     |julio-reyes-tena                 |churro1813                    |       Docs-editor        |
 
 
 4. All the team's members ***MUST*** sign the follwing [team's contract](https://forms.gle/dxATAsa9isXKbcBn7). Missing signatures from students will result in these students being dropped from the course. 
