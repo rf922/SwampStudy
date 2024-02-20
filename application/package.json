@@ -1,0 +1,9 @@
+{
+    "scripts": {
+        "build": "node ./scripts/build.js",
+        "install-frontend": "node ./scripts/installFrontend.js",
+        "install-server": "node ./scripts/installServer.js",
+        "run-server": "node ./scripts/runServer.js",
+        "run-frontend": "node ./scripts/runFrontend"
+    }
+}
