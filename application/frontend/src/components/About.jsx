@@ -1,9 +1,12 @@
 import React from "react";
 import { Link } from "react-router-dom";
-import lennartpic from '../lennart.jpg'
+import lennartpic from '../assets/images/lennart.jpg';
+import rafaelpic from '../assets/images/rafael.JPG';
+import conradpic from '../assets/images/Conrad.jpg'
+import juliopic from '../assets/images/julio.png'
 
 function Profile({ image, name }) {
-    const link = `/${name}`
+    const link = `/about/${name}`
     return (
         <>
             <div className="flex flex-col items-center">
@@ -35,20 +38,20 @@ export default function About() {
                 </div>
                 <div>
                     <Profile
-                        image={lennartpic}
-                        name="lennart"
+                        image={rafaelpic}
+                        name="rafael"
                     />
                 </div>
                 <div>
                     <Profile
-                        image={lennartpic}
-                        name="lennart"
+                        image={conradpic}
+                        name="conrad"
                     />
                 </div>
                 <div>
                     <Profile
-                        image={lennartpic}
-                        name="lennart"
+                        image={juliopic}
+                        name="julio"
                     />
                 </div>
                 <div>
