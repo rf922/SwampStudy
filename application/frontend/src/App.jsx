@@ -1,10 +1,8 @@
 import logo from './logo.svg';
 import './App.css';
-import About from "./components/About";
+import AboutMeRouter from "./routes/AboutMeRouter";
 import { Link } from 'react-router-dom';
-import Lennart from './components/Lennart';
 import Home from './components/Home';
-
 import { Route, Routes } from "react-router-dom";
 import Navbar from './components/Navbar';
 
@@ -14,9 +12,8 @@ function App() {
       <Navbar />
       <Routes>
         <Route path="/" element={<Home />} />
-        <Route path="about" element={<About />} />
-        <Route path="contact" element={<About />} />
-        <Route path="lennart" element={<Lennart />} />
+
+        <Route path="/about/*" element={<AboutMeRouter />} />
       </Routes>
     </div>
   );
