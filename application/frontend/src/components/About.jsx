@@ -4,6 +4,7 @@ import lennartpic from '../assets/images/lennart.jpg';
 import rafaelpic from '../assets/images/rafael.JPG';
 import conradpic from '../assets/images/Conrad.jpg'
 import juliopic from '../assets/images/julio.png'
+import edmundpic from '../assets/images/edmund.jpg'
 
 function Profile({ image, name }) {
     const link = `/about/${name}`
@@ -23,46 +24,30 @@ function Profile({ image, name }) {
     )
 }
 
-export default function About() {
+const About = () => {
+    const team = [
+        { image: lennartpic, name: 'lennart' },
+        { image: rafaelpic, name: 'rafael' },
+        { image: conradpic, name: 'conrad' },
+        { image: juliopic, name: 'julio' },
+        { image: edmundpic, name: 'edmund' }
+    ];
     return (
-        <section id="about">
-            <div className="">
-                <p className="text-3xl text-center">About Seal Team One</p>
-            </div>
-            <div className="grid grid-cols-5 gap-4 p-4">
-                <div>
+    <section id="about">
+        <div>
+            <p className="text-3xl text-center">About Seal Team One</p>
+        </div>
+        <div className="grid grid-cols-5 gap-4 p-4">
+            {team.map((profile, index) => (
+                <div key={index}>
                     <Profile
-                        image={lennartpic}
-                        name="lennart"
+                        image={profile.image}
+                        name={profile.name}
                     />
                 </div>
-                <div>
-                    <Profile
-                        image={rafaelpic}
-                        name="rafael"
-                    />
-                </div>
-                <div>
-                    <Profile
-                        image={conradpic}
-                        name="conrad"
-                    />
-                </div>
-                <div>
-                    <Profile
-                        image={juliopic}
-                        name="julio"
-                    />
-                </div>
-                <div>
-                    <Profile
-                        image={lennartpic}
-                        name="lennart"
-                    />
-                </div>
-
-            </div>
-
-        </section>
-    );
+            ))}
+        </div>
+    </section>);
 }
+
+export default About;
