@@ -5,6 +5,7 @@ import Lennart from '../components/Lennart';
 import Rafael from '../components/Rafael';
 import Conrad from '../components/Conrad';
 import Julio from '../components/Julio';
+import Edmund from '../components/Edmund';
 
 const AboutMeRouter = () => {
 
@@ -15,6 +16,7 @@ const AboutMeRouter = () => {
         <Route path='rafael' element={<Rafael />} />
         <Route path='conrad' element={<Conrad />} />
         <Route path='julio' element={<Julio />} />
+        <Route path='edmund' element={<Edmund />} />
         </Routes>
     );
 };
