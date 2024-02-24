@@ -5,5 +5,8 @@
         "install-server": "node ./scripts/installServer.js",
         "run-server": "node ./scripts/runServer.js",
         "run-frontend": "node ./scripts/runFrontend"
+    },
+    "dependencies": {
+        "axios": "^1.6.7"
     }
 }

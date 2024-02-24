@@ -1,0 +1,18 @@
+.profile {
+    display: flex;
+    flex-direction: column;
+    border: solid 1px white;
+
+}
+
+.profile img {
+    height: 200px;
+    width: 200px;
+
+}
+
+.profile p {
+    width: 80%;
+    margin-left: 20px;
+    
+}
