@@ -8,4 +8,3 @@ using MySQLWorkbench.
 
 Points will be deducted if teams do not add their credentials here once they have chosen their 
 technology stack or if their step-by-step descriptions are not clear enough. You have been warned! 
-
