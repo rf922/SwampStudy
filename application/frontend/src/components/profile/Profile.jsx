@@ -6,7 +6,6 @@ import {useParams} from "react-router-dom";
 function Profile() {
     const { name } = useParams();
     const [teamMate, setTeamMate] = useState(name||'');
-    console.log(teamMate);
     return (
             <div className="flex flex-col items-center profile">
                 <h1>{team[teamMate].name}</h1>
