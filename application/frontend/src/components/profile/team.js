@@ -1,7 +1,9 @@
 const team = {
     lennart: {
         name: 'Lennart Richter',
-        paragraph: ``,
+        paragraph: `Hey Everyone, I'm Lennart and I'm a Senior at SFSU currently, I'm quite excited to be taking
+        this class and building a project with a great team. Besides school I like to spend time with friends, read
+        books, and workout.`,
         imgUrl: '/images/lennart.jpg'
     },
     rafael: {
