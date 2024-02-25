@@ -8,7 +8,7 @@
 ## Connecting using MySQL Workbench
 1. Open MySQL Workbench
 2. One the main page click the "+" next to "MySQL Connection"
-![MySQL Workbench ADD](.\images\addconnection.png)
+![MySQL Workbench ADD](./images/addconnection.png)
 
 3. In the popup window
     1. Choose a name for the connection and write it into the "Connection Name" field
