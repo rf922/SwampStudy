@@ -28,7 +28,7 @@ jobs:
       name: Build and Push
       uses: docker/build-push-action@v5
       with:
-        context: .
+        context: ./application/backend
         file: ./application/backend/Dockerfile
         push: true
         tags: ${{ secrets.DOCKERHUB_USERNAME }}/csc648_seal_team_one:latest
