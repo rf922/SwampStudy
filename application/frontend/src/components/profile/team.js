@@ -32,7 +32,7 @@ const team = {
         imgUrl: '/images/conrad.jpg'
     }, julio: {
         name: 'Julio Reyes',
-        paragraph: `Hello I am a senior in my last semester in college (hopefully)`,
+        paragraph: `Hello I am a senior in my last semester in college (hopefully), I have a cat, I am the team Doc-Editor`,
         imgUrl: '/images/julio.jpg'
     }
 
