@@ -23,6 +23,7 @@ jobs:
     - 
       name: Download Dependencies
       run: |
+        cd application
         npm run install-frontend
         npm run build
 
