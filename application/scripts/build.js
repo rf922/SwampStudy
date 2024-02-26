@@ -5,7 +5,7 @@ const DESTINATION = path.resolve(path.join(__dirname, "../frontend"));
 
 const buildReactApp = () => {
     try{
-    const result = execSync(`cd ${DESTINATION} && npm run build2`);
+    const result = execSync(`cd ${DESTINATION} && npm run build`);
     console.log(result.toString());
     }
     catch (e){
