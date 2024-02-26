@@ -15,8 +15,11 @@ const team = {
         name: 'Edmund Huang',
         paragraph: `Hello! I am Edmund. 
         And this page is to introduce you to a little bit about me.
-        I am a senior in the San Francisco State Universits\'s Undergraduate Computer Science program.
-        I am excited to work with others in this class and learn how to design and create software.  `,
+        I am a senior in the San Francisco State University\'s Undergraduate Computer Science program.
+        I am excited to work with others in this class and learn how to design and create software.
+        I enjoy watching movies, gaming, and hanging out with my friends.
+        
+        Interesting fact about me: In the Fall of 2016, I fell into a coma.`,
         imgUrl: '/images/edmund.jpg'
     }, conrad: {
         name: 'Conrad',
