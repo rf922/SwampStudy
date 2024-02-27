@@ -1,4 +1,5 @@
 import './App.css';
+import React from 'react';
 import About from './components/about/About';
 import Profile from './components/profile/Profile';
 import { Route, Routes } from "react-router-dom";
