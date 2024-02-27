@@ -8,14 +8,14 @@ const team = {
     },
     rafael: {
         name: 'Rafael Fabiani',
-        paragraph: ` Hello I am Rafael Fabiani. I\'m currently a junior at San Francisco State University and I major in mathematics alongside computer science. 
+        paragraph: ` Hello I am Rafael Fabiani. I'm currently a junior at San Francisco State University and I major in mathematics alongside computer science. 
         I enjoy reading, meditating and listening to music.`,
         imgUrl: '/images/rafael2.jpg'
     }, edmund: {
         name: 'Edmund Huang',
         paragraph: `Hello! I am Edmund. 
         And this page is to introduce you to a little bit about me.
-        I am a senior in the San Francisco State University\'s Undergraduate Computer Science program.
+        I am a senior in the San Francisco State University's Undergraduate Computer Science program.
         I am excited to work with others in this class and learn how to design and create software.
         I enjoy watching movies, gaming, and hanging out with my friends.
         
