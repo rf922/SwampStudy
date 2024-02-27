@@ -1,7 +1,4 @@
-import logo from './logo.svg';
 import './App.css';
-import { Link } from 'react-router-dom';
-import Home from './components/Home';
 import About from './components/about/About';
 import Profile from './components/profile/Profile';
 import { Route, Routes } from "react-router-dom";

@@ -27,8 +27,6 @@ jobs:
         npm run install-server
         npm run install-frontend
         npm run build
-        cd frontend
-        npm run build
 
     # -
     #   name: Login to Docker Hub
