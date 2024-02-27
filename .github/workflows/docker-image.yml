@@ -24,7 +24,7 @@ jobs:
       name: Download Dependencies
       run: |
         cd application
-        npm run install-backend
+        npm run install-server
         npm run install-frontend
         npm run build
 
