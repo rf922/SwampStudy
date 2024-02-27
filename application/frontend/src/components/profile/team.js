@@ -22,7 +22,7 @@ const team = {
         Interesting fact about me: In the Fall of 2016, I fell into a coma.`,
         imgUrl: '/images/edmund2.jpg'
     }, conrad: {
-        name: 'Conrad',
+        name: 'Conrad Choi',
         paragraph: `Hello, my name is Conrad Choi and I am a Senior of SFSU and I am the GitHub Master. 
         My Major is Computer Science and my career goal is to be a Cybersecurity Forensic Analyst.
          To start my journey, I always loved disassembling things as a kid, when I built my first computer I knew 
