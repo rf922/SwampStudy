@@ -2,7 +2,7 @@ name: Docker Image CI
 
 on:
   push:
-    branches: [ "master" ]
+    branches: [ "CI_Fix" ]
   workflow_dispatch:
 
 jobs:
@@ -27,22 +27,24 @@ jobs:
         npm run install-server
         npm run install-frontend
         npm run build
+        cd frontend
+        npm run build
 
-    -
-      name: Login to Docker Hub
-      uses: docker/login-action@v3
-      with:
-        username: ${{ secrets.DOCKERHUB_USERNAME }}
-        password: ${{ secrets.DOCKERHUB_TOKEN }}
-    -
-      name: Set Up Docker Buildx
-      uses: docker/setup-buildx-action@v3
-    -
-      name: Build and Push
-      uses: docker/build-push-action@v5
-      with:
-        context: ./application/backend
-        file: ./application/backend/Dockerfile
-        push: true
-        tags: ${{ secrets.DOCKERHUB_USERNAME }}/csc648_seal_team_one:latest
+    # -
+    #   name: Login to Docker Hub
+    #   uses: docker/login-action@v3
+    #   with:
+    #     username: ${{ secrets.DOCKERHUB_USERNAME }}
+    #     password: ${{ secrets.DOCKERHUB_TOKEN }}
+    # -
+    #   name: Set Up Docker Buildx
+    #   uses: docker/setup-buildx-action@v3
+    # -
+    #   name: Build and Push
+    #   uses: docker/build-push-action@v5
+    #   with:
+    #     context: ./application/backend
+    #     file: ./application/backend/Dockerfile
+    #     push: true
+    #     tags: ${{ secrets.DOCKERHUB_USERNAME }}/csc648_seal_team_one:latest
     
