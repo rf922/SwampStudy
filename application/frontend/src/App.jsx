@@ -5,7 +5,6 @@ import Profile from './components/profile/Profile';
 import { Route, Routes } from "react-router-dom";
 import Navbar from './components/Navbar';
 
-
 function App() {
   return (
     <div className="wrapper">
