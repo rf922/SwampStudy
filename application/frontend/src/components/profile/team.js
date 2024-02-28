@@ -19,9 +19,9 @@ const team = {
         I am excited to work with others in this class and learn how to design and create software.  `,
         imgUrl: '/images/edmund.jpg'
     }, conrad: {
-        name: 'Conrad',
+        name: 'Conrad Choi',
         paragraph: `Hello, my name is Conrad Choi and I am a Senior of SFSU and I am the GitHub Master. 
-        My Major is Computer Science and my career goal is to be a Cybersecurity Forensic Analyst.
+        My Major is Computer Science and my career goal is to be a Digital Forensic Analyst.
          To start my journey, I always loved disassembling things as a kid, when I built my first computer I knew 
          I had to be something tech related. I am an introverted person and always dreaded group study work 
          this application will not only help those who are extrovert to find more study groups,
