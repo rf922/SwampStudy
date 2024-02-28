@@ -32,8 +32,11 @@ const team = {
         imgUrl: '/images/conrad2.jpg'
     }, julio: {
         name: 'Julio Reyes',
-        paragraph: `Hello I am a senior in my last semester in college (hopefully), I have a cat, I am the team Doc-Editor`,
+        paragraph: `Hello I am a senior in my last semester in college (hopefully), I am the team Doc-Editor.
+        I have an automotive background and my future goal is to eventually come back to the industry, maybe in something like self driving vehicles. 
+        I have a cat.`,
         imgUrl: '/images/julio.jpg'
+        
     }
 
 }
