@@ -42,7 +42,11 @@ const team = {
                     science, for each of us, is more than just a phase or a hobby; it is us striving to realize
                      the potential that lies within us.
     Outside of I enjoy reading, meditating and listening to music. I also really like debian and one day
-     would like to be a system administrator. Here is one of my all time favorite quotes by John F Kennedy which he gave in his speech at Rice University  : ". We choose to go to the moon in this decade and do the other things, not because they are easy, but because they are hard, because that goal will serve to organize and measure the best of our energies and skills, because that challenge is one that we are willing to accept, one we are unwilling to postpone, and one which we intend to win" `,
+     would like to be a system administrator. Here is one of my all time favorite quotes by John F Kennedy
+      which he gave in his speech at Rice University  : ". We choose to go to the moon in this decade and 
+      do the other things, not because they are easy, but because they are hard, because that goal will
+       serve to organize and measure the best of our energies and skills, because that challenge is one 
+       that we are willing to accept, one we are unwilling to postpone, and one which we intend to win" `,
         imgUrl: '/images/rafael2.jpg'
     }, edmund: {
         name: 'Edmund Huang',
