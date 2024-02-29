@@ -8,9 +8,9 @@ const Login = () => {
     const handleLogin = async () => {
         try {
 
-            //replace with env variable, 
+            //replace with env variable, changed port # from 80 to 8080
             const response = await axios.post(
-                `http://localhost:80/user/login`,
+                `http://localhost:8080/user/login`,
                 { username: username, password: password }
             );
             if (response.status === 200) {
@@ -34,8 +34,8 @@ const Login = () => {
 
     return (//TODO implement styling 
         <div className="Login">
-            <div className="login-card">
-                <h1>Login</h1>
+            <div className="flex flex-col items-center border border-white p-4">
+                <h1 className="text-xl mb-2">Login</h1>
                 <label htmlFor="username">Username</label>
                 <input
                     type="text"
