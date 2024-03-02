@@ -9,7 +9,7 @@ const Login = () => {
         try {
 
             const response = await axios.post(
-                `${process.env.REACT_APP_API_UR}/user/login`,
+                `http://localhost:8080/user/login`,
                 { username: username, password: password }
             );
             if (response.status === 200) {
