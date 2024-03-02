@@ -8,9 +8,8 @@ const Login = () => {
     const handleLogin = async () => {
         try {
 
-            //replace with env variable, changed port # from 80 to 8080
             const response = await axios.post(
-                `http://localhost:8080/user/login`,
+                `${process.env.REACT_APP_API_UR}/user/login`,
                 { username: username, password: password }
             );
             if (response.status === 200) {
@@ -20,7 +19,7 @@ const Login = () => {
             }
         } catch (err) {
             console.error("[ handleLogin ] :", err?.response ? err.response.data : err);
-//            console.error("Request URL:", `${process.env.BACK_END_URL}/user/login`); //broken
+            console.error("Request URL:", `${process.env.REACT_APP_API_URL}/user/login`); 
         }
     };
 
