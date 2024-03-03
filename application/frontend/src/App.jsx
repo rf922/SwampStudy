@@ -1,9 +1,9 @@
-import './App.css';
-import React from 'react';
-import About from './components/about/About';
-import Profile from './components/profile/Profile';
+import "./App.css";
+import React from "react";
+import About from "./components/about/About";
+import Profile from "./components/profile/Profile";
 import { Route, Routes } from "react-router-dom";
-import Navbar from './components/Navbar';
+import Navbar from "./components/navbar/Navbar";
 
 function App() {
   return (
@@ -13,7 +13,6 @@ function App() {
         <Route path="/" element={<About />} />
         <Route path="/about/:name" element={<Profile />} />
         <Route path="/about/" element={<About />} />
-        
       </Routes>
     </div>
   );
