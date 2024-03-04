@@ -1,5 +1,5 @@
-import { useNavigate } from 'react-router-dom';
-import team from '../profile/team';
+import { useNavigate } from "react-router-dom";
+import team from "../profile/team";
 
 const About = () => {
 

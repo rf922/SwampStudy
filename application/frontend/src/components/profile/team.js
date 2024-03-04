@@ -1,14 +1,14 @@
 const team = {
-    lennart: {
-        name: 'Lennart Richter',
-        paragraph: `Hey Everyone, I'm Lennart and I'm a Senior at SFSU currently, I'm quite excited to be taking
+  lennart: {
+    name: "Lennart Richter",
+    paragraph: `Hey Everyone, I'm Lennart and I'm a Senior at SFSU currently, I'm quite excited to be taking
         this class and building a project with a great team. Besides school I like to spend time with friends, read
         books, and workout.`,
-        imgUrl: '/images/lennart2.jpg'
-    },
-    rafael: {
-        name: 'Rafael Fabiani',
-        paragraph: ` Hello everyone, I am Rafael Fabiani. I'm currently a junior
+    imgUrl: "/images/lennart2.jpg",
+  },
+  rafael: {
+    name: "Rafael Fabiani",
+    paragraph: ` Hello everyone, I am Rafael Fabiani. I'm currently a junior
          at San Francisco State University, and I major in mathematics alongside computer science. 
          I was originally drawn to mathematics because of the influence of Professor Ni Peterkofsky. 
          Her lectures in mathematics inspired me to want to learn more about mathematics, to the point where 
@@ -47,36 +47,36 @@ const team = {
       do the other things, not because they are easy, but because they are hard, because that goal will
        serve to organize and measure the best of our energies and skills, because that challenge is one 
        that we are willing to accept, one we are unwilling to postpone, and one which we intend to win" `,
-        imgUrl: '/images/rafael2.jpg'
-    }, edmund: {
-        name: 'Edmund Huang',
-        paragraph: `Hello! I am Edmund. 
+    imgUrl: "/images/rafael2.jpg",
+  },
+  edmund: {
+    name: "Edmund Huang",
+    paragraph: `Hello! I am Edmund. 
         And this page is to introduce you to a little bit about me.
         I am a senior in the San Francisco State University's Undergraduate Computer Science program.
         I am excited to work with others in this class and learn how to design and create software.
         I enjoy watching movies, gaming, and hanging out with my friends.
         
         Interesting fact about me: In the Fall of 2016, I fell into a coma.`,
-        imgUrl: '/images/edmund2.jpg'
-    }, conrad: {
-        name: 'Conrad Choi',
-        paragraph: `Hello, my name is Conrad Choi and I am a Senior of SFSU and I am the GitHub Master. 
+    imgUrl: "/images/edmund2.jpg",
+  },
+  conrad: {
+    name: "Conrad Choi",
+    paragraph: `Hello, my name is Conrad Choi and I am a Senior of SFSU and I am the GitHub Master. 
         My Major is Computer Science and my career goal is to be a Cybersecurity Forensic Analyst.
          To start my journey, I always loved disassembling things as a kid, when I built my first computer I knew 
          I had to be something tech related. I am an introverted person and always dreaded group study work 
          this application will not only help those who are extrovert to find more study groups,
           but hopefully help those like me find a group of their own.`,
-        imgUrl: '/images/conrad2.jpg'
-    }, julio: {
-        name: 'Julio Reyes',
-        paragraph: `Hello I am a senior in my last semester in college (hopefully), I am the team Doc-Editor.
+    imgUrl: "/images/conrad2.jpg",
+  },
+  julio: {
+    name: "Julio Reyes",
+    paragraph: `Hello I am a senior in my last semester in college (hopefully), I am the team Doc-Editor.
         I have an automotive background and my future goal is to eventually come back to the industry, maybe in something like self driving vehicles. 
         I have a cat.`,
-        imgUrl: '/images/julio.jpg'
-        
-    }
-
-}
-
+    imgUrl: "/images/julio.jpg",
+  },
+};
 
 export default team;

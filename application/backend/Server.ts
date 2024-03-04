@@ -5,13 +5,12 @@ import * as path from 'path';
 import cors from 'cors';
 
 export class Server {
+  private app: Express;
 
-    private app: Express;
+  constructor(app: Express) {
+    this.app = app;
 
-    
-    constructor(app: Express) {
-        this.app = app;
-
+    this.app.use(express.static(path.resolve("./") + "/dist"));
         this.app.use(cors());
         this.app.use(express.static(path.resolve("./") + "/dist"));
         this.app.use(express.json());
