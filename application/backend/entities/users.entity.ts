@@ -1,13 +1,21 @@
-import {Entity, Column, PrimaryGeneratedColumn} from "typeorm"
+import {Entity, Column, PrimaryGeneratedColumn, CreateDateColumn, BaseEntity} from "typeorm"
+import { IsDefined, IsEmail, IsString } from "class-validator"
 
 @Entity()
-export class User{
+export class User extends BaseEntity{
     @PrimaryGeneratedColumn()
     id: number
 
-    @Column()
-    firstName: string
+    @Column({unique:true, nullable:false})
+    @IsEmail()
+    @IsDefined()
+    email: string
 
-    @Column()
-    lastName: string
+    @Column({nullable:false})
+    @IsDefined()
+    @IsString()
+    password: string
+
+    @CreateDateColumn()
+    created: Date
 }
