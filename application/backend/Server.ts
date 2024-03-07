@@ -1,6 +1,16 @@
 import { Express, Request, Response } from "express";
 import express from "express";
 import * as path from "path";
+import { myDataSource } from "./app-data-source";
+
+myDataSource
+  .initialize()
+  .then(() => {
+    console.log("Successfull DB Conn")
+  })
+  .catch((err) => {
+    console.log("not Successful", err)
+  })
 
 export class Server {
   private app: Express;
