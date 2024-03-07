@@ -3,6 +3,7 @@ import express from "express";
 import * as path from "path";
 import { myDataSource } from "./app-data-source";
 import { User } from "./entities/users.entity";
+import { Account } from "./entities/account.entity"
 import { Validate, validate } from "class-validator";
 
 myDataSource
@@ -29,14 +30,12 @@ export class Server {
 
     this.app.post("/api/user", async function (req: Request, res: Response) {
       const user = await myDataSource.getRepository(User).create(req.body);
-      console.log(user);
-      console.log(req.body);
 
       const errors = await validate(user);
       if (errors.length > 0) {
         res.status(500);
         console.log("Data Validation Failed");
-        res.send("Failed Data Validation")
+        res.send("Failed Data Validation");
       } else {
         try {
           const results = await myDataSource.getRepository(User).insert(user);
@@ -48,16 +47,39 @@ export class Server {
       }
     });
 
-    this.app.delete("/api/user/:id", async function(req: Request, res: Response) {
-      try{
-        const results = await myDataSource.getRepository(User).delete(req.params.id);
-        res.send(results)
-      } catch (error) {
-        res.status(500)
-        res.send("Could not delete the user")
+    this.app.post("/api/account", async function (req: Request, res:Response){
+      const account = await myDataSource.getRepository(Account).create(req.body)
+      const errors = await validate(account);
+
+      if(errors.length > 0){
+        res.status(500);
+        res.send("Failed Data Validation");
+      } else {
+        try {
+          const results = await myDataSource.getRepository(Account).insert(account);
+          res.send(results);
+        } catch (error) {
+          res.status(500);
+          res.send("DB Error");
+        }
       }
-      
+
     });
+
+    this.app.delete(
+      "/api/user/:id",
+      async function (req: Request, res: Response) {
+        try {
+          const results = await myDataSource
+            .getRepository(User)
+            .delete(req.params.id);
+          res.send(results);
+        } catch (error) {
+          res.status(500);
+          res.send("Could not delete the user");
+        }
+      }
+    );
 
     // this.app.get("/about", (req: Request, res: Response): void => {
     //     res.sendFile(path.resolve("./") + "/dist/about.html");
