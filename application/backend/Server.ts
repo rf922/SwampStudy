@@ -3,8 +3,8 @@ import express from "express";
 import * as path from "path";
 import { myDataSource } from "./app-data-source";
 
-const account = require("./routes/account_router");
-const user = require("./routes/user_router");
+const account = require("./routers/account_router");
+const user = require("./routers/user_router");
 
 myDataSource
   .initialize()
