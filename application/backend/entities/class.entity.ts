@@ -4,20 +4,20 @@ import { IsDefined, IsInt, IsString } from "class-validator";
 @Entity()
 export class Class extends BaseEntity {
   @PrimaryGeneratedColumn()
-  id: number
+  id: number;
 
   @Column()
   @IsDefined()
   @IsString()
-  name: string
+  name: string;
 
   @Column()
   @IsDefined()
   @IsInt()
-  number: number
+  number: number;
 
   @Column()
   @IsDefined()
   @IsString()
-  department: string
+  department: string;
 }
