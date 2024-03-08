@@ -1,7 +1,7 @@
 import { Request, Response } from "express";
 import { myDataSource } from "../app-data-source";
 import { Account } from "../entities/account.entity";
-import { Validate, validate } from "class-validator";
+import { validate } from "class-validator"; //import {Validate, validate}
 
 export const getAccount = async (req: Request, res: Response) => {
   const results = await myDataSource
