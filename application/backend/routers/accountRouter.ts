@@ -1,4 +1,4 @@
-import { getAccount, postAccount } from "../controllers/account_controller";
+import { getAccount, postAccount } from "../controllers/accountController";
 
 const express = require("express");
 const router = express.Router();

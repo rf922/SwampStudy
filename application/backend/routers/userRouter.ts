@@ -1,4 +1,4 @@
-import { postUser } from "../controllers/user_controller";
+import { postUser } from "../controllers/userController";
 
 const express = require("express");
 const router = express.Router();
