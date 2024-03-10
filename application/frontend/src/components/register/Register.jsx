@@ -11,10 +11,13 @@ const Register = () => {
   const handleRegister = async () => {
     //To-Do create and use form validation
     try {
-      const result = await axios.post(`http://localhost:8080/user/register`, {
-        username,
-        password,
-      });
+      const result = await axios.post(
+        `http://localhost:8080/api/user/register`,
+        {
+          username,
+          password,
+        },
+      );
       if (result.status === 200) {
         console.log(JSON.stringify(result.data) + confirmPassword);
         navigate("/");

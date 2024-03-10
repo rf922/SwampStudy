@@ -1,15 +1,15 @@
 import { Request, Response } from "express";
 import { myDataSource } from "../app-data-source";
 import { Account } from "../entities/account.entity";
-import { validate } from "class-validator"; //import {Validate, validate}
+import { validate } from "class-validator";
+import { StatusCodes } from "http-status-codes"; // Ensure correct import statement
 
 export const getAccount = async (req: Request, res: Response) => {
   const results = await myDataSource
     .getRepository(Account)
     .findOneBy({ id: req.params.id as unknown as number });
   if (results === null) {
-    res.status(404);
-    res.send("Resource not Found");
+    res.status(StatusCodes.NOT_FOUND).send("Resource not Found"); // Use StatusCodes.NOT_FOUND
   } else {
     return res.send(results);
   }
@@ -20,15 +20,15 @@ export const postAccount = async (req: Request, res: Response) => {
   const errors = await validate(account);
 
   if (errors.length > 0) {
-    res.status(422);
-    res.send("Failed Data Validation");
+    res.status(StatusCodes.UNPROCESSABLE_ENTITY).send("Failed Data Validation"); // Use StatusCodes.UNPROCESSABLE_ENTITY for 422
   } else {
     try {
       const results = await myDataSource.getRepository(Account).insert(account);
-      res.send(results);
+      res.status(StatusCodes.CREATED).send(results); // Use StatusCodes.CREATED for successful creation
     } catch (error) {
-      res.status(422);
-      res.send("Duplicate Request or Invalid Key or DB Error");
+      res
+        .status(StatusCodes.UNPROCESSABLE_ENTITY)
+        .send("Duplicate Request or Invalid Key or DB Error"); // Reuse StatusCodes.UNPROCESSABLE_ENTITY for 422 errors
     }
   }
 };

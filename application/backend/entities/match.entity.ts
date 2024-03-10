@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
 import {
   Entity,
   Column,
@@ -6,6 +7,7 @@ import {
   ManyToOne,
 } from "typeorm";
 import { IsDefined, IsInt, IsString } from "class-validator";
+/* eslint-disable @typescript-eslint/no-unused-vars */
 import { Account } from "./account.entity";
 import { Class } from "./class.entity";
 

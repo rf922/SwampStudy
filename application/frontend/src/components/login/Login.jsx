@@ -7,10 +7,13 @@ const Login = () => {
 
   const handleLogin = async () => {
     try {
-      const response = await axios.post(`http://localhost:8080/user/login`, {
-        username: username,
-        password: password,
-      });
+      const response = await axios.post(
+        `http://localhost:8080/api/user/login`,
+        {
+          username: username,
+          password: password,
+        },
+      );
       if (response.status === 200) {
         console.log("User Login successful");
         console.log(JSON.stringify(response.data));
