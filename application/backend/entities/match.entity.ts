@@ -16,11 +16,11 @@ export class Match extends BaseEntity {
   @PrimaryGeneratedColumn()
   id: number;
 
-  @ManyToOne(() => Account)
+  @ManyToOne((type) => Account, (account) => account.id)
   @IsDefined()
   user1: Account;
 
-  @ManyToOne(() => Account)
+  @ManyToOne((type) => Account, (account) => account.id)
   @IsDefined()
   user2: Account;
 
