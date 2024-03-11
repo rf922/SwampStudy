@@ -1,8 +1,8 @@
 import { postLike } from "../controllers/likeController";
+import express from "express";
 
-const express = require("express");
-const router = express.Router();
+const likeRouter = express.Router();
 
-router.post("/", postLike);
+likeRouter.post("/", postLike);
 
-module.exports = router;
+export default likeRouter;

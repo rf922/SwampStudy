@@ -1,8 +1,10 @@
 import { postUser } from "../controllers/userController";
+import express from "express";
 
-const express = require("express");
-const router = express.Router();
+const userRouter = express.Router();
 
-router.post("/", postUser);
+userRouter.post("/", postUser);
 
-module.exports = router;
+//userRouter.post("/register", register);
+
+export default userRouter;

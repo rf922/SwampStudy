@@ -3,10 +3,10 @@ import express from "express";
 import * as path from "path";
 import { myDataSource } from "./app-data-source";
 
-const account = require("./routers/accountRouter");
-const user = require("./routers/userRouter");
-const like = require("./routers/likeRouter");
-const match = require("./routers/matchRouter.ts");
+import accountRouter from "./routers/accountRouter";
+import userRouter from "./routers/userRouter";
+import likeRouter from "./routers/likeRouter";
+import matchRouter from "./routers/matchRouter";
 
 myDataSource
   .initialize()
@@ -26,10 +26,10 @@ export class Server {
     this.app.use(express.json());
     this.app.use(express.static(path.resolve("./") + "/dist"));
 
-    this.app.use("/api/account", account);
-    this.app.use("/api/user", user);
-    this.app.use("/api/like", like);
-    this.app.use("/api/match", match);
+    this.app.use("/api/account", accountRouter);
+    this.app.use("/api/user", userRouter);
+    this.app.use("/api/like", likeRouter);
+    this.app.use("/api/match", matchRouter);
 
     this.app.get("/api", (req: Request, res: Response): void => {
       res.send("You have reached the API!");
