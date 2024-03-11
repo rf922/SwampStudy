@@ -27,7 +27,9 @@ export const postUser = async (req: Request, res: Response) => {
 };
 
 export const register = async (req: Request, res: Response) => {
-  const { email, password } = req.body;
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  const { username, email, password } = req.body;
+  console.log(JSON.stringify(req.body));
 
   const existingUser = await myDataSource
     .getRepository(User)

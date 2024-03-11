@@ -4,7 +4,7 @@ export const myDataSource = new DataSource({
   host: "localhost",
   port: 3306,
   username: "root",
-  password: "password",
+  password: "MyNewPass",
   database: "swampstudydb",
   entities: ["./entities/*.ts"],
   logging: true,

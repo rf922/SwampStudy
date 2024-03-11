@@ -1,8 +1,9 @@
 import { Express, Request, Response } from "express";
 import express from "express";
 import * as path from "path";
+import cors from "cors";
 import { myDataSource } from "./app-data-source";
-
+import bodyParser from "body-parser";
 import accountRouter from "./routers/accountRouter";
 import userRouter from "./routers/userRouter";
 import likeRouter from "./routers/likeRouter";
@@ -24,6 +25,10 @@ export class Server {
     this.app = app;
 
     this.app.use(express.json());
+    this.app.use(cors());
+    this.app.use(express.json());
+    this.app.use(bodyParser.urlencoded({ extended: false }));
+    this.app.use(bodyParser.json());
     this.app.use(express.static(path.resolve("./") + "/dist"));
 
     this.app.use("/api/account", accountRouter);

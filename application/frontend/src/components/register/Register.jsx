@@ -4,6 +4,7 @@ import { useNavigate } from "react-router-dom";
 
 const Register = () => {
   const [username, setUsername] = useState("");
+  const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
   const navigate = useNavigate();
@@ -12,9 +13,10 @@ const Register = () => {
     //To-Do create and use form validation
     try {
       const result = await axios.post(
-        `http://localhost:8080/api/user/register`,
+        "http://localhost:8080/api/user/register",
         {
           username,
+          email,
           password,
         },
       );
@@ -22,6 +24,7 @@ const Register = () => {
         console.log(JSON.stringify(result.data) + confirmPassword);
         navigate("/");
       } else {
+        console.log(result.data);
         alert("User not registered. Please try again.");
       }
     } catch (err) {
@@ -40,6 +43,15 @@ const Register = () => {
           id="username"
           onChange={(e) => {
             setUsername(e.target.value);
+          }}
+        />
+        <label htmlFor="email">Email</label>
+        <input
+          type="text"
+          placeholder="Enter email"
+          id="email"
+          onChange={(e) => {
+            setEmail(e.target.value);
           }}
         />
         <label htmlFor="password">Password</label>
