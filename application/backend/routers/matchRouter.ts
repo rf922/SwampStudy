@@ -1,8 +1,8 @@
 import { getMatch } from "../controllers/matchController";
+import express from "express";
 
-const express = require("express");
-const router = express.Router();
+const matchRouter = express.Router();
 
-router.get("/", getMatch);
+matchRouter.get("/", getMatch);
 
-module.exports = router;
+export default matchRouter;

@@ -1,6 +1,5 @@
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
 import {
-  Entity,
+  Entity, // eslint-disable-next-line @typescript-eslint/no-unused-vars
   Column,
   PrimaryGeneratedColumn,
   BaseEntity,
