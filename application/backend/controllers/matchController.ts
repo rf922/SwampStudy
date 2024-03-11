@@ -6,11 +6,10 @@ import { Match } from "../entities/match.entity";
 export const getMatch = async (req: Request, res: Response) => {
   const id = req.body.userId;
   const results = await myDataSource
-    .createQueryBuilder()
-    .select("match")
-    .from(Match, "match")
-    .where("match.user1 = :user1ID", { user1ID: id })
-    .orWhere("match.user2 = :user2ID", { user2ID: id })
+    .getRepository(Match)
+    .createQueryBuilder("match")
+    .leftJoinAndSelect("match.users", "account")
+    .where("match.users = :userID", { userID: id })
     .getMany();
   res.json(results);
 };
