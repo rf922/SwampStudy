@@ -5,11 +5,11 @@ import { Match } from "../entities/match.entity";
 //Using the QueryBuilder to get the results
 export const getMatch = async (req: Request, res: Response) => {
   const id = req.body.userId;
-  const results = await myDataSource
+  const matches = await myDataSource
     .getRepository(Match)
     .createQueryBuilder("match")
-    .leftJoinAndSelect("match.users", "account")
-    .where("match.users = :userID", { userID: id })
+    .innerJoin("match.users", "account")
+    .where("account.id = :userID", { userID: id })
     .getMany();
-  res.json(results);
+  res.json(matches);
 };
