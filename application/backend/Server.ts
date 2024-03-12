@@ -26,7 +26,6 @@ export class Server {
 
     this.app.use(express.json());
     this.app.use(cors());
-    this.app.use(express.json());
     this.app.use(bodyParser.urlencoded({ extended: false }));
     this.app.use(bodyParser.json());
     this.app.use(express.static(path.resolve("./") + "/dist"));

@@ -3,6 +3,7 @@ import { useState } from "react";
 
 const Login = () => {
   const [username, setUsername] = useState("");
+  const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
 
   const handleLogin = async () => {
@@ -11,6 +12,7 @@ const Login = () => {
         `http://localhost:8080/api/user/login`,
         {
           username: username,
+          email: email,
           password: password,
         },
       );
@@ -36,6 +38,10 @@ const Login = () => {
     setUsername(e.target.value);
   };
 
+  const handleEmailChange = (e) => {
+    setEmail(e.target.value);
+  };
+
   const handlePasswordChange = (e) => {
     setPassword(e.target.value);
   };
@@ -53,6 +59,15 @@ const Login = () => {
           value={username}
           onChange={handleNameChange}
         />
+        <label htmlFor="email">Email</label>
+        <input
+          type="text"
+          placeholder="Type your email"
+          id="email"
+          value={email}
+          onChange={handleEmailChange}
+        />
+
         <label htmlFor="password">Password</label>
         <input
           type="password"
