@@ -3,6 +3,7 @@ import { myDataSource } from "../app-data-source";
 import { Match } from "../entities/match.entity";
 
 //Using the QueryBuilder to get the results
+//Accout.id exists due to joining
 export const getMatch = async (req: Request, res: Response) => {
   const id = req.body.userId;
   const matches = await myDataSource
