@@ -19,10 +19,9 @@ export const details = async (req: Request, res: Response) => {
   const userId = req.session.userId;
 
   try {
-    const result = await myDataSource.getRepository(Account).findOne({
-      where: { user_FK: { id: userId as unknown as number } },
-      relations: ["user_FK"],
-    });
+    const result = await myDataSource
+      .getRepository(Account)
+      .findOneBy({ id: userId as unknown as number });
     if (result === null) {
       res.status(StatusCodes.NOT_FOUND).send("Resource not Found");
     } else {
