@@ -3,7 +3,8 @@ import axios from "axios";
 import { useNavigate } from "react-router-dom";
 
 const Register = () => {
-  const [username, setUsername] = useState("");
+  const [firstName, setFirstName] = useState("");
+  const [lastName, setLastName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
@@ -15,12 +16,13 @@ const Register = () => {
       const result = await axios.post(
         "http://localhost:8080/api/user/register",
         {
-          username,
+          firstName,
+          lastName,
           email,
           password,
         },
       );
-      if (result.status === 200) {
+      if (result.status === 201) {
         console.log(JSON.stringify(result.data) + confirmPassword);
         navigate("/");
       } else {
@@ -36,18 +38,27 @@ const Register = () => {
     <div className="Register">
       <div className="register-card">
         <h1>Register</h1>
-        <label htmlFor="username">Username</label>
+        <label htmlFor="firstname">First Name</label>
         <input
           type="text"
-          placeholder="Enter username"
-          id="username"
+          placeholder="Enter First Name"
+          id="firstname"
           onChange={(e) => {
-            setUsername(e.target.value);
+            setFirstName(e.target.value);
+          }}
+        />
+        <label htmlFor="lastname">Last Name</label>
+        <input
+          type="text"
+          placeholder="Enter Last Name"
+          id="lastname"
+          onChange={(e) => {
+            setLastName(e.target.value);
           }}
         />
         <label htmlFor="email">Email</label>
         <input
-          type="text"
+          type="email"
           placeholder="Enter email"
           id="email"
           onChange={(e) => {

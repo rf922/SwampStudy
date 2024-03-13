@@ -3,7 +3,6 @@ import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 
 const Login = () => {
-  const [username, setUsername] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
 
@@ -14,7 +13,6 @@ const Login = () => {
       const response = await axios.post(
         `http://localhost:8080/api/user/login`,
         {
-          username: username,
           email: email,
           password: password,
         },
@@ -40,10 +38,6 @@ const Login = () => {
     }
   };
 
-  const handleNameChange = (e) => {
-    setUsername(e.target.value);
-  };
-
   const handleEmailChange = (e) => {
     setEmail(e.target.value);
   };
@@ -57,17 +51,9 @@ const Login = () => {
     <div className="Login">
       <div className="flex flex-col items-center border border-white p-4">
         <h1 className="text-xl mb-2">Login</h1>
-        <label htmlFor="username">Username</label>
-        <input
-          type="text"
-          placeholder="Type your username"
-          id="username"
-          value={username}
-          onChange={handleNameChange}
-        />
         <label htmlFor="email">Email</label>
         <input
-          type="text"
+          type="email"
           placeholder="Type your email"
           id="email"
           value={email}

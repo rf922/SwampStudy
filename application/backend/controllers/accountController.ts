@@ -15,6 +15,35 @@ export const getAccount = async (req: Request, res: Response) => {
   }
 };
 
+export const details = async (req: Request, res: Response) => {
+  const userId = req.session.userId;
+
+  try {
+    const result = await myDataSource.getRepository(Account).findOne({
+      where: { user_FK: { id: userId as unknown as number } },
+      relations: ["user_FK"],
+    });
+    if (result === null) {
+      res.status(StatusCodes.NOT_FOUND).send("Resource not Found");
+    } else {
+      return res.send(result);
+    }
+
+    const accountData = {
+      id: result.id,
+      firstName: result.first_name,
+      lastName: result.last_name,
+      profilePicture: result.profile_picture,
+    };
+
+    return res.status(StatusCodes.CREATED).send(accountData);
+  } catch (error) {
+    return res
+      .status(StatusCodes.INTERNAL_SERVER_ERROR)
+      .send("Duplicate Request or DB Error");
+  }
+};
+
 export const postAccount = async (req: Request, res: Response) => {
   const account = await myDataSource.getRepository(Account).create(req.body);
   const errors = await validate(account);

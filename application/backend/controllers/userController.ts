@@ -2,6 +2,7 @@ import { Request, Response } from "express";
 import { myDataSource } from "../app-data-source";
 import { StatusCodes } from "http-status-codes";
 import { User } from "../entities/users.entity";
+import { Account } from "../entities/account.entity";
 import { validate } from "class-validator";
 import { hash, compare } from "bcrypt";
 
@@ -28,7 +29,7 @@ export const postUser = async (req: Request, res: Response) => {
 
 export const register = async (req: Request, res: Response) => {
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  const { username, email, password } = req.body;
+  const { firstName, lastName, email, password } = req.body;
   console.log(JSON.stringify(req.body));
 
   const existingUser = await myDataSource
@@ -45,21 +46,37 @@ export const register = async (req: Request, res: Response) => {
   user.email = email;
   user.password = hashedPassword;
 
-  try {
-    const newUser = await myDataSource.getRepository(User).save(user);
+  const userErrors = await validate(user);
+  if (userErrors.length > 0) {
     return res
-      .status(StatusCodes.CREATED)
-      .send(`User registered with email: ${newUser.email}`);
-  } catch (error) {
-    return res
-      .status(StatusCodes.INTERNAL_SERVER_ERROR)
-      .send("Error registering the user.");
+      .status(StatusCodes.UNPROCESSABLE_ENTITY)
+      .send("Failed User Data Validation");
   }
+
+  // create account
+  const newUser = await myDataSource.getRepository(User).save(user);
+  const account = new Account();
+  account.first_name = firstName;
+  account.last_name = lastName;
+
+  account.profile_picture = "picture that well put n s3 bucket"; // placeholder
+  account.user_FK = newUser; // fk user
+
+  const accountErrors = await validate(account);
+  if (accountErrors.length > 0) {
+    return res
+      .status(StatusCodes.UNPROCESSABLE_ENTITY)
+      .send("Failed Account Data Validation");
+  }
+
+  await myDataSource.getRepository(Account).save(account);
+  return res
+    .status(StatusCodes.CREATED)
+    .send(`User and account registered with email: ${newUser.email}`);
 };
 
 export const login = async (req: Request, res: Response) => {
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  const { username, email, password } = req.body;
+  const { email, password } = req.body;
   res.status(StatusCodes.OK);
   const existingUser = await myDataSource
     .getRepository(User)
