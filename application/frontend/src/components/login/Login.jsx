@@ -1,10 +1,13 @@
 import axios from "axios";
 import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 
 const Login = () => {
   const [username, setUsername] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+
+  const navigate = useNavigate(); // useNavigate
 
   const handleLogin = async () => {
     try {
@@ -15,10 +18,13 @@ const Login = () => {
           email: email,
           password: password,
         },
+        { withCredentials: true },
       );
       if (response.status === 200) {
         console.log("User Login successful");
         console.log(JSON.stringify(response.data));
+        navigate("/");
+        window.location.reload(); //temp
       } else {
         console.log("User Login unsuccessful");
       }

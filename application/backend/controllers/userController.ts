@@ -40,13 +40,12 @@ export const register = async (req: Request, res: Response) => {
 
   const hashedPassword = await hash(password, 10);
 
-  // Create a new user entity with the hashed password
+  // Create a new user entity with hashed password
   const user = new User();
   user.email = email;
   user.password = hashedPassword;
 
   try {
-    // Save user to the db
     const newUser = await myDataSource.getRepository(User).save(user);
     return res
       .status(StatusCodes.CREATED)
@@ -73,6 +72,24 @@ export const login = async (req: Request, res: Response) => {
   if (!isPasswordMatch) {
     return res.status(StatusCodes.UNAUTHORIZED).send("Invalid password.");
   }
+  req.session.userId = existingUser.id;
 
   return res.status(StatusCodes.OK).send("Login successful.");
+};
+
+export const logout = (req: Request, res: Response) => {
+  req.session.destroy((err) => {
+    if (err) {
+      res.status(StatusCodes.BAD_GATEWAY).send("Could not log out");
+    }
+    res.status(StatusCodes.OK).send("Logged Out ..");
+  });
+};
+
+export const loginStatus = (req: Request, res: Response) => {
+  if (req.session.userId) {
+    res.status(StatusCodes.OK).json({ isLoggedIn: true });
+  } else {
+    res.status(StatusCodes.OK).json({ isLoggedIn: false });
+  }
 };
