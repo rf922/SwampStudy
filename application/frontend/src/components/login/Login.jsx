@@ -1,12 +1,14 @@
 import axios from "axios";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { useAuth } from "../../context/AuthContext";
 
 const Login = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
 
   const navigate = useNavigate(); // useNavigate
+  const { setIsLoggedIn } = useAuth();
 
   const handleLogin = async () => {
     try {
@@ -21,8 +23,8 @@ const Login = () => {
       if (response.status === 200) {
         console.log("User Login successful");
         console.log(JSON.stringify(response.data));
+        setIsLoggedIn(true); 
         navigate("/");
-        window.location.reload(); //temp
       } else {
         console.log("User Login unsuccessful");
       }

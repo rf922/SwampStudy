@@ -2,14 +2,14 @@ import { Request, Response } from "express";
 import { myDataSource } from "../app-data-source";
 import { Account } from "../entities/account.entity";
 import { validate } from "class-validator";
-import { StatusCodes } from "http-status-codes"; // Ensure correct import statement
+import { StatusCodes } from "http-status-codes";
 
 export const getAccount = async (req: Request, res: Response) => {
   const results = await myDataSource
     .getRepository(Account)
     .findOneBy({ id: req.params.id as unknown as number });
   if (results === null) {
-    res.status(StatusCodes.NOT_FOUND).send("Resource not Found"); // Use StatusCodes.NOT_FOUND
+    res.status(StatusCodes.NOT_FOUND).send("Resource not Found"); 
   } else {
     return res.send(results);
   }

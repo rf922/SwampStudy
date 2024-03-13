@@ -1,18 +1,14 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
+import { useAuth } from "../../context/AuthContext";
 
 const Home = () => {
   const [userFirstName, setUserFirstName] = useState("");
-
+  const { isLoggedIn } = useAuth();
   useEffect(() => {
-    const fetchUserDetails = async () => {
+    const getUserDetails = async () => {
       try {
-        const loginStatusResponse = await axios.get(
-          "http://localhost:8080/api/user/loginStatus",
-          { withCredentials: true },
-        );
-
-        if (loginStatusResponse.data.isLoggedIn) {
+        if (isLoggedIn) {
           const userDetailsResponse = await axios.get(
             "http://localhost:8080/api/account/details",
             { withCredentials: true },
@@ -25,8 +21,8 @@ const Home = () => {
       }
     };
 
-    fetchUserDetails();
-  }, []);
+    getUserDetails();
+  }, [isLoggedIn]);
 
   return (
     <div>

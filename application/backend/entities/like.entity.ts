@@ -1,13 +1,15 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
 import {
-  Entity, // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  Entity,
   Column,
   PrimaryGeneratedColumn,
   BaseEntity,
   ManyToOne,
   CreateDateColumn,
 } from "typeorm";
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
 import { IsDefined, IsInt, IsString } from "class-validator";
+/* eslint-enable @typescript-eslint/no-unused-vars */
+
 import { Account } from "./account.entity";
 
 @Entity()

@@ -3,14 +3,14 @@ import { myDataSource } from "../app-data-source";
 import { Match } from "../entities/match.entity";
 
 //Using the QueryBuilder to get the results
+//Accout.id exists due to joining
 export const getMatch = async (req: Request, res: Response) => {
   const id = req.body.userId;
-  const results = await myDataSource
-    .createQueryBuilder()
-    .select("match")
-    .from(Match, "match")
-    .where("match.user1 = :user1ID", { user1ID: id })
-    .orWhere("match.user2 = :user2ID", { user2ID: id })
+  const matches = await myDataSource
+    .getRepository(Match)
+    .createQueryBuilder("match")
+    .innerJoin("match.users", "account")
+    .where("account.id = :userID", { userID: id })
     .getMany();
-  res.json(results);
+  res.json(matches);
 };
