@@ -21,7 +21,6 @@ const sessionStoreOptions = {
 const MySQLStore = require("express-mysql-session")(session);
 const store = new MySQLStore(sessionStoreOptions);
 
-
 myDataSource
   .initialize()
   .then(() => {
@@ -46,17 +45,18 @@ export class Server {
     this.app.use(bodyParser.json());
     this.app.use(express.static(path.resolve("./") + "/dist"));
 
-    this.app.use(session({
-      secret: "session_cookie_secret",
-      store: store,
-      resave: false,
-      saveUninitialized: false,
-      cookie: {
-        secure: process.env.PRODUCTION === "true",
-        httpOnly: true,
-        maxAge: 1000 * 60 * 60 * 24 * 365,
-      },
-    }),
+    this.app.use(
+      session({
+        secret: "session_cookie_secret",
+        store: store,
+        resave: false,
+        saveUninitialized: false,
+        cookie: {
+          secure: process.env.PRODUCTION === "true",
+          httpOnly: true,
+          maxAge: 1000 * 60 * 60 * 24 * 365,
+        },
+      }),
     );
 
     this.app.use("/api/account", accountRouter);
