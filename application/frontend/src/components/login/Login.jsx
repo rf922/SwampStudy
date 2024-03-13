@@ -23,7 +23,7 @@ const Login = () => {
       if (response.status === 200) {
         console.log("User Login successful");
         console.log(JSON.stringify(response.data));
-        setIsLoggedIn(true); 
+        setIsLoggedIn(true);
         navigate("/");
       } else {
         console.log("User Login unsuccessful");

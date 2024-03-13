@@ -9,7 +9,7 @@ export const getAccount = async (req: Request, res: Response) => {
     .getRepository(Account)
     .findOneBy({ id: req.params.id as unknown as number });
   if (results === null) {
-    res.status(StatusCodes.NOT_FOUND).send("Resource not Found"); 
+    res.status(StatusCodes.NOT_FOUND).send("Resource not Found");
   } else {
     return res.send(results);
   }
