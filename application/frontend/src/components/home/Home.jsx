@@ -7,10 +7,6 @@ const Home = () => {
   const { isLoggedIn } = useAuth();
   useEffect(() => {
     const getUserDetails = async () => {
-      if (!isLoggedIn) {
-        setUserFirstName("");
-        return;
-      }
       try {
         if (isLoggedIn) {
           const userDetailsResponse = await axios.get(
