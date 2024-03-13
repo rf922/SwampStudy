@@ -1,10 +1,34 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import axios from "axios";
 import { useAuth } from "../../context/AuthContext";
 
 const Navbar = () => {
   const { isLoggedIn, setIsLoggedIn } = useAuth();
+  const [isLoading, setIsLoading] = useState(true); // add loading state
+
+  useEffect(() => {
+    const checkAuthStatus = async () => {
+      try {
+        const response = await axios.get(
+          "http://localhost:8080/api/user/loginStatus",
+          { withCredentials: true },
+        );
+        if (response.status === 200) {
+          setIsLoggedIn(true);
+        } else {
+          setIsLoggedIn(false);
+        }
+      } catch (error) {
+        console.error("Failed to verify auth status", error);
+        setIsLoggedIn(false);
+      } finally {
+        setIsLoading(false); //  loading  false after checking auth status
+      }
+    };
+
+    checkAuthStatus();
+  }, [setIsLoggedIn]);
 
   const handleLogout = async () => {
     try {
@@ -18,6 +42,8 @@ const Navbar = () => {
       console.error("Logout failed", error);
     }
   };
+
+  if (isLoading) return null;
 
   return (
     <div className="flex flex-wrap justify-center items-center gap-4">
