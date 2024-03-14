@@ -1,11 +1,19 @@
 import { Router } from "express";
-import { getThreads, getPosts, createThread, createPost } from "../controllers/forumController";
+import {
+  getAllQuestions,
+  createQuestion,
+  getAnswersToQuestion,
+  createAnswer,
+} from "../controllers/forumController";
 
 const router = Router();
 
-router.get("/:accountId/threads", getThreads);
-router.get("/threads/:id/posts", getPosts);
-router.post("/:accountId/threads", createThread);
-router.post("/threads/:id/posts", createPost);
+// Routes for questions
+router.get("/questions", getAllQuestions);
+router.post("/questions", createQuestion);
+
+// Routes for answers
+router.get("/questions/:questionId/answers", getAnswersToQuestion);
+router.post("/questions/:questionId/answers", createAnswer);
 
 export default router;

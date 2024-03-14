@@ -3,8 +3,9 @@ import express from "express";
 import * as path from "path";
 import { myDataSource } from "./app-data-source";
 
-const account = require("./routers/account_router");
-const user = require("./routers/user_router");
+const account = require("./routers/accountRouter");
+const user = require("./routers/userRouter");
+const forum = require("./routers/forumRouter");
 
 myDataSource
   .initialize()
@@ -26,7 +27,7 @@ export class Server {
 
     this.app.use("/api/account", account);
     this.app.use("/api/user", user);
-
+    this.app.use("/api/forum",forum);
     this.app.get("/api", (req: Request, res: Response): void => {
       res.send("You have reached the API!");
     });
