@@ -3,6 +3,8 @@ import { myDataSource } from "../app-data-source";
 import { StatusCodes } from "http-status-codes";
 import { User } from "../entities/users.entity";
 import { Account } from "../entities/account.entity";
+
+import { Session } from "../entities/session.entity";
 import { validate } from "class-validator";
 import { hash, compare } from "bcrypt";
 
@@ -89,22 +91,33 @@ export const login = async (req: Request, res: Response) => {
   if (!isPasswordMatch) {
     return res.status(StatusCodes.UNAUTHORIZED).send("Invalid password.");
   }
+  console.log(req.session);
   req.session.userId = existingUser.id;
 
   return res.status(StatusCodes.OK).send("Login successful.");
 };
 
-export const logout = (req: Request, res: Response) => {
-  req.session.destroy((err) => {
+export const logout = async (req: Request, res: Response) => {
+  const sessionId = req.sessionID; // Get the session ID
+  req.session.destroy(async (err) => {
     if (err) {
-      res.status(StatusCodes.BAD_GATEWAY).send("Could not log out");
+      return res
+        .status(StatusCodes.INTERNAL_SERVER_ERROR)
+        .send("Error during logout");
     }
-    res.status(StatusCodes.OK).send("Logged Out ..");
+    try {
+      await myDataSource.getRepository(Session).delete({ id: sessionId });
+      res.status(StatusCodes.OK).send("Logged out successfully");
+    } catch (error) {
+      console.error("Error deleting session from DB:", error);
+      res.status(StatusCodes.INTERNAL_SERVER_ERROR).send("Error during logout");
+    }
   });
 };
 
 export const loginStatus = (req: Request, res: Response) => {
-  if (req.session.userId) {
+  console.log(req.body);
+  if (req.session?.userId) {
     res.status(StatusCodes.OK).json({ isLoggedIn: true });
   } else {
     res.status(StatusCodes.OK).json({ isLoggedIn: false });
