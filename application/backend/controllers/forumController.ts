@@ -10,7 +10,9 @@ export const getAllQuestions = async (req: Request, res: Response) => {
     const questions = await myDataSource.getRepository(Question).find();
     return res.json(questions);
   } catch (error) {
-    return res.status(500).json({ message: "Error retrieving questions", details: error });
+    return res
+      .status(500)
+      .json({ message: "Error retrieving questions", details: error });
   }
 };
 
@@ -21,10 +23,14 @@ export const createQuestion = async (req: Request, res: Response) => {
     const errors = await validate(question);
     if (errors.length > 0) return res.status(400).json(errors);
 
-    const savedQuestion = await myDataSource.getRepository(Question).save(question);
+    const savedQuestion = await myDataSource
+      .getRepository(Question)
+      .save(question);
     return res.status(201).json(savedQuestion);
   } catch (error) {
-    return res.status(500).json({ message: "Error creating question", details: error });
+    return res
+      .status(500)
+      .json({ message: "Error creating question", details: error });
   }
 };
 
@@ -37,12 +43,14 @@ export const getAnswersToQuestion = async (req: Request, res: Response) => {
 
   try {
     const answers = await myDataSource.getRepository(Answer).find({
-      where: { question:  questionId  },
+      where: { question: questionId },
       relations: ["account"],
     });
     return res.json(answers);
   } catch (error) {
-    return res.status(500).json({ message: "Error retrieving answers", details: error });
+    return res
+      .status(500)
+      .json({ message: "Error retrieving answers", details: error });
   }
 };
 
@@ -56,6 +64,8 @@ export const createAnswer = async (req: Request, res: Response) => {
     const savedAnswer = await myDataSource.getRepository(Answer).save(answer);
     return res.status(201).json(savedAnswer);
   } catch (error) {
-    return res.status(500).json({ message: "Error creating answer", details: error });
+    return res
+      .status(500)
+      .json({ message: "Error creating answer", details: error });
   }
 };

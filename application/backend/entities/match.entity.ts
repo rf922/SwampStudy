@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
 import {
   Entity,
   Column,
@@ -8,6 +9,7 @@ import {
 import { IsDefined, IsInt, IsString } from "class-validator";
 import { Account } from "./account.entity";
 import { Class } from "./class.entity";
+/* eslint-enable @typescript-eslint/no-unused-vars */
 
 @Entity()
 export class Match extends BaseEntity {

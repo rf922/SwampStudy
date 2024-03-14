@@ -3,9 +3,10 @@ import express from "express";
 import * as path from "path";
 import { myDataSource } from "./app-data-source";
 
-const account = require("./routers/accountRouter");
-const user = require("./routers/userRouter");
-const forum = require("./routers/forumRouter");
+// es6 syntax, router names match file names
+import accountRouter from "./routers/accountRouter.js";
+import userRouter from "./routers/userRouter.js";
+import forumRouter from "./routers/forumRouter.js";
 
 myDataSource
   .initialize()
@@ -25,9 +26,9 @@ export class Server {
     this.app.use(express.json());
     this.app.use(express.static(path.resolve("./") + "/dist"));
 
-    this.app.use("/api/account", account);
-    this.app.use("/api/user", user);
-    this.app.use("/api/forum",forum);
+    this.app.use("/api/account", accountRouter);
+    this.app.use("/api/user", userRouter);
+    this.app.use("/api/forum", forumRouter);
     this.app.get("/api", (req: Request, res: Response): void => {
       res.send("You have reached the API!");
     });

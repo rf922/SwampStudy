@@ -1,8 +1,9 @@
-import { postUser } from "../controllers/userController";
+import express from "express";
+import { postUser } from "../controllers/userController.js";
+//es6 syntax for import exports
 
-const express = require("express");
-const router = express.Router();
+const userRouter = express.Router();
 
-router.post("/", postUser);
+userRouter.post("/", postUser);
 
-module.exports = router;
+export default userRouter;

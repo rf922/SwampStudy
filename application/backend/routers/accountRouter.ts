@@ -1,9 +1,8 @@
-import { getAccount, postAccount } from "../controllers/accountController";
+import express from "express";
+import { getAccount, postAccount } from "../controllers/accountController.js";
 
-const express = require("express");
-const router = express.Router();
+const accountRouter = express.Router();
 
-router.get("/:id", getAccount);
-router.post("/", postAccount);
-
-module.exports = router;
+accountRouter.get("/:id", getAccount);
+accountRouter.post("/", postAccount);
+export default accountRouter;

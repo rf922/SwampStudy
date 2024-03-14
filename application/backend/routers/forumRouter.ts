@@ -4,17 +4,17 @@ import {
   createQuestion,
   getAnswersToQuestion,
   createAnswer,
-} from "../controllers/forumController";
+} from "../controllers/forumController.js";
+//es6 syntax for import exports
 
-const express=require("express");
-const router = express.Router();
+const forumRouter = Router();
 
 // Routes for questions
-router.get("/questions", getAllQuestions);
-router.post("/questions", createQuestion);
+forumRouter.get("/questions", getAllQuestions);
+forumRouter.post("/questions", createQuestion);
 
 // Routes for answers
-router.get("/questions/:questionId/answers", getAnswersToQuestion);
-router.post("/questions/:questionId/answers", createAnswer);
+forumRouter.get("/questions/:questionId/answers", getAnswersToQuestion);
+forumRouter.post("/questions/:questionId/answers", createAnswer);
 
-module.exports=router;
+export default forumRouter;
