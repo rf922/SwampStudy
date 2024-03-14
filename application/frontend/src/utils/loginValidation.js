@@ -7,7 +7,7 @@ export const isValidEmail = (email) => {
 
 export const isValidPassword = (password) => {
   const isValid = /^(?=.*[a-zA-Z])(?=.*\d)[a-zA-Z\d]{8,}$/.test(password);
-  return password.length >= 8;
+  return password.length >= 8 && isValid;
 };
 
 export const validateLoginForm = ({ email, password }) => {
