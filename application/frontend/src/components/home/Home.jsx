@@ -16,7 +16,7 @@ const Home = () => {
           console.log(userDetailsResponse.data);
           setUserFirstName(userDetailsResponse.data.first_name);
         } else {
-          setUserFirstName("Welcome, please log in.");
+          setUserFirstName("please log in.");
         }
       } catch (error) {
         console.error("Error fetching user details", error);

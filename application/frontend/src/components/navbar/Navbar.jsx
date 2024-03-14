@@ -14,11 +14,7 @@ const Navbar = () => {
           "http://localhost:8080/api/user/loginStatus",
           { withCredentials: true },
         );
-        if (response.status === 200) {
-          setIsLoggedIn(true);
-        } else {
-          setIsLoggedIn(false);
-        }
+        setIsLoggedIn(response.data.isLoggedIn);
       } catch (error) {
         console.error("Failed to verify auth status", error);
         setIsLoggedIn(false);
