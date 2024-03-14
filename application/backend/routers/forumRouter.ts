@@ -6,7 +6,8 @@ import {
   createAnswer,
 } from "../controllers/forumController";
 
-const router = Router();
+const express=require("express");
+const router = express.Router();
 
 // Routes for questions
 router.get("/questions", getAllQuestions);
@@ -16,4 +17,4 @@ router.post("/questions", createQuestion);
 router.get("/questions/:questionId/answers", getAnswersToQuestion);
 router.post("/questions/:questionId/answers", createAnswer);
 
-export default router;
+module.exports=router;
