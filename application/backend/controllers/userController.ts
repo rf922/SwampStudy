@@ -32,73 +32,97 @@ export const postUser = async (req: Request, res: Response) => {
 export const register = async (req: Request, res: Response) => {
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const { firstName, lastName, email, password } = req.body;
-  console.log(JSON.stringify(req.body));
+  if (!firstName || !lastName || !email || !password) {
+    return res.status(StatusCodes.BAD_REQUEST).send("Missing required fields.");
+  }
 
   const existingUser = await myDataSource
     .getRepository(User)
     .findOneBy({ email });
   if (existingUser) {
-    return res.status(StatusCodes.BAD_REQUEST).send("User already exists.");
+    return res.status(StatusCodes.CONFLICT).send("User already exists.");
   }
-
   const hashedPassword = await hash(password, 10);
 
-  // Create a new user entity with hashed password
-  const user = new User();
-  user.email = email;
-  user.password = hashedPassword;
+  try {
+    await myDataSource.transaction(async (transactionalEntityManager) => {
+      // create the user
+      const user = transactionalEntityManager.create(User, {
+        email: email,
+        password: hashedPassword,
+      });
 
-  const userErrors = await validate(user);
-  if (userErrors.length > 0) {
+      // validate user
+      const userErrors = await validate(user);
+      if (userErrors.length > 0) {
+        throw new Error("Failed User Data Validation");
+      }
+
+      const newUser = await transactionalEntityManager.save(User, user);
+
+      // create and validate the account entity
+      const account = transactionalEntityManager.create(Account, {
+        first_name: firstName,
+        last_name: lastName,
+        profile_picture: "picture that well put in s3 bucket",
+        user_FK: newUser,
+      });
+
+      const accountErrors = await validate(account);
+      if (accountErrors.length > 0) {
+        throw new Error("Failed Account Data Validation");
+      }
+
+      await transactionalEntityManager.save(Account, account);
+    });
+
     return res
-      .status(StatusCodes.UNPROCESSABLE_ENTITY)
-      .send("Failed User Data Validation");
+      .status(StatusCodes.CREATED)
+      .send(`User and account registered with email: ${email}`);
+  } catch (error) {
+    return res.status(StatusCodes.UNPROCESSABLE_ENTITY).send(error.message);
   }
-
-  // create account
-  const newUser = await myDataSource.getRepository(User).save(user);
-  const account = new Account();
-  account.first_name = firstName;
-  account.last_name = lastName;
-
-  account.profile_picture = "picture that well put n s3 bucket"; // placeholder
-  account.user_FK = newUser; // fk user
-
-  const accountErrors = await validate(account);
-  if (accountErrors.length > 0) {
-    return res
-      .status(StatusCodes.UNPROCESSABLE_ENTITY)
-      .send("Failed Account Data Validation");
-  }
-
-  await myDataSource.getRepository(Account).save(account);
-  return res
-    .status(StatusCodes.CREATED)
-    .send(`User and account registered with email: ${newUser.email}`);
 };
 
 export const login = async (req: Request, res: Response) => {
   const { email, password } = req.body;
-  res.status(StatusCodes.OK);
-  const existingUser = await myDataSource
-    .getRepository(User)
-    .findOneBy({ email });
-  if (!existingUser) {
-    return res.status(StatusCodes.BAD_REQUEST).send("User Does Not exist.");
-  }
 
-  const isPasswordMatch = await compare(password, existingUser.password);
-  if (!isPasswordMatch) {
-    return res.status(StatusCodes.UNAUTHORIZED).send("Invalid password.");
+  if (!email || !password) {
+    // check params
+    return res
+      .status(StatusCodes.BAD_REQUEST)
+      .send("Email and password are required.");
   }
-  console.log(req.session);
-  req.session.userId = existingUser.id;
+  try {
+    const user = await myDataSource.getRepository(User).findOneBy({ email });
 
-  return res.status(StatusCodes.OK).send("Login successful.");
+    if (!user) {
+      return res.status(StatusCodes.NOT_FOUND).send("User not found.");
+    }
+
+    const isPasswordMatch = await compare(password, user.password);
+
+    if (!isPasswordMatch) {
+      return res.status(StatusCodes.UNAUTHORIZED).send("Invalid credentials.");
+    }
+
+    req.session.userId = user.id; // Assuming session setup is done elsewhere
+
+    return res.status(StatusCodes.OK).send("Login successful.");
+  } catch (error) {
+    console.error(error); // Log the error for debugging purposes
+    return res
+      .status(StatusCodes.INTERNAL_SERVER_ERROR)
+      .send("An error occurred during login.");
+  }
 };
 
 export const logout = async (req: Request, res: Response) => {
   const sessionId = req.sessionID; // Get the session ID
+  if (!sessionId) {
+    return res.status(StatusCodes.BAD_REQUEST).send("Session not found.");
+  }
+
   req.session.destroy(async (err) => {
     if (err) {
       return res
@@ -113,13 +137,4 @@ export const logout = async (req: Request, res: Response) => {
       res.status(StatusCodes.INTERNAL_SERVER_ERROR).send("Error during logout");
     }
   });
-};
-
-export const loginStatus = (req: Request, res: Response) => {
-  console.log(req.body);
-  if (req.session?.userId) {
-    res.status(StatusCodes.OK).json({ isLoggedIn: true });
-  } else {
-    res.status(StatusCodes.OK).json({ isLoggedIn: false });
-  }
 };

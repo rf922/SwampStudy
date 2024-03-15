@@ -40,11 +40,32 @@ const Login = () => {
         console.log("User Login unsuccessful");
       }
     } catch (err) {
-      console.error(
-        "User Failed To log in : ",
-        err?.response ? err.response.data : err,
-      );
-      console.error("Request URL:");
+      if (err.response) {
+        switch (err.response.data.error) {
+          case "user_not_found":
+            setErrors({
+              ...errors,
+              email: "Please try again.",
+              form: "Invalid email or password",
+            });
+            break;
+          case "invalid_password":
+            setErrors({
+              ...errors,
+              password: "Please try again.",
+              form: "Invalid email or password",
+            });
+            break;
+          default:
+            setErrors({
+              ...errors,
+              form: "An error occurred. Please try again later.",
+            });
+        }
+      } else {
+        console.error("Error during login:", err);
+        setErrors({ ...errors, form: "An unknown error occurred." });
+      }
     }
   };
 
@@ -57,20 +78,27 @@ const Login = () => {
     setErrors(validationResult.errors);
   };
 
-  const handleEmailChange = (e) => {
-    setEmail(e.target.value);
-    validateField("email", e.target.value);
-  };
+  const handleInputChange = (field, value) => {
+    const setFunctionMap = {
+      email: setEmail,
+      password: setPassword,
+    };
 
-  const handlePasswordChange = (e) => {
-    setPassword(e.target.value);
-    validateField("password", e.target.value);
+    if (setFunctionMap[field]) {
+      setFunctionMap[field](value);
+    }
+
+    validateField(field, value);
   };
 
   return (
     <div className="flex justify-center items-center h-screen">
       <form onSubmit={handleLogin} className="w-full max-w-xs">
         <div className="mb-4">
+          {errors.form && (
+            <div className="text-red-500 text-xs italic">{errors.form}</div>
+          )}
+
           <label htmlFor="email" className="block text-sm font-bold mb-2">
             Email
           </label>
@@ -80,7 +108,7 @@ const Login = () => {
             id="email"
             placeholder="Type your email"
             value={email}
-            onChange={handleEmailChange}
+            onChange={(e) => handleInputChange("email", e.target.value)}
             className={`shadow appearance-none border ${errors.email ? "border-red-500" : ""} rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline`}
           />
           {errors.email && (
@@ -97,7 +125,7 @@ const Login = () => {
             id="password"
             placeholder="Type your password"
             value={password}
-            onChange={handlePasswordChange}
+            onChange={(e) => handleInputChange("password", e.target.value)}
             className={`shadow appearance-none border ${errors.password ? "border-red-500" : ""} rounded w-full py-2 px-3 text-gray-700 mb-3 leading-tight focus:outline-none focus:shadow-outline`}
           />
           {errors.password && (

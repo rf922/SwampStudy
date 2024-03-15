@@ -4,12 +4,13 @@ import cors from "cors";
 import bodyParser from "body-parser";
 import session from "express-session";
 import { TypeormStore } from "connect-typeorm";
-
 import { myDataSource } from "./app-data-source";
 import accountRouter from "./routers/accountRouter";
 import userRouter from "./routers/userRouter";
 import likeRouter from "./routers/likeRouter";
 import matchRouter from "./routers/matchRouter";
+
+import authenticationRouter from "./routers/authenticationRouter";
 import { Session } from "./entities/session.entity";
 
 export class Server {
@@ -61,11 +62,11 @@ export class Server {
   }
 
   private configureRoutes(): void {
+    this.app.use("/api/auth", authenticationRouter);
     this.app.use("/api/account", accountRouter);
     this.app.use("/api/user", userRouter);
     this.app.use("/api/like", likeRouter);
     this.app.use("/api/match", matchRouter);
-
     this.app.get("/api", (req: Request, res: Response) =>
       res.send("You have reached the API!"),
     );

@@ -4,7 +4,8 @@ import { useAuth } from "../../context/AuthContext";
 
 const Home = () => {
   const [userFirstName, setUserFirstName] = useState("");
-  const { isLoggedIn } = useAuth();
+  const { isLoggedIn, isLoading } = useAuth();
+
   useEffect(() => {
     const getUserDetails = async () => {
       try {
@@ -25,6 +26,14 @@ const Home = () => {
 
     getUserDetails();
   }, [isLoggedIn]);
+
+  if (isLoading)
+    return (
+      <div>
+        <h1>Study Swamp</h1>
+        {<p>Content Loading . . . </p>}
+      </div>
+    );
 
   return (
     <div>
