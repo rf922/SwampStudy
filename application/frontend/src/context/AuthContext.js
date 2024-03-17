@@ -1,35 +1,30 @@
 import React, { createContext, useContext, useState, useEffect } from "react";
 import axios from "axios";
 import PropTypes from "prop-types";
-const AuthContext = createContext(null);
+
+const AuthContext = createContext();
 
 export const Auth = ({ children }) => {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
-    const checkLoginStatus = async () => {
-      try {
-        const response = await axios.get(
-          "http://localhost:8080/api/auth/checkSession",
-          {
-            withCredentials: true,
-          },
-        );
+    axios
+      .get("http://localhost:8080/api/auth/checkSession", {
+        withCredentials: true,
+      })
+      .then((response) => {
         setIsLoggedIn(response.data.isLoggedIn);
-      } catch (error) {
+      })
+      .catch((error) => {
         console.error("Failed to check login status", error);
-        setIsLoggedIn(false);
-      } finally {
+      })
+      .finally(() => {
         setIsLoading(false);
-      }
-    };
-
-    checkLoginStatus();
+      });
   }, []);
 
   const handleLogout = async () => {
-    console.log("Attempting to logout...");
     try {
       await axios.post(
         "http://localhost:8080/api/user/logout",
@@ -37,7 +32,6 @@ export const Auth = ({ children }) => {
         { withCredentials: true },
       );
       setIsLoggedIn(false);
-      console.log("Logout successful");
     } catch (error) {
       console.error("Logout failed", error);
     }
@@ -47,7 +41,7 @@ export const Auth = ({ children }) => {
     <AuthContext.Provider
       value={{ isLoggedIn, setIsLoggedIn, isLoading, handleLogout }}
     >
-      {children}
+      {!isLoading ? children : <div>Loading...</div>}
     </AuthContext.Provider>
   );
 };

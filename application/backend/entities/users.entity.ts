@@ -4,8 +4,10 @@ import {
   PrimaryGeneratedColumn,
   CreateDateColumn,
   BaseEntity,
+  OneToOne,
 } from "typeorm";
 import { IsDefined, IsEmail, IsString } from "class-validator";
+import { Account } from "./account.entity";
 
 @Entity()
 export class User extends BaseEntity {
@@ -24,4 +26,7 @@ export class User extends BaseEntity {
 
   @CreateDateColumn()
   created: Date;
+
+  @OneToOne(() => Account, (account) => account.user_FK)
+  account: Account;
 }

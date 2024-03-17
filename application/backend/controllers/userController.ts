@@ -106,11 +106,10 @@ export const login = async (req: Request, res: Response) => {
       return res.status(StatusCodes.UNAUTHORIZED).send("Invalid credentials.");
     }
 
-    req.session.userId = user.id; // Assuming session setup is done elsewhere
-
+    req.session.userId = user.id;
     return res.status(StatusCodes.OK).send("Login successful.");
   } catch (error) {
-    console.error(error); // Log the error for debugging purposes
+    console.error(error);
     return res
       .status(StatusCodes.INTERNAL_SERVER_ERROR)
       .send("An error occurred during login.");
@@ -129,6 +128,8 @@ export const logout = async (req: Request, res: Response) => {
         .status(StatusCodes.INTERNAL_SERVER_ERROR)
         .send("Error during logout");
     }
+    res.clearCookie("connect.sid");
+
     try {
       await myDataSource.getRepository(Session).delete({ id: sessionId });
       res.status(StatusCodes.OK).send("Logged out successfully");

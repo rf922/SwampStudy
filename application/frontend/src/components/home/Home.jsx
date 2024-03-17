@@ -7,6 +7,7 @@ const Home = () => {
   const { isLoggedIn, isLoading } = useAuth();
 
   useEffect(() => {
+    //effect to set a custom welcome message,
     const getUserDetails = async () => {
       try {
         if (isLoggedIn) {
@@ -27,6 +28,7 @@ const Home = () => {
     getUserDetails();
   }, [isLoggedIn]);
 
+  //loading place holder, may replace with custom spinner / effect
   if (isLoading)
     return (
       <div>

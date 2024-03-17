@@ -9,6 +9,7 @@ import accountRouter from "./routers/accountRouter";
 import userRouter from "./routers/userRouter";
 import likeRouter from "./routers/likeRouter";
 import matchRouter from "./routers/matchRouter";
+import forumRouter from "./routers/forumRouter";
 
 import authenticationRouter from "./routers/authenticationRouter";
 import { Session } from "./entities/session.entity";
@@ -54,6 +55,7 @@ export class Server {
         saveUninitialized: false,
         cookie: {
           secure: process.env.PRODUCTION === "true",
+          sameSite: "strict",
           httpOnly: true,
           maxAge: 1000 * 60 * 60 * 24 * 365,
         },
@@ -67,6 +69,7 @@ export class Server {
     this.app.use("/api/user", userRouter);
     this.app.use("/api/like", likeRouter);
     this.app.use("/api/match", matchRouter);
+    this.app.use("/api/forum", forumRouter);
     this.app.get("/api", (req: Request, res: Response) =>
       res.send("You have reached the API!"),
     );

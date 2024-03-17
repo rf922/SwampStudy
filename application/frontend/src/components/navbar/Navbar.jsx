@@ -15,9 +15,14 @@ const Navbar = () => {
           <Link to="/register">Register</Link>
         </>
       ) : (
-        <button onClick={handleLogout}>Logout</button>
+        <>
+          <button onClick={handleLogout}>Logout</button>
+          <Link to="/account">Account</Link>
+        </>
       )}
+
       <Link to="/about">About</Link>
+      <Link to="/forum">Forum</Link>
       <Link to="/">Home</Link>
     </div>
   );

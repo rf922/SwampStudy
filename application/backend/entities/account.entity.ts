@@ -4,9 +4,11 @@ import {
   PrimaryGeneratedColumn,
   BaseEntity,
   OneToOne,
+  OneToMany,
   JoinColumn,
 } from "typeorm";
 import { User } from "./users.entity";
+import { Question } from "./questions.entity";
 import { IsDefined, IsString } from "class-validator";
 
 @Entity()
@@ -30,4 +32,7 @@ export class Account extends BaseEntity {
   @OneToOne(() => User)
   @JoinColumn()
   user_FK: User;
+
+  @OneToMany(() => Question, (question) => question.account)
+  questions: Question[];
 }
