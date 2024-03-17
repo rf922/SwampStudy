@@ -2,12 +2,7 @@ import React, { useState } from "react";
 import axios from "axios";
 import { useAuth } from "../../context/AuthContext";
 import { useNavigate } from "react-router-dom";
-import {
-  isValidName,
-  isValidEmail,
-  isValidPassword,
-  isValidConfirmPassword,
-} from "../../utils/registrationValidation";
+import { validateUpdateForm } from "../../utils/updateAccountValidation";
 
 const UpdateAccount = () => {
   // takes fields from user, validates then sends to server to update acc.
@@ -21,40 +16,6 @@ const UpdateAccount = () => {
   });
   const [errors, setErrors] = useState({});
   const navigate = useNavigate();
-
-  const validateUpdateForm = ({
-    //performs validation on user input
-    firstName,
-    lastName,
-    email,
-    newPassword,
-    confirmPassword,
-  }) => {
-    const errors = {};
-
-    if (firstName && !isValidName(firstName)) {
-      errors.firstName = "Invalid First Name";
-    }
-    if (lastName && !isValidName(lastName)) {
-      errors.lastName = "Invalid Last Name";
-    }
-    if (email && !isValidEmail(email)) {
-      errors.email = "Invalid email format";
-    }
-    // Only validate new password if it's provided
-    if (newPassword && !isValidPassword(newPassword)) {
-      errors.newPassword = "Invalid Password";
-    }
-    // Only check confirmPassword if newPassword is provided
-    if (newPassword && !isValidConfirmPassword(newPassword, confirmPassword)) {
-      errors.confirmPassword = "Password and Confirm Password must match";
-    }
-
-    return {
-      isValid: Object.keys(errors).length === 0,
-      errors,
-    };
-  };
 
   const handleChange = (e) => {
     //updates the field value and validates
