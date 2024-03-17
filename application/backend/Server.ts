@@ -4,9 +4,9 @@ import * as path from "path";
 import { myDataSource } from "./app-data-source";
 
 // es6 syntax, router names match file names
-import accountRouter from "./routers/accountRouter.js";
-import userRouter from "./routers/userRouter.js";
-import forumRouter from "./routers/forumRouter.js";
+import accountRouter from "./routers/accountRouter";
+import userRouter from "./routers/userRouter";
+import forumRouter from "./routers/forumRouter";
 
 myDataSource
   .initialize()

@@ -4,7 +4,7 @@ import {
   createQuestion,
   getAnswersToQuestion,
   createAnswer,
-} from "../controllers/forumController.js";
+} from "../controllers/forumController";
 //es6 syntax for import exports
 
 const forumRouter = Router();

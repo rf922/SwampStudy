@@ -4,7 +4,9 @@ import {
   PrimaryGeneratedColumn,
   BaseEntity,
   ManyToOne,
+  OneToMany,
 } from "typeorm";
+import { Answer } from "./answer.entity";
 import { Account } from "./account.entity";
 import { IsDefined, IsString } from "class-validator";
 
@@ -12,6 +14,8 @@ import { IsDefined, IsString } from "class-validator";
 export class Question extends BaseEntity {
   @PrimaryGeneratedColumn()
   id: number;
+  @OneToMany(() => Answer, (answer) => answer.question) // reciprocal part of the relationship
+  answers: Answer[];
 
   @ManyToOne(() => Account)
   @IsDefined()

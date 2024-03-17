@@ -43,8 +43,12 @@ export const getAnswersToQuestion = async (req: Request, res: Response) => {
 
   try {
     const answers = await myDataSource.getRepository(Answer).find({
-      where: { question: questionId },
-      relations: ["account"],
+      where: {
+        question: { id: questionId },
+      },
+      relations: {
+        account: true,
+      },
     });
     return res.json(answers);
   } catch (error) {
