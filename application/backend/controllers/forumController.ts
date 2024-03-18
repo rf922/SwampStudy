@@ -46,7 +46,7 @@ export const createQuestion = async (req: Request, res: Response) => {
     }
 
     // Save the new question to the database
-    const savedQuestion = await myDataSource.getRepository(Question).save(questionText);
+    const savedQuestion = await myDataSource.getRepository(Question).save(newQuestion);
     return res.status(201).json(savedQuestion);
   } catch (error) {
     return res.status(500).json({ message: "Error creating question", details: error.toString() });
