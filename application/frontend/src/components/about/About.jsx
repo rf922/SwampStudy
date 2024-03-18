@@ -6,7 +6,7 @@ const About = () => {
   const handleClick = (name) => {
     navigate(`/about/${name}`);
   };
-  console.log(JSON.stringify(team));
+  // console.log(JSON.stringify(team));
   return (
     <div className="h-full w-full bg-slate-800 p-4">
       <p className="text-3xl text-center text-white mb-4">

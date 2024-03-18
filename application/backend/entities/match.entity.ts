@@ -4,9 +4,13 @@ import {
   Column,
   PrimaryGeneratedColumn,
   BaseEntity,
+  ManyToMany,
   ManyToOne,
+  JoinTable,
 } from "typeorm";
+/* eslint-disable @typescript-eslint/no-unused-vars */
 import { IsDefined, IsInt, IsString } from "class-validator";
+/* eslint-enable @typescript-eslint/no-unused-vars */
 import { Account } from "./account.entity";
 import { Class } from "./class.entity";
 /* eslint-enable @typescript-eslint/no-unused-vars */
@@ -15,14 +19,11 @@ import { Class } from "./class.entity";
 export class Match extends BaseEntity {
   @PrimaryGeneratedColumn()
   id: number;
-
-  @ManyToOne(() => Account)
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  @ManyToMany(() => Account)
+  @JoinTable()
   @IsDefined()
-  user1: Account;
-
-  @ManyToOne(() => Account)
-  @IsDefined()
-  user2: Account;
+  users: Account[];
 
   @ManyToOne(() => Class)
   @IsDefined()

@@ -17,7 +17,7 @@ export class Question extends BaseEntity {
   @OneToMany(() => Answer, (answer) => answer.question) // reciprocal part of the relationship
   answers: Answer[];
 
-  @ManyToOne(() => Account)
+  @ManyToOne(() => Account, { onDelete: "CASCADE" })
   @IsDefined()
   account: Account;
 

@@ -1,9 +1,19 @@
+import {
+  postUser,
+  register,
+  login,
+  logout,
+} from "../controllers/userController";
 import express from "express";
-import { postUser } from "../controllers/userController";
-//es6 syntax for import exports
 
 const userRouter = express.Router();
 
 userRouter.post("/", postUser);
+
+userRouter.post("/login", login);
+
+userRouter.post("/register", register);
+
+userRouter.post("/logout", logout);
 
 export default userRouter;

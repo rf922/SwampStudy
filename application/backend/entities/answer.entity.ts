@@ -14,11 +14,7 @@ export class Answer extends BaseEntity {
   @PrimaryGeneratedColumn()
   id: number;
 
-  @ManyToOne(() => Question, (question) => question.answers) // corresponding setup @ Question entity
-  @IsDefined()
-  question: Question;
-
-  @ManyToOne(() => Account)
+  @ManyToOne(() => Account, { onDelete: "CASCADE" })
   @IsDefined()
   account: Account;
 
