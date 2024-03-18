@@ -113,7 +113,6 @@ export const getQuestion = async (req: Request, res: Response) => {
   }
 };
 
-/* Get  answers to question in progress and untested
 export const getAnswersToQuestion = async (req: Request, res: Response) => {
   const questionId = parseInt(req.params.questionId);
   if (isNaN(questionId)) {
@@ -122,12 +121,8 @@ export const getAnswersToQuestion = async (req: Request, res: Response) => {
 
   try {
     const answers = await myDataSource.getRepository(Answer).find({
-      where: {
-        question: { id: questionId },
-      },
-      relations: {
-        account: true,
-      },
+      where: { id: questionId },
+      relations: ["account"],
     });
     return res.json(answers);
   } catch (error) {
@@ -136,8 +131,6 @@ export const getAnswersToQuestion = async (req: Request, res: Response) => {
       .json({ message: "Error retrieving answers", details: error });
   }
 };
-
-*/
 
 // Create new answer to question in progress and untested
 export const createAnswer = async (req: Request, res: Response) => {
@@ -154,4 +147,3 @@ export const createAnswer = async (req: Request, res: Response) => {
       .json({ message: "Error creating answer", details: error });
   }
 };
-
