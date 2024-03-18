@@ -2,7 +2,7 @@ import { Router } from "express";
 import {
   getAllQuestions,
   createQuestion,
-  getAnswersToQuestion,
+  //getAnswersToQuestion,
   createAnswer,
   getQuestion,
 } from "../controllers/forumController";
@@ -16,7 +16,7 @@ forumRouter.get("/questions/:questionId", getQuestion);
 forumRouter.post("/questions", createQuestion);
 
 // Routes for answers
-forumRouter.get("/questions/:questionId/answers", getAnswersToQuestion);
+//forumRouter.get("/questions/:questionId/answers", getAnswersToQuestion);
 forumRouter.post("/questions/:questionId/answers", createAnswer);
 
 export default forumRouter;

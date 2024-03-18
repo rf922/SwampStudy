@@ -6,7 +6,7 @@ import {
   ManyToOne,
 } from "typeorm";
 import { Account } from "./account.entity";
-import { Question } from "./questions.entity";
+//import { Question } from "./questions.entity";
 import { IsDefined, IsString } from "class-validator";
 
 @Entity()

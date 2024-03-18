@@ -1,6 +1,7 @@
 import { Request, Response } from "express";
 import { myDataSource } from "../app-data-source";
 import { Question } from "../entities/questions.entity";
+import { Account } from "../entities/account.entity";
 import { Answer } from "../entities/answer.entity";
 import { validate } from "class-validator";
 import { StatusCodes } from "http-status-codes";
@@ -42,13 +43,19 @@ export const createQuestion = async (req: Request, res: Response) => {
     const { accountId, question } = req.body;
     // Parse the accountId to an integer this is a personal test to see if id was the issue
     const Accountid = parseInt(accountId);
-    if(isNaN(Accountid)){return res.status(400).json({ message: "error in parse" });}
+    if (isNaN(Accountid)) {
+      return res.status(400).json({ message: "error in parse" });
+    }
     const questionText = question;
 
     // Check if the accountId exists in the database
-    const account = await myDataSource.getRepository(Account).findOneBy({ id: Accountid });
+    const account = await myDataSource
+      .getRepository(Account)
+      .findOneBy({ id: Accountid });
     if (!account) {
-      return res.status(404).json({ message: "Account not found for the user" });
+      return res
+        .status(404)
+        .json({ message: "Account not found for the user" });
     }
 
     // Create a new question and associate it with the account
@@ -57,17 +64,22 @@ export const createQuestion = async (req: Request, res: Response) => {
     // Validate the new question
     const errors = await validate(newQuestion);
     if (errors.length > 0) {
-      return res.status(400).json({message: "error in new question",details: errors});
+      return res
+        .status(400)
+        .json({ message: "error in new question", details: errors });
     }
 
     // Save the new question to the database
-    const savedQuestion = await myDataSource.getRepository(Question).save(newQuestion);
+    const savedQuestion = await myDataSource
+      .getRepository(Question)
+      .save(newQuestion);
     return res.status(201).json(savedQuestion);
   } catch (error) {
-    return res.status(500).json({ message: "Error creating question", details: error.toString() });
+    return res
+      .status(500)
+      .json({ message: "Error creating question", details: error.toString() });
   }
 };
-
 
 // get question by id
 export const getQuestion = async (req: Request, res: Response) => {
@@ -101,7 +113,7 @@ export const getQuestion = async (req: Request, res: Response) => {
   }
 };
 
-// Get  answers to question in progress and untested
+/* Get  answers to question in progress and untested
 export const getAnswersToQuestion = async (req: Request, res: Response) => {
   const questionId = parseInt(req.params.questionId);
   if (isNaN(questionId)) {
@@ -125,6 +137,8 @@ export const getAnswersToQuestion = async (req: Request, res: Response) => {
   }
 };
 
+*/
+
 // Create new answer to question in progress and untested
 export const createAnswer = async (req: Request, res: Response) => {
   try {
@@ -140,3 +154,4 @@ export const createAnswer = async (req: Request, res: Response) => {
       .json({ message: "Error creating answer", details: error });
   }
 };
+
