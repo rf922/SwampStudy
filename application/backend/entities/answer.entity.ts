@@ -7,6 +7,7 @@ import {
 } from "typeorm";
 import { Account } from "./account.entity";
 import { IsDefined, IsString } from "class-validator";
+import { Thread } from "./thread.entity";
 
 @Entity()
 export class Answer extends BaseEntity {
@@ -21,4 +22,7 @@ export class Answer extends BaseEntity {
   @IsDefined()
   @IsString()
   answer: string;
+
+  @ManyToOne(() => Thread, (thread) => thread.answers)
+  thread: Thread;
 }
