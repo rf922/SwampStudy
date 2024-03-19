@@ -1,0 +1,28 @@
+name: PR Format Test
+
+on:
+  pull_request:
+    branches:
+      - main
+jobs:
+  pr_format_test:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      - name: Install Dependencies 
+        run: (cd application && npm run install-server && npm run install-frontend && npm run build)
+    
+      - name: Check Formatting 
+        run: (cd application && npm run format:check)
+    
+      - name: Check Lint
+        run: (cd application && npm run lint) 
+    
