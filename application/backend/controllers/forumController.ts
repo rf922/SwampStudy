@@ -1,38 +1,12 @@
 import { Request, Response } from "express";
 import { myDataSource } from "../app-data-source";
 import { Question } from "../entities/questions.entity";
+import { Thread } from "../entities/thread.entity";
+import { User } from "../entities/users.entity";
+import { Class } from "../entities/class.entity";
 import { Answer } from "../entities/answer.entity";
 import { validate } from "class-validator";
 import { StatusCodes } from "http-status-codes";
-
-// Get questions
-export const getAllQuestions = async (req: Request, res: Response) => {
-  try {
-    //const questions = await myDataSource.getRepository(Question).find();
-    const questions = await myDataSource.getRepository(Question).find({
-      relations: {
-        // joint related account
-        account: true,
-      },
-      select: {
-        // should add a created field to quest ent, introduce sort by created date, etc/ select fields
-        id: true,
-        question: true,
-        account: {
-          //select fields from account
-          id: true,
-          first_name: true,
-          last_name: true,
-        },
-      },
-    });
-    return res.json(questions);
-  } catch (error) {
-    return res
-      .status(500)
-      .json({ message: "Error retrieving questions", details: error });
-  }
-};
 
 // create question
 export const createQuestion = async (req: Request, res: Response) => {
@@ -49,6 +23,82 @@ export const createQuestion = async (req: Request, res: Response) => {
     return res
       .status(500)
       .json({ message: "Error creating question", details: error });
+  }
+};
+
+export const createPost = async (req: Request, res: Response) => {
+  //use userId from sess to assoc. thread with account
+  const userId = req.session.userId;
+  const { classId, questionText, threadTitle } = req.body;
+
+  if (!threadTitle || !questionText) {
+    //ensure validity of params
+    return res.status(StatusCodes.BAD_REQUEST).json({
+      message:
+        "Missing required parameters: thread title and/or question text.",
+    });
+  }
+
+  try {
+    // create thread, question
+    await myDataSource.transaction(async (transactionalEntityManager) => {
+      // grab the user and assoc. acc
+      const userWithAccount = await transactionalEntityManager
+        .getRepository(User)
+        .findOne({
+          where: { id: userId },
+          relations: ["account"],
+        });
+
+      if (!userWithAccount || !userWithAccount.account) {
+        // ensure the user and account are valid
+        return res
+          .status(StatusCodes.NOT_FOUND)
+          .json({ message: "User account not found" });
+      }
+
+      // reuse `transactionalEntityManager` to keep transaction context
+      const question = transactionalEntityManager
+        .getRepository(Question)
+        .create({
+          // create question and ensure relation with acc.
+          question: questionText,
+          account: userWithAccount.account,
+        });
+
+      // val the question
+      const errors = await validate(question);
+      if (errors.length > 0) {
+        console.error("FOUND ERRORS TRYING TO VALIDATE QUESTION", errors);
+        return res.status(StatusCodes.BAD_REQUEST).json(errors);
+      }
+
+      // save question using the t-e-m
+      const savedQuestion = await transactionalEntityManager
+        .getRepository(Question)
+        .save(question);
+
+      // create corresponding thread
+      const thread = transactionalEntityManager.getRepository(Thread).create({
+        title: threadTitle,
+        class: classId,
+        question: savedQuestion,
+      });
+
+      const savedThread = await transactionalEntityManager
+        .getRepository(Thread)
+        .save(thread);
+
+      // if all operations succeed, commit the transaction and respond
+      res
+        .status(StatusCodes.CREATED)
+        .json({ thread: savedThread, question: savedQuestion });
+    });
+  } catch (error) {
+    console.error("Error during transaction:", error);
+    return res
+      .status(StatusCodes.INTERNAL_SERVER_ERROR)
+      .json({ message: "Error creating post", details: error.toString() });
   }
 };
 
@@ -117,5 +167,140 @@ export const createAnswer = async (req: Request, res: Response) => {
     return res
       .status(500)
       .json({ message: "Error creating answer", details: error });
+  }
+};
+
+// get all questions , refacor to instead get all threads and assoc question?
+export const getAllQuestions = async (req: Request, res: Response) => {
+  try {
+    //const questions = await myDataSource.getRepository(Question).find();
+    const questions = await myDataSource.getRepository(Question).find({
+      relations: {
+        // join related account
+        account: true,
+      },
+      select: {
+        // should add a created field to quest ent, introduce sort by created date, etc/ select fields
+        id: true,
+        question: true,
+        account: {
+          //select fields from account
+          id: true,
+          first_name: true,
+          last_name: true,
+        },
+      },
+    });
+    return res.json(questions);
+  } catch (error) {
+    return res
+      .status(StatusCodes.INTERNAL_SERVER_ERROR) // may add responses for specific serv errors
+      .json({ message: "Error retrieving questions", details: error });
+  }
+};
+
+// get all available classes, optinally get all classses corresponding to dep param if passed
+export const getClasses = async (req: Request, res: Response) => {
+  const dep = req.query.department;
+  try {
+    let classes: Class[];
+    if (dep) {
+      //prvided dep was passed, yield courses corresponding to dep
+      classes = await myDataSource
+        .getRepository(Class)
+        .createQueryBuilder("class")
+        .where("class.department = :department", { department: dep })
+        .getMany();
+    } else {
+      // dep not passed, default retrieve all classes
+      classes = await myDataSource.getRepository(Class).find();
+    }
+
+    return res.json(classes);
+  } catch (error) {
+    console.error("error retrieving classes", error);
+    return res
+      .status(StatusCodes.INTERNAL_SERVER_ERROR)
+      .json({ message: "Error retrieving classes", details: error });
+  }
+};
+
+// get a listing of the current class departments
+export const getClassesByDepartment = async (req: Request, res: Response) => {
+  try {
+    //grab thread and corr. class
+    const threads = await myDataSource
+      .getRepository(Thread)
+      .createQueryBuilder("thread")
+      .leftJoinAndSelect("thread.class", "class")
+      .getMany();
+
+    // Group classes by their department attribute
+    const groupedByDepartment = threads.reduce((acc, thr) => {
+      const departmentName = thr.class.department;
+      if (!acc[departmentName]) {
+        acc[departmentName] = [];
+      }
+      acc[departmentName].push(thr);
+      return acc;
+    }, {});
+
+    res.json(groupedByDepartment);
+  } catch (error) {
+    console.error("Error retrieving departments:", error);
+    res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({
+      message: "Error retrieving departments",
+      details: error.message,
+    });
+  }
+};
+
+// return
+export const getQuestionsWithThreadAndClass = async (
+  req: Request,
+  res: Response,
+) => {
+  try {
+    // querry for threads, the corresponding class, question and corresponfing account
+    const threads = await myDataSource
+      .getRepository(Thread)
+      .createQueryBuilder("thread")
+      .leftJoinAndSelect("thread.class", "class")
+      .leftJoinAndSelect("thread.question", "question")
+      .leftJoinAndSelect("question.account", "account")
+      .getMany();
+
+    const grouped = threads.reduce((acc, thread) => {
+      //gather threads by class, and by department
+      const departmentName =
+        thread.class && thread.class.department
+          ? thread.class.department
+          : "No Department";
+      const className = thread.class ? thread.class.name : "No Class";
+
+      if (!acc[departmentName]) {
+        acc[departmentName] = {};
+      }
+
+      if (!acc[departmentName][className]) {
+        acc[departmentName][className] = [];
+      }
+
+      acc[departmentName][className].push(thread);
+
+      return acc;
+    }, {});
+
+    // Send the structured data as a response
+    res.json(grouped);
+  } catch (error) {
+    console.error(
+      "Error retrieving questions with their threads and classes:",
+      error,
+    );
+    return res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({
+      message: "Error retrieving questions with their threads and classes",
+      details: error.message,
+    });
   }
 };

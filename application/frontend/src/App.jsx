@@ -11,6 +11,7 @@ import Forum from "./components/forum/Forum";
 import Account from "./components/account/accountmanagement";
 import ProtectedRoute from "./components/protectedroute/protectedroute";
 import Post from "./components/post/Post";
+import Makepost from "./components/makepost/Makepost";
 
 import { Auth } from "./context/AuthContext";
 
@@ -33,6 +34,14 @@ function App() {
               element={
                 <ProtectedRoute>
                   <Account /> {/* wrp acc comp in ProtectedRoute */}
+                </ProtectedRoute>
+              }
+            />
+            <Route
+              path="/makepost"
+              element={
+                <ProtectedRoute>
+                  <Makepost />
                 </ProtectedRoute>
               }
             />

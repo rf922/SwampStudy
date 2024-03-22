@@ -27,6 +27,9 @@ export class Thread {
   @JoinColumn()
   question: Question;
 
+  @OneToMany(() => Thread, (thread) => thread.class)
+  threads: Thread[];
+
   @OneToMany(() => Answer, (answer) => answer.thread, {})
   answers: Answer[];
 }
