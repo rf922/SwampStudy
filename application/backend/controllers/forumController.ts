@@ -2,6 +2,7 @@ import { Request, Response } from "express";
 import { myDataSource } from "../app-data-source";
 import { Question } from "../entities/questions.entity";
 import { Thread } from "../entities/thread.entity";
+import { Account } from "../entities/account.entity";
 import { User } from "../entities/users.entity";
 import { Class } from "../entities/class.entity";
 import { Answer } from "../entities/answer.entity";
