@@ -1,44 +1,23 @@
-import React, { useState } from "react";
-import axios from "axios";
-import { useAuth } from "../../context/AuthContext";
-import { useNavigate } from "react-router-dom";
-import { validateUpdateForm } from "../../utils/updateAccountValidation";
+import React from "react";
+import { useUpdateForm } from "./hooks/setUpdateForm";
+import { useAccountActions } from "./hooks/useAccountActions";
 
 const UpdateAccount = () => {
-  // takes fields from user, validates then sends to server to update acc.
-  const { setIsLoggedIn } = useAuth();
-  const [formData, setFormData] = useState({
+  //component for accountmanagement / update
+  const { formData, handleChange, errors } = useUpdateForm({
     firstName: "",
     lastName: "",
     email: "",
     newPassword: "",
     confirmPassword: "",
   });
-  const [errors, setErrors] = useState({});
-  const navigate = useNavigate();
 
-  const handleChange = (e) => {
-    //updates the field value and validates
-    const { name, value } = e.target;
-    setFormData((prevFormData) => ({
-      ...prevFormData,
-      [name]: value,
-    }));
-    const formErrors = validateUpdateForm({ ...formData, [name]: value });
-    setErrors(formErrors.errors);
-  };
+  const { updateAccount, deleteAccount } = useAccountActions();
 
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    // validate form data
-    const validationResult = validateUpdateForm(formData);
-    if (!validationResult.isValid) {
-      setErrors(validationResult.errors);
-      return;
-    }
-
-    // filter out empty fields and confirmPassword
+    // filt out empty fields and confirmPassword
     const dataToSend = Object.entries(formData).reduce((acc, [key, value]) => {
       if (value && key !== "confirmPassword") {
         acc[key] = value;
@@ -46,41 +25,7 @@ const UpdateAccount = () => {
       return acc;
     }, {});
 
-    try {
-      const response = await axios.post(
-        "http://localhost:8080/api/account/update",
-        dataToSend,
-        { withCredentials: true },
-      );
-      if (response.status === 200) {
-        alert("Account updated successfully!");
-        navigate("/");
-      }
-    } catch (error) {
-      console.error("Error updating account:", error);
-      setErrors({
-        form:
-          error.response?.data.message ||
-          "An error occurred while updating the account.",
-      });
-    }
-  };
-
-  const handleDeleteAccount = async () => {
-    try {
-      const response = await axios.post(
-        "http://localhost:8080/api/account/delete",
-        {},
-        { withCredentials: true },
-      );
-      if (response.status == 200) {
-        setIsLoggedIn(false);
-        navigate("/");
-        alert("Deleted account.");
-      }
-    } catch (error) {
-      console.error("Error deleting account:", error);
-    }
+    updateAccount(dataToSend, (errors) => console.log(errors));
   };
 
   return (
@@ -88,76 +33,87 @@ const UpdateAccount = () => {
       <form onSubmit={handleSubmit} className="w-full max-w-xs">
         <h1>Update Account</h1>
 
-        <label htmlFor="firstName">First Name</label>
-        <input
-          name="firstName"
-          id="firstName"
-          type="text"
-          placeholder="First Name"
-          value={formData.firstName}
-          onChange={handleChange}
-        />
-        {errors.firstName && (
-          <p className="text-red-500 text-xs italic">{errors.firstName}</p>
-        )}
+        <div className="mb-4">
+          <label htmlFor="firstName" className="block">
+            First Name
+          </label>
+          <input
+            name="firstName"
+            id="firstName"
+            type="text"
+            placeholder="First Name"
+            value={formData.firstName}
+            onChange={handleChange}
+            className="input"
+          />
+          {errors.firstName && <p className="error">{errors.firstName}</p>}{" "}
+        </div>
+        <div className="mb-4">
+          <label htmlFor="lastName" className="block">
+            Last Name
+          </label>
+          <input
+            name="lastName"
+            id="lastName"
+            type="text"
+            placeholder="Last Name"
+            value={formData.lastName}
+            onChange={handleChange}
+            className="input"
+          />
+          {errors.lastName && <p className="error">{errors.lastName}</p>}
+        </div>
+        <div className="mb-4">
+          <label htmlFor="email" className="block">
+            Email
+          </label>
+          <input
+            name="email"
+            id="email"
+            type="email"
+            placeholder="Email"
+            value={formData.email}
+            onChange={handleChange}
+            className="input"
+          />
+          {errors.email && <p className="error">{errors.email}</p>}
+        </div>
 
-        <label htmlFor="lastName">Last Name</label>
-        <input
-          name="lastName"
-          id="lastName"
-          type="text"
-          placeholder="Last Name"
-          value={formData.lastName}
-          onChange={handleChange}
-        />
-        {errors.lastName && (
-          <p className="text-red-500 text-xs italic">{errors.lastName}</p>
-        )}
+        <div className="mb-4">
+          <label htmlFor="newPassword" className="block">
+            New Password (optional)
+          </label>
+          <input
+            name="newPassword"
+            id="newPassword"
+            type="password"
+            placeholder="New Password"
+            value={formData.newPassword}
+            onChange={handleChange}
+            className="input"
+          />
+          {errors.newPassword && <p className="error">{errors.newPassword}</p>}
+        </div>
 
-        <label htmlFor="email">Email</label>
-        <input
-          name="email"
-          id="email"
-          type="email"
-          placeholder="Email"
-          value={formData.email}
-          onChange={handleChange}
-        />
-        {errors.email && (
-          <p className="text-red-500 text-xs italic">{errors.email}</p>
-        )}
+        <div className="mb-4">
+          <label htmlFor="confirmPassword" className="block">
+            Confirm New Password
+          </label>
+          <input
+            name="confirmPassword"
+            id="confirmPassword"
+            type="password"
+            placeholder="Confirm New Password"
+            value={formData.confirmPassword}
+            onChange={handleChange}
+            className="input"
+          />
+          {errors.confirmPassword && (
+            <p className="error">{errors.confirmPassword}</p>
+          )}
+        </div>
 
-        <label htmlFor="newPassword">New Password (optional)</label>
-        <input
-          name="newPassword"
-          id="newPassword"
-          type="password"
-          placeholder="New Password"
-          value={formData.newPassword}
-          onChange={handleChange}
-        />
-        {errors.newPassword && (
-          <p className="text-red-500 text-xs italic">{errors.newPassword}</p>
-        )}
-
-        <label htmlFor="confirmPassword">Confirm New Password</label>
-        <input
-          name="confirmPassword"
-          id="confirmPassword"
-          type="password"
-          placeholder="Confirm New Password"
-          value={formData.confirmPassword}
-          onChange={handleChange}
-        />
-        {errors.confirmPassword && (
-          <p className="text-red-500 text-xs italic">
-            {errors.confirmPassword}
-          </p>
-        )}
-
-        {errors.form && (
-          <p className="text-red-500 text-xs italic">{errors.form}</p>
-        )}
+        {errors.form && <p className="error">{errors.form}</p>}
 
         <button
           type="submit"
@@ -165,14 +121,14 @@ const UpdateAccount = () => {
         >
           Update Account
         </button>
-        <a
-          href="#delete-account"
-          onClick={handleDeleteAccount}
+        <button
+          type="button"
+          onClick={deleteAccount}
           className="text-red-500 underline mt-4 hover:text-red-700"
           style={{ display: "block", cursor: "pointer" }}
         >
           Delete Account
-        </a>
+        </button>
       </form>
     </div>
   );

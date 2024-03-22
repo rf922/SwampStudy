@@ -3,7 +3,7 @@ import {
   isValidEmail,
   isValidPassword,
   isValidConfirmPassword,
-} from "./registrationValidation";
+} from "../../utils/validationUtils";
 
 export const validateUpdateForm = ({
   firstName,

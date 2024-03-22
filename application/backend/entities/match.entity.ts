@@ -13,7 +13,6 @@ import { IsDefined, IsInt, IsString } from "class-validator";
 /* eslint-enable @typescript-eslint/no-unused-vars */
 import { Account } from "./account.entity";
 import { Class } from "./class.entity";
-/* eslint-enable @typescript-eslint/no-unused-vars */
 
 @Entity()
 export class Match extends BaseEntity {
