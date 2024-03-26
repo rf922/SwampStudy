@@ -2,7 +2,7 @@ import { useState } from "react";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
 
-export const useRegister = () => {
+export const useUserAPI = () => {
   const navigate = useNavigate();
   const [apiError, setApiError] = useState(null);
 

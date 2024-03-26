@@ -1,6 +1,6 @@
 import React from "react";
 import { useUpdateForm } from "./hooks/setUpdateForm";
-import { useAccountActions } from "./hooks/useAccountActions";
+import { useAccountAPI } from "./hooks/useAccountAPI";
 
 const UpdateAccount = () => {
   //component for accountmanagement / update
@@ -12,7 +12,7 @@ const UpdateAccount = () => {
     confirmPassword: "",
   });
 
-  const { updateAccount, deleteAccount } = useAccountActions();
+  const { updateAccount, deleteAccount } = useAccountAPI();
 
   const handleSubmit = async (e) => {
     e.preventDefault();

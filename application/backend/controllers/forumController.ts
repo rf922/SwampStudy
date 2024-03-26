@@ -1,8 +1,9 @@
 import { Request, Response } from "express";
 import { myDataSource } from "../app-data-source";
-import { Question } from "../entities/questions.entity";
+import { Question } from "../entities/question.entity";
 import { Thread } from "../entities/thread.entity";
-import { User } from "../entities/users.entity";
+import { Account } from "../entities/account.entity";
+import { User } from "../entities/user.entity";
 import { Class } from "../entities/class.entity";
 import { Answer } from "../entities/answer.entity";
 import { validate } from "class-validator";
@@ -11,13 +12,40 @@ import { StatusCodes } from "http-status-codes";
 // create question
 export const createQuestion = async (req: Request, res: Response) => {
   try {
-    const question = myDataSource.getRepository(Question).create(req.body);
-    const errors = await validate(question);
-    if (errors.length > 0) return res.status(400).json(errors);
+    // Extract the accountId and question from the request
+    const { accountId, question } = req.body;
+    // Parse the accountId to an integer this is a personal test to see if id was the issue
+    const Accountid = parseInt(accountId);
+    if (isNaN(Accountid)) {
+      return res.status(400).json({ message: "error in parse" });
+    }
+    const questionText = question;
 
+    // Check if the accountId exists in the database
+    const account = await myDataSource
+      .getRepository(Account)
+      .findOneBy({ id: Accountid });
+    if (!account) {
+      return res
+        .status(404)
+        .json({ message: "Account not found for the user" });
+    }
+
+    // Create a new question and associate it with the account
+    const newQuestion = new Question();
+    newQuestion.question = questionText;
+    // Validate the new question
+    const errors = await validate(newQuestion);
+    if (errors.length > 0) {
+      return res
+        .status(400)
+        .json({ message: "error in new question", details: errors });
+    }
+
+    // Save the new question to the database
     const savedQuestion = await myDataSource
       .getRepository(Question)
-      .save(question);
+      .save(newQuestion);
     return res.status(201).json(savedQuestion);
   } catch (error) {
     return res
@@ -133,8 +161,7 @@ export const getQuestion = async (req: Request, res: Response) => {
     }
   }
 };
-
-// Get  answers to question
+// get answers corresonding to a question
 export const getAnswersToQuestion = async (req: Request, res: Response) => {
   const questionId = parseInt(req.params.questionId);
   if (isNaN(questionId)) {
@@ -142,31 +169,92 @@ export const getAnswersToQuestion = async (req: Request, res: Response) => {
   }
 
   try {
-    const answers = await myDataSource.getRepository(Answer).find({
-      where: { id: questionId },
-      relations: ["account"],
+    const thread = await myDataSource.getRepository(Thread).findOne({
+      where: {
+        question: {
+          id: questionId,
+        },
+      },
+      relations: ["answers", "answers.account"], // load answers && their associated accounts
     });
-    return res.json(answers);
+
+    if (!thread) {
+      return res
+        .status(StatusCodes.NOT_FOUND)
+        .json({ message: "Thread not found for the given question ID" });
+    }
+    const formattedAnswers = thread.answers.map((answer) => ({
+      id: answer.id,
+      answer: answer.answer,
+      account: {
+        id: answer.account.id,
+        first_name: answer.account.first_name,
+        last_name: answer.account.last_name,
+        profile_picture: answer.account.profile_picture,
+      },
+    }));
+
+    return res.json(formattedAnswers);
   } catch (error) {
     return res
-      .status(500)
+      .status(StatusCodes.INTERNAL_SERVER_ERROR)
       .json({ message: "Error retrieving answers", details: error });
   }
 };
 
-// Create new answer to question
+// Create new answer to question in progress and untested
 export const createAnswer = async (req: Request, res: Response) => {
+  //use userId from sess to assoc. thread with account
+  const userId = req.session.userId;
+  const questionId = parseInt(req.params.questionId); // question they are postinh answer to
+  const { answer } = req.body; //answers content
   try {
-    const answer = myDataSource.getRepository(Answer).create(req.body);
-    const errors = await validate(answer);
-    if (errors.length > 0) return res.status(400).json(errors);
+    await myDataSource.transaction(async (transactionEntityManager) => {
+      // find the user, acc
+      const user = await transactionEntityManager.findOne(User, {
+        where: { id: userId },
+        relations: ["account"],
+      });
 
-    const savedAnswer = await myDataSource.getRepository(Answer).save(answer);
-    return res.status(201).json(savedAnswer);
+      if (!user || !user.account) {
+        return res
+          .status(StatusCodes.NOT_FOUND)
+          .json({ message: "User account not found" });
+      }
+
+      // find question and ensure it exists
+      const question = await transactionEntityManager.findOne(Question, {
+        where: { id: questionId },
+        relations: ["thread"],
+      });
+
+      if (!question) {
+        return res
+          .status(StatusCodes.NOT_FOUND)
+          .json({ message: "Question not found" });
+      }
+
+      // create && validate the new answer, associating it with the Account and Thread
+      const newAnswer = transactionEntityManager.create(Answer, {
+        answer: answer,
+        account: user.account,
+        thread: question.thread,
+      });
+
+      const errors = await validate(newAnswer);
+      if (errors.length > 0) {
+        throw new Error(`Validation failed: ${errors}`);
+      }
+
+      await transactionEntityManager.save(Answer, newAnswer);
+      res.status(StatusCodes.CREATED).json(newAnswer);
+    });
   } catch (error) {
-    return res
-      .status(500)
-      .json({ message: "Error creating answer", details: error });
+    console.error("Transaction failed", error);
+    return res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({
+      message: "Error creating answer",
+      details: error.toString(),
+    });
   }
 };
 
@@ -199,7 +287,10 @@ export const getAllQuestions = async (req: Request, res: Response) => {
   }
 };
 
-// get all available classes, optinally get all classses corresponding to dep param if passed
+//get classes and get class by dep could be merged pos.
+//thread for making question,
+
+// get all available classes, optinally get all classses filterin on dep param if passed
 export const getClasses = async (req: Request, res: Response) => {
   const dep = req.query.department;
   try {
@@ -225,23 +316,19 @@ export const getClasses = async (req: Request, res: Response) => {
   }
 };
 
-// get a listing of the current class departments
+// get a listing of the current classes grouped by department
 export const getClassesByDepartment = async (req: Request, res: Response) => {
   try {
-    //grab thread and corr. class
-    const threads = await myDataSource
-      .getRepository(Thread)
-      .createQueryBuilder("thread")
-      .leftJoinAndSelect("thread.class", "class")
-      .getMany();
+    //get all classes
+    const classes = await myDataSource.getRepository(Class).find();
 
-    // Group classes by their department attribute
-    const groupedByDepartment = threads.reduce((acc, thr) => {
-      const departmentName = thr.class.department;
-      if (!acc[departmentName]) {
-        acc[departmentName] = [];
+    // group classes by their department attribute
+    const groupedByDepartment = classes.reduce((acc, cls) => {
+      const { department } = cls;
+      if (!acc[department]) {
+        acc[department] = [];
       }
-      acc[departmentName].push(thr);
+      acc[department].push(cls);
       return acc;
     }, {});
 
@@ -255,11 +342,8 @@ export const getClassesByDepartment = async (req: Request, res: Response) => {
   }
 };
 
-// return
-export const getQuestionsWithThreadAndClass = async (
-  req: Request,
-  res: Response,
-) => {
+// return a map of threads grouped on class name then grouped on dep,
+export const getThreadsByDepartment = async (req: Request, res: Response) => {
   try {
     // querry for threads, the corresponding class, question and corresponfing account
     const threads = await myDataSource

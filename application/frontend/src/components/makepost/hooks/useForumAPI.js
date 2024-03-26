@@ -5,18 +5,18 @@ export const useForumAPI = () => {
   const [departmentClassesMap, setDepartmentClassesMap] = useState({});
 
   useEffect(() => {
-    const fetchDepartments = async () => {
+    const getDepartments = async () => {
       try {
         const response = await axios.get(
           `http://localhost:8080/api/forum/departments/listing`,
         );
         setDepartmentClassesMap(response.data);
       } catch (error) {
-        console.error("Error fetching departments and classes:", error);
+        console.error("Error geting departments and classes:", error);
       }
     };
 
-    fetchDepartments();
+    getDepartments();
   }, []);
 
   const postQuestion = async (formData) => {

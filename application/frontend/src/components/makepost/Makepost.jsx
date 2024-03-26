@@ -27,12 +27,12 @@ const Makepost = () => {
   }, [departmentClassesMap, setFormData]);
 
   useEffect(() => {
-    const departmentThreads =
+    const departmentClasses =
       departmentClassesMap[formData.selectedDepartment] || [];
     const classesMap = {};
 
-    departmentThreads.forEach((thread) => {
-      const cls = thread.class;
+    departmentClasses.forEach((currentClass) => {
+      const cls = currentClass;
       if (cls && !classesMap[cls.id]) {
         classesMap[cls.id] = cls;
       }

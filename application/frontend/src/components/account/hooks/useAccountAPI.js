@@ -2,7 +2,7 @@ import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "../../../context/AuthContext";
 
-export const useAccountActions = () => {
+export const useAccountAPI = () => {
   const { setIsLoggedIn } = useAuth();
   const navigate = useNavigate();
 
@@ -47,4 +47,4 @@ export const useAccountActions = () => {
   return { updateAccount, deleteAccount };
 };
 
-export default useAccountActions;
+export default useAccountAPI;

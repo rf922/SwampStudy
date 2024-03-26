@@ -1,8 +1,10 @@
 import { Request, Response } from "express";
 import { myDataSource } from "../app-data-source";
 import { Account } from "../entities/account.entity";
-import { Session } from "../entities/session.entity";
-import { User } from "../entities/users.entity"; //'users' maybe change name to 'user'
+import { Question } from "../entities/question.entity";
+import { Answer } from "../entities/answer.entity";
+import { Thread } from "../entities/thread.entity";
+import { User } from "../entities/user.entity"; //'users' maybe change name to 'user'
 import { validate } from "class-validator";
 import { StatusCodes } from "http-status-codes";
 import { hash } from "bcrypt";
@@ -111,28 +113,48 @@ export const updateAccount = async (req: Request, res: Response) => {
       .send("Error updating account.");
   }
 };
-
-export const deleteAccount = async (req: Request, res: Response) => {
+// del user account and rel. data
+export const deleteAccount = async (req, res) => {
   const userId = req.session.userId;
-  const sessionId = req.session.id;
   if (!userId) {
     return res.status(StatusCodes.UNAUTHORIZED).send("User not logged in.");
   }
 
-  // verify the user exists before deletion
-  const existingUser = await myDataSource
-    .getRepository(User)
-    .findOneBy({ id: userId });
-  if (!existingUser) {
-    return res.status(StatusCodes.NOT_FOUND).send("User not found.");
-  }
-
   try {
-    await myDataSource.transaction(async (transactionalEntityManager) => {
-      await transactionalEntityManager.delete(Account, {
-        user_FK: existingUser.id,
-      });
+    const user = await myDataSource.getRepository(User).findOne({
+      where: { id: userId },
+      relations: [
+        // get acc, and rel questions, threads , answers
+        "account",
+        "account.questions",
+        "account.questions.thread",
+        "account.questions.thread.answers",
+      ],
+    });
 
+    if (!user || !user.account) {
+      return res
+        .status(StatusCodes.NOT_FOUND)
+        .send("User or associated account not found.");
+    }
+
+    await myDataSource.transaction(async (transactionalEntityManager) => {
+      // delete related answrs, threads, and questions
+      for (const question of user.account.questions) {
+        if (question.thread) {
+          await transactionalEntityManager.delete(Answer, {
+            thread: question.thread.id,
+          });
+          await transactionalEntityManager.delete(Thread, {
+            id: question.thread.id,
+          });
+        }
+      }
+
+      await transactionalEntityManager.delete(Question, {
+        account: user.account.id,
+      });
+      await transactionalEntityManager.delete(Account, { id: user.account.id });
       await transactionalEntityManager.delete(User, { id: userId });
     });
 
@@ -144,17 +166,12 @@ export const deleteAccount = async (req: Request, res: Response) => {
           .send("Error during session destruction.");
       }
     });
-    // clear / del cookie from client browser
     res.clearCookie("connect.sid");
-
-    await myDataSource.getRepository(Session).delete({ id: sessionId });
-    return res
-      .status(StatusCodes.OK)
-      .send({ message: "Account deleted successfully.", sessionEnded: true });
+    return res.status(StatusCodes.OK).send("Account deleted successfully.");
   } catch (error) {
     console.error("Error deleting account:", error);
-    res
+    return res
       .status(StatusCodes.INTERNAL_SERVER_ERROR)
-      .send("Error deleting account." + error);
+      .send("Error deleting account.");
   }
 };

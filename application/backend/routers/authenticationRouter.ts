@@ -1,8 +1,8 @@
 import { checkSession } from "../controllers/authenticationController";
 import express from "express";
 
-const router = express.Router();
+const authenticationRouter = express.Router();
 
-router.get("/checkSession", checkSession);
+authenticationRouter.get("/checkSession", checkSession);
 
-export default router;
+export default authenticationRouter;
