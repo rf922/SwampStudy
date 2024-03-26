@@ -16,13 +16,9 @@ const Navbar = () => {
       ) : (
         <>
           <button onClick={handleLogout}>Logout</button>
-          <Link to="/account">Account</Link>
+          <Link to="/account">Settings</Link>
         </>
       )}
-
-      <Link to="/" className="text-x1 font-bold flex items-center">
-        <span> Swamp Study</span>
-      </Link>
 
       <Link to="/forum" className="flex items-center">
         <span>
@@ -30,8 +26,11 @@ const Navbar = () => {
         </span>
       </Link>
 
-      <Link to="/settings">Settings</Link>
-      <Link to="/logout">Logout</Link>
+      <Link to="/" className="text-x1 font-bold flex items-center">
+        <span> Swamp Study</span>
+      </Link>
+      {/* logout link appears already */}
+      {/*      <Link to="/logout">Logout</Link> /*}
 
       {/*
             <Link to="/matching">Matching</Link>

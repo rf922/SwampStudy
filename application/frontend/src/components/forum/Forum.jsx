@@ -5,7 +5,7 @@ import Postcard from "../postcard/Postcard";
 import { useAuth } from "../../context/AuthContext";
 import { useNavigate } from "react-router-dom";
 import { Link } from "react-router-dom";
-
+import { useForumAPI } from "./hooks/useForumAPI";
 const ForumBorder = () => {
   return (
     <div className="absolute bottom-0 right-0 border-8 border-black w-3/4 h-3/4 flex-col justify-center items-center">
