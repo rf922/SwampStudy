@@ -319,20 +319,16 @@ export const getClasses = async (req: Request, res: Response) => {
 // get a listing of the current classes grouped by department
 export const getClassesByDepartment = async (req: Request, res: Response) => {
   try {
-    //grab thread and corr. class
-    const threads = await myDataSource
-      .getRepository(Thread)
-      .createQueryBuilder("thread")
-      .leftJoinAndSelect("thread.class", "class")
-      .getMany();
+    //get all classes
+    const classes = await myDataSource.getRepository(Class).find();
 
     // group classes by their department attribute
-    const groupedByDepartment = threads.reduce((acc, thr) => {
-      const departmentName = thr.class.department;
-      if (!acc[departmentName]) {
-        acc[departmentName] = [];
+    const groupedByDepartment = classes.reduce((acc, cls) => {
+      const { department } = cls;
+      if (!acc[department]) {
+        acc[department] = [];
       }
-      acc[departmentName].push(thr);
+      acc[department].push(cls);
       return acc;
     }, {});
 

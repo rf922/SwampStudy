@@ -1,4 +1,5 @@
 import { Router } from "express";
+import { isAuthenticated } from "./../middleware/isAuthenticated";
 import {
   getAllQuestions,
   createPost,
@@ -16,11 +17,15 @@ const forumRouter = Router();
 // Routes for questions
 forumRouter.get("/questions", getAllQuestions);
 forumRouter.get("/questions/:questionId", getQuestion);
-forumRouter.post("/question", createPost);
+forumRouter.post("/question", isAuthenticated, createPost);
 
 // Routes for answers
 forumRouter.get("/questions/:questionId/answers", getAnswersToQuestion);
-forumRouter.post("/questions/:questionId/answers", createAnswer);
+forumRouter.post(
+  "/questions/:questionId/answers",
+  isAuthenticated,
+  createAnswer,
+);
 
 // Route for getting all classes
 forumRouter.get("/classes", getClasses);

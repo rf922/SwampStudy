@@ -1,13 +1,13 @@
 import React from "react";
 import { useForm } from "./hooks/useForm";
-import { useAuthApi } from "./hooks/useAuthApi";
+import { useUserAPI } from "./hooks/useUserAPI";
 
 const Login = () => {
   const { values, errors, handleChange, validate, setErrors } = useForm({
     email: "",
     password: "",
   });
-  const { login } = useAuthApi();
+  const { login } = useUserAPI();
 
   const handleLogin = async (e) => {
     e.preventDefault();

@@ -1,6 +1,6 @@
 import React from "react";
 import { useForm } from "./hooks/useForm";
-import { useRegister } from "./hooks/useRegister";
+import { useUserAPI } from "./hooks/useUserAPI";
 
 const Register = () => {
   const { formData, handleChange, errors, validateForm, setErrors } = useForm({
@@ -11,7 +11,7 @@ const Register = () => {
     confirmPassword: "",
   });
 
-  const { handleRegister, apiError } = useRegister();
+  const { handleRegister, apiError } = useUserAPI();
 
   const handleSubmit = async (e) => {
     e.preventDefault();

@@ -1,52 +1,22 @@
-import React, { useState, useEffect } from "react";
-import axios from "axios";
+import React from "react";
+//import React, { useState, useEffect } from "react";
+//import axios from "axios";
 import Postcard from "../postcard/Postcard";
 import { useAuth } from "../../context/AuthContext";
 import { useNavigate } from "react-router-dom";
-
+import { useForumAPI } from "./hooks/useForumAPI";
 const Forum = () => {
   //forum component displays a collection of postcards/summaries of posts
-  const [threadsMap, setThreadsMap] = useState({});
-  const [selectedDepartment, setSelectedDepartment] = useState("");
-  const [selectedClass, setSelectedClass] = useState("");
-  const [filteredThreads, setFilteredThreads] = useState([]);
+  const {
+    threadsMap,
+    selectedDepartment,
+    setSelectedDepartment,
+    selectedClass,
+    setSelectedClass,
+    filteredThreads,
+  } = useForumAPI();
   const { isLoggedIn } = useAuth();
   const navigate = useNavigate();
-
-  useEffect(() => {
-    // get threads/question by class then by department
-    axios
-      .get("http://localhost:8080/api/forum/departments/threads")
-      .then((response) => {
-        setThreadsMap(response.data);
-        const departments = Object.keys(response.data);
-        if (departments.length > 0) {
-          setSelectedDepartment(departments[0]);
-        }
-      })
-      .catch((error) => console.error("Error fetching threads:", error));
-  }, []);
-
-  useEffect(() => {
-    //update the selected department
-    if (selectedDepartment) {
-      const classes = Object.keys(threadsMap[selectedDepartment] || {});
-      if (classes.length > 0) {
-        setSelectedClass(classes[0]); // default to first entry
-      } else {
-        setSelectedClass("");
-        setFilteredThreads([]);
-      }
-    }
-  }, [selectedDepartment, threadsMap]);
-
-  useEffect(() => {
-    //update the selected c;ass
-    if (selectedDepartment && selectedClass) {
-      const threads = threadsMap[selectedDepartment]?.[selectedClass] || [];
-      setFilteredThreads(threads);
-    }
-  }, [selectedDepartment, selectedClass, threadsMap]);
 
   const handleDepartmentChange = (e) => {
     setSelectedDepartment(e.target.value);
