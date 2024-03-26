@@ -8,11 +8,10 @@ const Navbar = () => {
   if (isLoading) return null;
 
   return (
-    <div className="flex flex-wrap justify-center items-center gap-4">
+    <div className="sticky top-0 bg-purple-600 text-white p-4 flex flex-wrap justify-center items-center gap-4">
       {!isLoggedIn ? (
         <>
-          <Link to="/login">Login</Link>
-          <Link to="/register">Register</Link>
+          <Link to="/about">About</Link>
         </>
       ) : (
         <>
@@ -21,9 +20,26 @@ const Navbar = () => {
         </>
       )}
 
-      <Link to="/about">About</Link>
-      <Link to="/forum">Forum</Link>
-      <Link to="/">Home</Link>
+      <Link to="/" className="text-x1 font-bold flex items-center">
+        <span> Swamp Study</span>
+      </Link>
+
+      <Link to="/forum" className="flex items-center">
+        <span>
+          <img src="/images/alli.png" className="ml-2 w-17 h-9" />
+        </span>
+      </Link>
+
+      <Link to="/settings">Settings</Link>
+      <Link to="/logout">Logout</Link>
+
+      {/*
+            <Link to="/matching">Matching</Link>
+                  <Link to="/forum">Forum</Link>
+
+            
+
+      */}
     </div>
   );
 };

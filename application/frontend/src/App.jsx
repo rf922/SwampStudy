@@ -12,6 +12,9 @@ import Account from "./components/account/accountmanagement";
 import ProtectedRoute from "./components/protectedroute/protectedroute";
 import Post from "./components/post/Post";
 import Makepost from "./components/makepost/Makepost";
+import Matching from "./components/matching/Matching";
+import Settings from "./components/settings/Settings";
+import Logout from "./components/logout/Logout";
 
 import { Auth } from "./context/AuthContext";
 
@@ -29,6 +32,10 @@ function App() {
             <Route path="/about/" element={<About />} />
             <Route path="/login" element={<Login />} />
             <Route path="/register" element={<Register />} />
+            <Route path="/matching" element={<Matching />} />
+            <Route path="/settings" element={<Settings />} />
+            <Route path="/logout" element={<Logout />} />
+
             <Route
               path="/account"
               element={

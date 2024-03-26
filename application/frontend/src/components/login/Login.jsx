@@ -1,19 +1,96 @@
-import React from "react";
-import { useForm } from "./hooks/useForm";
-import { useAuthApi } from "./hooks/useAuthApi";
+import axios from "axios";
+import { useState } from "react";
+import { useNavigate } from "react-router-dom";
+import { useAuth } from "../../context/AuthContext";
+import { validateLoginForm } from "./loginValidation";
+
+/*import "./login.css";*/
 
 const Login = () => {
-  const { values, errors, handleChange, validate, setErrors } = useForm({
-    email: "",
-    password: "",
-  });
-  const { login } = useAuthApi();
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [errors, setErrors] = useState({});
+  const navigate = useNavigate(); // useNavigate
+  const { setIsLoggedIn } = useAuth();
 
   const handleLogin = async (e) => {
-    e.preventDefault();
-    if (!validate()) return; // qt if val fails
+    e.preventDefault(); // prevent def form sub
 
-    login(values.email, values.password, setErrors);
+    const validationResult = validateLoginForm({ email, password });
+    if (!validationResult.isValid) {
+      setErrors(validationResult.errors);
+      return; // stop the login if validation fail
+    }
+
+    // clear prev errors
+    setErrors({});
+    try {
+      const response = await axios.post(
+        `http://localhost:8080/api/user/login`,
+        {
+          email: email,
+          password: password,
+        },
+        { withCredentials: true },
+      );
+      if (response.status === 200) {
+        console.log("User Login successful");
+        console.log(JSON.stringify(response.data));
+        setIsLoggedIn(true);
+        navigate("/");
+      } else {
+        console.log("User Login unsuccessful");
+      }
+    } catch (err) {
+      if (err.response) {
+        switch (err.response.data.error) {
+          case "user_not_found":
+            setErrors({
+              ...errors,
+              email: "Please try again.",
+              form: "Invalid email or password",
+            });
+            break;
+          case "invalid_password":
+            setErrors({
+              ...errors,
+              password: "Please try again.",
+              form: "Invalid email or password",
+            });
+            break;
+          default:
+            setErrors({
+              ...errors,
+              form: "An error occurred. Please try again later.",
+            });
+        }
+      } else {
+        console.error("Error during login:", err);
+        setErrors({ ...errors, form: "An unknown error occurred." });
+      }
+    }
+  };
+
+  const validateField = (name, value) => {
+    const validationResult = validateLoginForm({
+      email,
+      password,
+      [name]: value,
+    });
+    setErrors(validationResult.errors);
+  };
+
+  const handleInputChange = (field, value) => {
+    const setFunctionMap = {
+      email: setEmail,
+      password: setPassword,
+    };
+
+    if (setFunctionMap[field]) {
+      setFunctionMap[field](value);
+    }
+
+    validateField(field, value);
   };
 
   return (
@@ -23,17 +100,17 @@ const Login = () => {
           {errors.form && (
             <div className="text-red-500 text-xs italic">{errors.form}</div>
           )}
+
           <label htmlFor="email" className="block text-sm font-bold mb-2">
             Email
           </label>
           <input
             required
             type="email"
-            name="email"
             id="email"
-            placeholder="Type your email"
-            value={values.email}
-            onChange={handleChange}
+            placeholder="Type jfjfjyour email"
+            value={email}
+            onChange={(e) => handleInputChange("email", e.target.value)}
             className={`shadow appearance-none border ${errors.email ? "border-red-500" : ""} rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline`}
           />
           {errors.email && (
@@ -47,22 +124,24 @@ const Login = () => {
           <input
             required
             type="password"
-            name="password"
             id="password"
             placeholder="Type your password"
-            value={values.password}
-            onChange={handleChange}
+            value={password}
+            onChange={(e) => handleInputChange("password", e.target.value)}
             className={`shadow appearance-none border ${errors.password ? "border-red-500" : ""} rounded w-full py-2 px-3 text-gray-700 mb-3 leading-tight focus:outline-none focus:shadow-outline`}
           />
           {errors.password && (
             <p className="text-red-500 text-xs italic">{errors.password}</p>
           )}
         </div>
+        {errors.form && (
+          <p className="text-red-500 text-xs italic">{errors.form}</p>
+        )}
         <div className="flex items-center justify-between">
           <button
             type="submit"
             disabled={Object.keys(errors).length > 0}
-            className="bg-purple-500 hover:bg-violet-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline disabled:opacity-50"
+            className="bg-purple-500 hover:bg-violet-700 text-white  font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline disabled:opacity-50"
           >
             Login
           </button>
@@ -70,7 +149,7 @@ const Login = () => {
             href="/register"
             className="inline-block align-baseline font-bold text-sm text-purple-500 hover:text-purple-800"
           >
-            Don&apos;t have an account? Register{" "}
+            Don&apos;t have an account? Register
           </a>
         </div>
       </form>

@@ -3,6 +3,21 @@ import axios from "axios";
 import Postcard from "../postcard/Postcard";
 import { useAuth } from "../../context/AuthContext";
 import { useNavigate } from "react-router-dom";
+import { Link } from "react-router-dom";
+
+const ForumBorder = () => {
+  return (
+    <div className="absolute bottom-0 right-0 border-8 border-black w-3/4 h-3/4 flex-col justify-center items-center">
+      <button className="mx-2 px-4 py-2 bg-green-500 text-white font-semibold round-md">
+        Question 1
+      </button>
+
+      <button className="my-2 px-4 py-2 bg-green-500 text-white font-semibold round-md">
+        Question 2
+      </button>
+    </div>
+  );
+};
 
 const Forum = () => {
   //forum component displays a collection of postcards/summaries of posts
@@ -58,9 +73,30 @@ const Forum = () => {
   };
 
   return (
-    <div className="my-8">
-      <h2 className="text-2xl font-bold mb-4">Forum Questions</h2>
+    <div>
       <div>
+        <div className="flex justify-between items-center bg-green-600 p-3">
+          <Link
+            to="/matching"
+            className="block text-center font-semibold text-lg bg-blue-500 text-white py-2 px-4 rounded hover:bg-blue-700"
+          >
+            Go to Matching
+          </Link>
+          <div className="border-r border-black-300 h-5"></div> {/*border*/}
+          <Link
+            to="/forum"
+            className="block text-center font-semibold text-lg bg-blue-500 text-white py-2 px-4 rounded hover:bg-blue-700"
+          >
+            Currently in Forums
+          </Link>
+        </div>
+      </div>
+
+      <div>
+        <div className="font-semibold text-lg bg-yellow-500 text-white py-2 px-4 rounded hover:bg-blue-700">
+          General Chat
+        </div>
+
         <label htmlFor="departmentSelect">Department:</label>
         <select
           id="departmentSelect"
@@ -74,6 +110,7 @@ const Forum = () => {
           ))}
         </select>
       </div>
+
       <div>
         <label htmlFor="classSelect">Class:</label>
         <select
@@ -96,6 +133,7 @@ const Forum = () => {
             )}
         </select>
       </div>
+
       {isLoggedIn && (
         <button
           onClick={() => navigate("/makepost")}
@@ -109,6 +147,8 @@ const Forum = () => {
           <Postcard key={thread.id} question={thread.question} />
         ))}
       </div>
+
+      <ForumBorder />
     </div>
   );
 };
