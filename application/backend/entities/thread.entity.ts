@@ -8,7 +8,7 @@ import {
   ManyToOne,
 } from "typeorm";
 import { Class } from "./class.entity";
-import { Question } from "./questions.entity";
+import { Question } from "./question.entity";
 import { Answer } from "./answer.entity";
 
 @Entity()

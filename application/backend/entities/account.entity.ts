@@ -7,8 +7,8 @@ import {
   OneToMany,
   JoinColumn,
 } from "typeorm";
-import { User } from "./users.entity";
-import { Question } from "./questions.entity";
+import { User } from "./user.entity";
+import { Question } from "./question.entity";
 import { IsDefined, IsString } from "class-validator";
 
 @Entity()
@@ -33,6 +33,9 @@ export class Account extends BaseEntity {
   @JoinColumn()
   user_FK: User;
 
-  @OneToMany(() => Question, (question) => question.account)
+  @OneToMany(() => Question, (question) => question.account, {
+    cascade: true,
+    onDelete: "CASCADE",
+  })
   questions: Question[];
 }

@@ -9,6 +9,9 @@ import {
 
 @Entity()
 export class Session implements ISession {
+  @PrimaryColumn("varchar", { length: 255 })
+  public id: string = "";
+
   @Index()
   @Column("bigint", {
     name: "expiredAt",
@@ -18,9 +21,6 @@ export class Session implements ISession {
     },
   })
   public expiredAt: number = Date.now();
-
-  @PrimaryColumn("varchar", { length: 255 })
-  public id: string = "";
 
   @Column("text")
   public json: string = "";

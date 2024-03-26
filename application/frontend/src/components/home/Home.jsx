@@ -34,14 +34,14 @@ const Home = () => {
   if (isLoading)
     return (
       <div>
-        <h1>Study Swamp</h1>
+        <h1>Swamp Study</h1>
         {<p>Content Loading . . . </p>}
       </div>
     );
 
   return (
     <div>
-      <h1>Study Swamp</h1>
+      <h1>Swamp Study</h1>
       {userFirstName && <p>Welcome, {userFirstName}!</p>}
     </div>
   );

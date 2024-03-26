@@ -1,7 +1,7 @@
 import { Request, Response } from "express";
 import { myDataSource } from "../app-data-source";
 import { StatusCodes } from "http-status-codes";
-import { User } from "../entities/users.entity";
+import { User } from "../entities/user.entity";
 import { Account } from "../entities/account.entity";
 
 import { Session } from "../entities/session.entity";

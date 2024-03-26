@@ -14,18 +14,19 @@ import { IsDefined, IsString } from "class-validator";
 
 @Entity()
 export class Question extends BaseEntity {
-  @PrimaryGeneratedColumn()
-  id: number;
-
   @ManyToOne(() => Account, { onDelete: "CASCADE" })
   @IsDefined()
   account: Account;
 
-  @OneToOne(() => Thread, (thread) => thread.question)
-  thread: Thread;
-
+  @PrimaryGeneratedColumn()
+  id: number;
   @Column()
   @IsDefined()
   @IsString()
   question: string;
+  @OneToOne(() => Thread, (thread) => thread.question, {
+    cascade: true,
+    onDelete: "CASCADE",
+  })
+  thread: Thread;
 }

@@ -6,7 +6,7 @@ import {
   createAnswer,
   getClasses,
   getQuestion,
-  getQuestionsWithThreadAndClass,
+  getThreadsByDepartment,
   getClassesByDepartment,
 } from "../controllers/forumController";
 //es6 syntax for import exports
@@ -27,7 +27,6 @@ forumRouter.get("/classes", getClasses);
 
 forumRouter.get("/departments/listing", getClassesByDepartment);
 
-//getQuestionsWithThreadAndClass
-forumRouter.get("/departments/dev", getQuestionsWithThreadAndClass);
+forumRouter.get("/departments/threads", getThreadsByDepartment);
 
 export default forumRouter;

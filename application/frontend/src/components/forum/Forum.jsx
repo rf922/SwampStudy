@@ -16,7 +16,7 @@ const Forum = () => {
   useEffect(() => {
     // get threads/question by class then by department
     axios
-      .get("http://localhost:8080/api/forum/departments/dev")
+      .get("http://localhost:8080/api/forum/departments/threads")
       .then((response) => {
         setThreadsMap(response.data);
         const departments = Object.keys(response.data);
