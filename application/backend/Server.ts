@@ -1,4 +1,5 @@
 import express, { Express, Request, Response } from "express";
+import "dotenv/config";
 import path from "path";
 import cors from "cors";
 import bodyParser from "body-parser";
@@ -49,7 +50,7 @@ export class Server {
     const sessionRepository = myDataSource.getRepository(Session);
     this.app.use(
       session({
-        secret: "session_cookie_secret",
+        secret: process.env.SESSION_SECRET,
         store: new TypeormStore().connect(sessionRepository),
         resave: false,
         saveUninitialized: false,
@@ -57,7 +58,7 @@ export class Server {
           secure: process.env.PRODUCTION === "true",
           sameSite: "strict",
           httpOnly: true,
-          maxAge: 1000 * 60 * 60 * 24 * 365,
+          maxAge: 1000 * 60 * 60 * 24 * 7, // millisec * sec * min * hour * day , 7 day exp
         },
       }),
     );
@@ -79,6 +80,7 @@ export class Server {
   }
 
   public start(port: number): void {
+    port = parseInt(process.env.PORT) || 80;
     this.app.listen(port, () =>
       console.log(`Server listening on port ${port}!`),
     );
