@@ -17,7 +17,7 @@ export const createQuestion = async (req: Request, res: Response) => {
     // Parse the accountId to an integer this is a personal test to see if id was the issue
     const Accountid = parseInt(accountId);
     if (isNaN(Accountid)) {
-      return res.status(400).json({ message: "error in parse" });
+      return res.status(StatusCodes.BAD_REQUEST).json({ message: "Error in Parse" });
     }
     const questionText = question;
 
@@ -27,7 +27,7 @@ export const createQuestion = async (req: Request, res: Response) => {
       .findOneBy({ id: Accountid });
     if (!account) {
       return res
-        .status(404)
+        .status(StatusCodes.NOT_FOUND)
         .json({ message: "Account not found for the user" });
     }
 
@@ -38,7 +38,7 @@ export const createQuestion = async (req: Request, res: Response) => {
     const errors = await validate(newQuestion);
     if (errors.length > 0) {
       return res
-        .status(400)
+        .status(StatusCodes.BAD_REQUEST)
         .json({ message: "error in new question", details: errors });
     }
 
@@ -46,10 +46,10 @@ export const createQuestion = async (req: Request, res: Response) => {
     const savedQuestion = await myDataSource
       .getRepository(Question)
       .save(newQuestion);
-    return res.status(201).json(savedQuestion);
+    return res.status(StatusCodes.OK).json(savedQuestion);
   } catch (error) {
     return res
-      .status(500)
+      .status(StatusCodes.NOT_FOUND)
       .json({ message: "Error creating question", details: error });
   }
 };
@@ -165,7 +165,7 @@ export const getQuestion = async (req: Request, res: Response) => {
 export const getAnswersToQuestion = async (req: Request, res: Response) => {
   const questionId = parseInt(req.params.questionId);
   if (isNaN(questionId)) {
-    return res.status(400).json({ message: "Invalid question ID" });
+    return res.status(StatusCodes.BAD_REQUEST).json({ message: "Invalid question ID" });
   }
 
   try {
