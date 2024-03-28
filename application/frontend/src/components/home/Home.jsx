@@ -12,7 +12,7 @@ const Home = () => {
       try {
         if (isLoggedIn) {
           const userDetailsResponse = await axios.get(
-            "http://localhost:8080/api/account/details", // The following lines were for dev. /debug will be removed
+            `${process.env.REACT_APP_API_URL}/account/details`, // The following lines were for dev. /debug will be removed
             //"http://localhost:8080/api/forum/departments/dev",
             //            "http://localhost:8080/api/forum/departments/listing",
             { withCredentials: true },

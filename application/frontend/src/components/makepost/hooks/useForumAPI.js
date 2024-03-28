@@ -8,7 +8,7 @@ export const useForumAPI = () => {
     const getDepartments = async () => {
       try {
         const response = await axios.get(
-          `http://localhost:8080/api/forum/departments/listing`,
+          `${process.env.REACT_APP_API_URL}/forum/departments/listing`,
         );
         setDepartmentClassesMap(response.data);
       } catch (error) {
@@ -22,7 +22,7 @@ export const useForumAPI = () => {
   const postQuestion = async (formData) => {
     try {
       await axios.post(
-        "http://localhost:8080/api/forum/question",
+        `${process.env.REACT_APP_API_URL}/forum/question`,
         {
           threadTitle: formData.threadTitle,
           questionText: formData.questionText,

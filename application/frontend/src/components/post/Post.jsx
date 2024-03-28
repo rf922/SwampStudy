@@ -25,7 +25,7 @@ const Post = () => {
 
     try {
       const response = await axios.post(
-        `http://localhost:8080/api/forum/questions/${questionId}/answers`,
+        `${process.env.REACT_APP_API_URL}/forum/questions/${questionId}/answers`,
         { answer: answer },
         { withCredentials: true },
       );

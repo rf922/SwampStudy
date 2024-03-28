@@ -2,7 +2,8 @@
   "env": {
     "browser": true,
     "es2021": true,
-    "jest": true
+    "jest": true,
+    "node": true
   },
   "ignorePatterns": ["tailwind.config.js"],
   "extends": [
@@ -39,10 +40,7 @@
   },
   "overrides": [
     {
-      "files": ["scripts/*.js"],
-      "env": {
-        "node": true
-      }
+      "files": ["scripts/*.js"]
     }
   ]
 }

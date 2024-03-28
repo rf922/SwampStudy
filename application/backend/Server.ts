@@ -56,7 +56,7 @@ export class Server {
         saveUninitialized: false,
         cookie: {
           secure: process.env.PRODUCTION === "true",
-          sameSite: "strict",
+          sameSite: process.env.PRODUCTION === "true" ? "none" : "lax",
           httpOnly: true,
           maxAge: 1000 * 60 * 60 * 24 * 7, // millisec * sec * min * hour * day , 7 day exp
         },
