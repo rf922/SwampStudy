@@ -17,7 +17,9 @@ export const createQuestion = async (req: Request, res: Response) => {
     // Parse the accountId to an integer this is a personal test to see if id was the issue
     const Accountid = parseInt(accountId);
     if (isNaN(Accountid)) {
-      return res.status(StatusCodes.BAD_REQUEST).json({ message: "Error in Parse" });
+      return res
+        .status(StatusCodes.BAD_REQUEST)
+        .json({ message: "Error in Parse" });
     }
     const questionText = question;
 
@@ -165,7 +167,9 @@ export const getQuestion = async (req: Request, res: Response) => {
 export const getAnswersToQuestion = async (req: Request, res: Response) => {
   const questionId = parseInt(req.params.questionId);
   if (isNaN(questionId)) {
-    return res.status(StatusCodes.BAD_REQUEST).json({ message: "Invalid question ID" });
+    return res
+      .status(StatusCodes.BAD_REQUEST)
+      .json({ message: "Invalid question ID" });
   }
 
   try {

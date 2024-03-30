@@ -6,41 +6,28 @@ import { useAuth } from "../../context/AuthContext";
 import { useNavigate } from "react-router-dom";
 import { Link } from "react-router-dom";
 import { useForumAPI } from "./hooks/useForumAPI";
-const ForumBorder = () => {
-  return (
-    <div className="absolute bottom-0 right-0 border-8 border-black w-3/4 h-3/4 flex-col justify-center items-center">
-      <button className="mx-2 px-4 py-2 bg-green-500 text-white font-semibold round-md">
-        Question 1
-      </button>
-
-      <button className="my-2 px-4 py-2 bg-green-500 text-white font-semibold round-md">
-        Question 2
-      </button>
-    </div>
-  );
-};
 
 const Forum = () => {
   //forum component displays a collection of postcards/summaries of posts
   const {
     threadsMap,
-    selectedDepartment,
+   // selectedDepartment,
     setSelectedDepartment,
-    selectedClass,
+   // selectedClass,
     setSelectedClass,
     filteredThreads,
   } = useForumAPI();
   const { isLoggedIn } = useAuth();
   const navigate = useNavigate();
 
-  const handleDepartmentChange = (e) => {
-    setSelectedDepartment(e.target.value);
+  const handleDepartmentChange = (dept) => {
+    setSelectedDepartment(dept);
     setSelectedClass("");
   };
 
-  const handleClassChange = (e) => {
-    setSelectedClass(e.target.value);
-  };
+  //const handleClassChange = (e) => {
+  //  setSelectedClass(e.target.value);
+  //};
 
   return (
     <div>
@@ -62,63 +49,88 @@ const Forum = () => {
         </div>
       </div>
 
-      <div>
-        <div className="font-semibold text-lg bg-yellow-500 text-white py-2 px-4 rounded hover:bg-blue-700">
-          General Chat
+      <div className="flex">
+        <div className="w-1/5">
+          <div className="max-h-60 overflow-y-auto font-semibold text-lg bg-yellow-500 text-white py-2 px-4">
+            <label
+              htmlFor="departmentSelect"
+              className="block text-sm font-medium text-gray-700"
+            >
+              Department:
+            </label>
+            <div className="mt-1">
+              {Object.keys(threadsMap).map((dept) => (
+                <div
+                  key={dept}
+                  className="cursor-pointer flex items-center justify-between px-4 py-2 text-sm font-medium text-gray-900 bg-white hover:bg-gray-100"
+                  onClick={() => handleDepartmentChange(dept)}
+                >
+                  {dept}
+                </div>
+              ))}
+            </div>
+          </div>
+
+          {/* 
+              <label htmlFor="departmentSelect">Department:</label>
+              <select
+                id="departmentSelect"
+                value={selectedDepartment}
+                onChange={handleDepartmentChange}
+              >
+                {Object.keys(threadsMap).map((dept) => (
+                  <option key={dept} value={dept}>
+                    {dept}
+                  </option>
+                ))}
+              </select>
+            
+
+            <div>
+              <label htmlFor="classSelect">Class:</label>
+              <select
+                id="classSelect"
+                value={selectedClass}
+                onChange={handleClassChange}
+                disabled={
+                  !selectedDepartment ||
+                  !Object.keys(threadsMap[selectedDepartment] || {}).length
+                }
+              >
+                {selectedDepartment &&
+                  Object.entries(threadsMap[selectedDepartment] || {}).map(
+                    // eslint-disable-next-line no-unused-vars
+                    ([className, _]) => (
+                      <option key={className} value={className}>
+                        {className}
+                      </option>
+                    ),
+                  )}
+              </select>
+            </div>
+
+
+                    */}
+
+          {isLoggedIn && (
+            <button
+              onClick={() => navigate("/makepost")}
+              className="mb-4 bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
+            >
+              Ask a question
+            </button>
+          )}
         </div>
 
-        <label htmlFor="departmentSelect">Department:</label>
-        <select
-          id="departmentSelect"
-          value={selectedDepartment}
-          onChange={handleDepartmentChange}
-        >
-          {Object.keys(threadsMap).map((dept) => (
-            <option key={dept} value={dept}>
-              {dept}
-            </option>
-          ))}
-        </select>
+        <div className="w-4/5">
+          <p>this should be the 4/5 part</p>
+          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-4">
+            {filteredThreads.map((thread) => (
+              <Postcard key={thread.id} question={thread.question} />
+            ))}
+          </div>
+        </div>
       </div>
-
-      <div>
-        <label htmlFor="classSelect">Class:</label>
-        <select
-          id="classSelect"
-          value={selectedClass}
-          onChange={handleClassChange}
-          disabled={
-            !selectedDepartment ||
-            !Object.keys(threadsMap[selectedDepartment] || {}).length
-          }
-        >
-          {selectedDepartment &&
-            Object.entries(threadsMap[selectedDepartment] || {}).map(
-              // eslint-disable-next-line no-unused-vars
-              ([className, _]) => (
-                <option key={className} value={className}>
-                  {className}
-                </option>
-              ),
-            )}
-        </select>
-      </div>
-
-      {isLoggedIn && (
-        <button
-          onClick={() => navigate("/makepost")}
-          className="mb-4 bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
-        >
-          Make a Post
-        </button>
-      )}
-      <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-4">
-        {filteredThreads.map((thread) => (
-          <Postcard key={thread.id} question={thread.question} />
-        ))}
-      </div>
-
-      <ForumBorder />
     </div>
   );
 };

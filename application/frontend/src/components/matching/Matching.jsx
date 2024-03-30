@@ -18,6 +18,8 @@ const Matching = () => {
           Go to Forums
         </Link>
       </div>
+
+      <p>Comming soon</p>
     </div>
   );
 };
