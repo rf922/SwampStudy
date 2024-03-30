@@ -25,6 +25,7 @@ const useForumAPI = (questionId) => {
           `${process.env.REACT_APP_API_URL}/forum/questions/${questionId}/answers`,
           { withCredentials: true },
         );
+        console.log(response.data);
         setAnswers(response.data);
       } catch (error) {
         console.error("Error fetching answers:", error);

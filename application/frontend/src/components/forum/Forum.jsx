@@ -1,8 +1,6 @@
 import React from "react";
-//import React, { useState, useEffect } from "react";
-//import axios from "axios";
-import Postcard from "../postcard/Postcard";
-import { useAuth } from "../../context/AuthContext";
+import Postcard from "./../postcard/Postcard";
+import { useAuth } from "./../../context/AuthContext";
 import { useNavigate } from "react-router-dom";
 import { useForumAPI } from "./hooks/useForumAPI";
 const Forum = () => {

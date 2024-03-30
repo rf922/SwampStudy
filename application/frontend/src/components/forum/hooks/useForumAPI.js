@@ -13,6 +13,7 @@ export const useForumAPI = () => {
     axios
       .get(`${process.env.REACT_APP_API_URL}/forum/departments/threads`)
       .then((response) => {
+        console.log(response.data);
         setThreadsMap(response.data);
         const departments = Object.keys(response.data);
         if (departments.length > 0) {

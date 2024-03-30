@@ -17,7 +17,7 @@ export const Auth = ({ children }) => {
         setIsLoggedIn(response.data.isLoggedIn);
       })
       .catch((error) => {
-        console.error("Failed to check login status", error);
+        console.error("Failed to check login status !", error);
       })
       .finally(() => {
         setIsLoading(false);

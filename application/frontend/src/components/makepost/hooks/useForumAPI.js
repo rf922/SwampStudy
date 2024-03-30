@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import axios from "axios";
 
 export const useForumAPI = () => {
-  const [departmentClassesMap, setDepartmentClassesMap] = useState({});
+  const [departmentClassesMap, setDepartmentClassesMap] = useState([]);
 
   useEffect(() => {
     const getDepartments = async () => {
@@ -10,6 +10,7 @@ export const useForumAPI = () => {
         const response = await axios.get(
           `${process.env.REACT_APP_API_URL}/forum/departments/listing`,
         );
+        console.log(response.data);
         setDepartmentClassesMap(response.data);
       } catch (error) {
         console.error("Error geting departments and classes:", error);
