@@ -5,12 +5,13 @@ import { Link } from "react-router-dom";
 const Postcard = ({ question }) => {
   // small container for quick summary of a post/ question
   return (
-    <div className="max-w-md mx-auto rounded-lg overflow-hidden shadow-lg bg-white my-4 border border-purple-200">
+    <div className="max-w-full mx-auto rounded-lg overflow-hidden shadow-lg bg-white my-4 border border-purple-200">
       <div className="px-6 py-4 bg-purple-100 text-gray-800">
         <div className="font-bold text-xl mb-2 text-purple-600">
           {question.question}
         </div>
       </div>
+
       <div className="px-6 pt-4 pb-2">
         <p className="text-gray-700 text-base">
           Created by Account ID:{" "}
