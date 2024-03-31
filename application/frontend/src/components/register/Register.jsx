@@ -86,11 +86,6 @@ const Register = () => {
               onChange={handleChange}
               className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
             />
-            <p className="text-gray-600 text-xs italic">
-              <p>Password must be at least 8-16 characters long.</p>
-              <p>Password must contain at least 1 number.</p>
-              <p></p>
-            </p>
             {errors.password && (
               <p className="text-red-500 text-xs italic">{errors.password}</p>
             )}

@@ -1,98 +1,20 @@
-import axios from "axios";
-import { useState } from "react";
-import { useNavigate } from "react-router-dom";
-import { useAuth } from "../../context/AuthContext";
-import { validateLoginForm } from "./loginValidation";
-
-/*import "./login.css";*/
+import React from "react";
+import { useForm } from "./hooks/useForm";
+import { useUserAPI } from "./hooks/useUserAPI";
 
 const Login = () => {
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
-  const [errors, setErrors] = useState({});
-  const navigate = useNavigate(); // useNavigate
-  const { setIsLoggedIn } = useAuth();
+  const { values, errors, handleChange, validate, setErrors } = useForm({
+    email: "",
+    password: "",
+  });
+  const { login } = useUserAPI();
 
   const handleLogin = async (e) => {
-    e.preventDefault(); // prevent def form sub
+    e.preventDefault();
+    if (!validate()) return; // qt if val fails
 
-    const validationResult = validateLoginForm({ email, password });
-    if (!validationResult.isValid) {
-      setErrors(validationResult.errors);
-      return; // stop the login if validation fail
-    }
-
-    // clear prev errors
-    setErrors({});
-    try {
-      const response = await axios.post(
-        `http://localhost:8080/api/user/login`,
-        {
-          email: email,
-          password: password,
-        },
-        { withCredentials: true },
-      );
-      if (response.status === 200) {
-        console.log("User Login successful");
-        console.log(JSON.stringify(response.data));
-        setIsLoggedIn(true);
-        navigate("/");
-      } else {
-        console.log("User Login unsuccessful");
-      }
-    } catch (err) {
-      if (err.response) {
-        switch (err.response.data.error) {
-          case "user_not_found":
-            setErrors({
-              ...errors,
-              email: "Please try again.",
-              form: "Invalid email or password",
-            });
-            break;
-          case "invalid_password":
-            setErrors({
-              ...errors,
-              password: "Please try again.",
-              form: "Invalid email or password",
-            });
-            break;
-          default:
-            setErrors({
-              ...errors,
-              form: "An error occurred. Please try again later.",
-            });
-        }
-      } else {
-        console.error("Error during login:", err);
-        setErrors({ ...errors, form: "An unknown error occurred." });
-      }
-    }
+    login(values.email, values.password, setErrors);
   };
-
-  const validateField = (name, value) => {
-    const validationResult = validateLoginForm({
-      email,
-      password,
-      [name]: value,
-    });
-    setErrors(validationResult.errors);
-  };
-
-  const handleInputChange = (field, value) => {
-    const setFunctionMap = {
-      email: setEmail,
-      password: setPassword,
-    };
-
-    if (setFunctionMap[field]) {
-      setFunctionMap[field](value);
-    }
-
-    validateField(field, value);
-  };
-
   return (
     <div className="flex justify-center items-start h-screen pt-20">
       <form
@@ -110,10 +32,11 @@ const Login = () => {
           <input
             required
             type="email"
+            name="email"
             id="email"
             placeholder="Enter your email"
-            value={email}
-            onChange={(e) => handleInputChange("email", e.target.value)}
+            value={values.email}
+            onChange={handleChange}
             className={`shadow appearance-none border ${errors.email ? "border-red-500" : ""} rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline`}
           />
           {errors.email && (
@@ -127,19 +50,17 @@ const Login = () => {
           <input
             required
             type="password"
+            name="password"
             id="password"
             placeholder="Enter your password"
-            value={password}
-            onChange={(e) => handleInputChange("password", e.target.value)}
+            value={values.password}
+            onChange={handleChange}
             className={`shadow appearance-none border ${errors.password ? "border-red-500" : ""} rounded w-full py-2 px-3 text-gray-700 mb-3 leading-tight focus:outline-none focus:shadow-outline`}
           />
           {errors.password && (
             <p className="text-red-500 text-xs italic">{errors.password}</p>
           )}
         </div>
-        {errors.form && (
-          <p className="text-red-500 text-xs italic">{errors.form}</p>
-        )}
         <div className="flex items-center justify-between">
           <button
             type="submit"

@@ -20,8 +20,8 @@ const Forum = () => {
   const { isLoggedIn } = useAuth();
   const navigate = useNavigate();
 
-  const handleDepartmentChange = (dept) => {
-    setSelectedDepartment(dept);
+  const handleDepartmentChange = (e) => {
+    setSelectedDepartment(e.target.value);
     setSelectedClass("");
   };
 

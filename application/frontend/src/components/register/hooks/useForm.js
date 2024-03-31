@@ -30,7 +30,7 @@ export const useForm = (initialValues) => {
         if (!isValidEmail(value)) error = "Invalid email format";
         break;
       case "password":
-        if (!isValidPassword(value)) error = "Invalid Password";
+        if (!isValidPassword(value)) error = "Invalid Password, "; // \nPassword must be at least 8-16 characters long \nPassword must contain ateast one number";
         break;
       case "confirmPassword":
         if (!isValidConfirmPassword(formData.password, value))

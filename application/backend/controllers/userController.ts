@@ -112,7 +112,7 @@ export const login = async (req: Request, res: Response) => {
     console.error(error);
     return res
       .status(StatusCodes.INTERNAL_SERVER_ERROR)
-      .send("An error occurred during login.");
+      .send("An error occurred during login." + error.message);
   }
 };
 
