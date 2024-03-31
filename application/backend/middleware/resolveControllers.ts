@@ -53,3 +53,27 @@ export const resolveForumController = (req, res, next) => {
   req.forumController = forumController;
   next();
 };
+
+/**
+ * uses DIContainer to resolve the like controller
+ * @param req //request controller will be attached to
+ * @param res
+ * @param next // call to next to pass on to the next midlware or route hndlr
+ */
+export const resolveLikeController = (req, res, next) => {
+  const likeController = DIContainer.resolve("LikeController");
+  req.likeController = likeController;
+  next();
+};
+
+/**
+ * uses DIContainer to resolve the match controller
+ * @param req //request controller will be attached to
+ * @param res
+ * @param next // call to next to pass on to the next midlware or route hndlr
+ */
+export const resolveMatchController = (req, res, next) => {
+  const matchController = DIContainer.resolve("MatchController");
+  req.matchController = matchController;
+  next();
+};

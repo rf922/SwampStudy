@@ -30,6 +30,11 @@ import { ThreadService } from "./services/ThreadService";
 import { ForumController } from "./controllers/ForumController";
 import { ClassRepository } from "./repositories/ClassRepository";
 import { SessionRepository } from "./repositories/SessionRepository";
+import { LikeRepository } from "./repositories/LikeRepository";
+import { LikeService } from "./services/LikeService";
+import { MatchRepository } from "./repositories/MatchRepository";
+import { MatchService } from "./services/MatchService";
+import { MatchController } from "./controllers/matchController";
 
 export class Server {
   private app: Express;
@@ -63,6 +68,9 @@ export class Server {
     DIContainer.registerInstance("QuestionRepository", QuestionRepository);
     DIContainer.registerInstance("ClassRepository", ClassRepository);
     DIContainer.registerInstance("SessionRepository", SessionRepository);
+    DIContainer.registerInstance("LikeRepository", LikeRepository);
+    DIContainer.registerInstance("MatchRepository", MatchRepository);
+
     /* add other repositories as needed... */
 
     /* register services to factory here, inject dependencies */
@@ -98,7 +106,15 @@ export class Server {
       "ThreadService",
       () => new ThreadService(DIContainer.resolve("ThreadRepository")),
     );
+    DIContainer.registerFactory(
+      "LikeService",
+      () => new LikeService(DIContainer.resolve("LikeRepository")),
+    );
 
+    DIContainer.registerFactory(
+      "MatchService",
+      () => new MatchService(DIContainer.resolve("MatchRepository")),
+    );
     /* expand services as needed */
 
     /* register controllers here passing factory methods to get instances */
@@ -129,6 +145,23 @@ export class Server {
           DIContainer.resolve("QuestionService"),
           DIContainer.resolve("ThreadService"),
           DIContainer.resolve("ClassService"),
+        ),
+    );
+    DIContainer.registerFactory(
+      "LikeController",
+      () =>
+        new ForumController(
+          DIContainer.resolve("LikeService"),
+          DIContainer.resolve("AccountService"),
+          DIContainer.resolve("ClassService"),
+        ),
+    );
+    DIContainer.registerFactory(
+      "MatchController",
+      () =>
+        new MatchController(
+          DIContainer.resolve("MatchService"),
+          //DIContainer.resolve("LikeService") /* might need to add more here ad matches and like are dev */
         ),
     );
     /* add as project expands */
