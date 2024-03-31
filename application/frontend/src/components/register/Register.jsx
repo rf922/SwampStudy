@@ -22,7 +22,10 @@ const Register = () => {
 
   return (
     <div className="flex justify-center items-center h-screen">
-      <form onSubmit={handleSubmit} className="w-full max-w-xs">
+      <form
+        onSubmit={handleSubmit}
+        className="w-full max-w-xs border-2 border-gray-300 rounded-lg p-4 shadow-lg"
+      >
         <div className="register-card">
           <h1>Register</h1>
           {errors.form && (
@@ -83,6 +86,11 @@ const Register = () => {
               onChange={handleChange}
               className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
             />
+            <p className="text-gray-600 text-xs italic">
+              <p>Password must be at least 8-16 characters long.</p>
+              <p>Password must contain at least 1 capital letter and number.</p>
+              <p></p>
+            </p>
             {errors.password && (
               <p className="text-red-500 text-xs italic">{errors.password}</p>
             )}
