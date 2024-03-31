@@ -17,7 +17,7 @@ export const useUserAPI = () => {
 
       if (response.status === 200) {
         setIsLoggedIn(true);
-        navigate("/");
+        navigate("/forum");
       }
     } catch (err) {
       const errorMessages = {};

@@ -13,7 +13,6 @@ import ProtectedRoute from "./components/protectedroute/protectedroute";
 import Post from "./components/post/Post";
 import Makepost from "./components/makepost/Makepost";
 import Matching from "./components/matching/Matching";
-import Settings from "./components/settings/Settings";
 
 import { Auth } from "./context/AuthContext";
 
