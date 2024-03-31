@@ -1,4 +1,4 @@
-import React, { useState } from "react"; // remove eslint config later, leave for dev
+import { useState } from "react"; // remove eslint config later, leave for dev
 export const useFormInputValidation = (initialFormData) => {
   const [formData, setFormData] = useState(initialFormData);
   const [errors, setErrors] = useState({});
