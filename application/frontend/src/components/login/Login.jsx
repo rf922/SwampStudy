@@ -28,6 +28,8 @@ export const Login = () => {
             <div className="text-red-500 text-xs italic">{errors.form}</div>
           )}
 
+          <h1>Welcome!</h1>
+
           <label htmlFor="email" className="block text-sm font-bold mb-2">
             Email
           </label>

@@ -90,6 +90,15 @@ const Register = () => {
               <p className="text-red-500 text-xs italic">{errors.password}</p>
             )}
           </div>
+          <div>
+            <p className="text-sm">Password must:</p>
+            <p></p>
+            <p className="text-xs italic"> Contain 8 to 16 characters</p>
+            <p className="text-xs italic">
+              Contain at least 1 uppercase letter
+            </p>
+            <p className="text-xs italic"> Contain at least 1 number</p>
+          </div>
           <div className="mb-4">
             <input
               required
