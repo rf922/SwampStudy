@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
 import { useAuth } from "../../context/AuthContext";
-import { Link } from "react-router-dom";
+//import { Link } from "react-router-dom";
 
 const Home = () => {
   const [userFirstName, setUserFirstName] = useState("");
@@ -45,13 +45,6 @@ const Home = () => {
       <div>
         <h1>Study Swamp</h1>
         {userFirstName && <p>Welcome, {userFirstName}!</p>}
-      </div>
-
-      <div>
-        <Link to="/login">Login</Link>
-      </div>
-      <div>
-        <Link to="/register">Register</Link>
       </div>
     </div>
   );

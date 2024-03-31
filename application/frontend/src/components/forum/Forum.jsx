@@ -20,8 +20,8 @@ const Forum = () => {
   const { isLoggedIn } = useAuth();
   const navigate = useNavigate();
 
-  const handleDepartmentChange = (e) => {
-    setSelectedDepartment(e.target.value);
+  const handleDepartmentChange = (dept) => {
+    setSelectedDepartment(dept);
     setSelectedClass("");
   };
 
@@ -31,7 +31,10 @@ const Forum = () => {
 
   return (
     <div>
+      {" "}
+      {/* Outter most div*/}
       <div>
+        {/* top bar div*/}
         <div className="flex justify-between items-center bg-green-600 p-3">
           <Link
             to="/matching"
@@ -48,13 +51,16 @@ const Forum = () => {
           </Link>
         </div>
       </div>
-
       <div className="flex">
+        {" "}
+        {/* bottom box */}
         <div className="w-1/5">
-          <div className="max-h-60 overflow-y-auto font-semibold text-lg bg-yellow-500 text-white py-2 px-4">
+          {" "}
+          {/* nested box */}
+          <div className="max-h-60 block overflow-y-auto font-semibold text-lg bg-yellow-500 text-white py-2 px-4">
             <label
               htmlFor="departmentSelect"
-              className="block text-sm font-medium text-gray-700"
+              className=" text-sm font-medium text-gray-700"
             >
               Department:
             </label>
@@ -69,49 +75,8 @@ const Forum = () => {
                 </div>
               ))}
             </div>
-          </div>
-
-          {/* 
-              <label htmlFor="departmentSelect">Department:</label>
-              <select
-                id="departmentSelect"
-                value={selectedDepartment}
-                onChange={handleDepartmentChange}
-              >
-                {Object.keys(threadsMap).map((dept) => (
-                  <option key={dept} value={dept}>
-                    {dept}
-                  </option>
-                ))}
-              </select>
-            
-
-            <div>
-              <label htmlFor="classSelect">Class:</label>
-              <select
-                id="classSelect"
-                value={selectedClass}
-                onChange={handleClassChange}
-                disabled={
-                  !selectedDepartment ||
-                  !Object.keys(threadsMap[selectedDepartment] || {}).length
-                }
-              >
-                {selectedDepartment &&
-                  Object.entries(threadsMap[selectedDepartment] || {}).map(
-                    // eslint-disable-next-line no-unused-vars
-                    ([className, _]) => (
-                      <option key={className} value={className}>
-                        {className}
-                      </option>
-                    ),
-                  )}
-              </select>
-            </div>
-
-
-                    */}
-
+          </div>{" "}
+          {/* dep select box */}
           {isLoggedIn && (
             <button
               onClick={() => navigate("/makepost")}
@@ -121,7 +86,6 @@ const Forum = () => {
             </button>
           )}
         </div>
-
         <div className="w-4/5">
           <p>this should be the 4/5 part</p>
 
