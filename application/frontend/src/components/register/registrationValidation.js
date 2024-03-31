@@ -37,3 +37,7 @@ export const validateRegistrationForm = ({
     errors,
   };
 };
+const isValidPassword = (password) => {
+  const passwordRegex = /^(?=.*[a-zA-Z])(?=.*\d)[A-Za-z\d]{8,16}$/;
+  return passwordRegex.test(password);
+};
