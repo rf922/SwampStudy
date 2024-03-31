@@ -7,7 +7,7 @@ import { useNavigate } from "react-router-dom";
 import { Link } from "react-router-dom";
 import { useForumAPI } from "./hooks/useForumAPI";
 
-const Forum = () => {
+export const Forum = () => {
   //forum component displays a collection of postcards/summaries of posts
   const {
     threadsMap,
@@ -33,24 +33,7 @@ const Forum = () => {
     <div>
       {" "}
       {/* Outter most div*/}
-      <div>
-        {/* top bar div*/}
-        <div className="flex justify-between items-center bg-green-600 p-3">
-          <Link
-            to="/matching"
-            className="block text-center font-semibold text-lg bg-blue-500 text-white py-2 px-4 rounded hover:bg-blue-700"
-          >
-            Go to Matching
-          </Link>
-          <div className="border-r border-black-300 h-5"></div> {/*border*/}
-          <Link
-            to="/forum"
-            className="block text-center font-semibold text-lg bg-blue-500 text-white py-2 px-4 rounded hover:bg-blue-700"
-          >
-            Currently in Forums
-          </Link>
-        </div>
-      </div>
+      <div>{/* top bar div*/}</div>
       <div className="flex">
         {" "}
         {/* bottom box */}
