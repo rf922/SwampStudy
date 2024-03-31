@@ -57,7 +57,7 @@ const Home = () => {
           {view === "matching" ? "Currently in Matching!" : "Go To Matching"}
         </button>
         <button
-          className={`flex-1 text-right ${view === "forum" ? "text-purple-400 font-bold" : "bg-400"}`}
+          className={`flex-1 text-right ${view === "forum" ? "text-purple-400 font-bold" : "bg-purple-400"}`}
           onClick={() => setView("forum")}
         >
           {view === "forum" ? "Currently in Forums!" : "Forums"}

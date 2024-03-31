@@ -4,7 +4,6 @@ import React from "react";
 import Postcard from "../postcard/Postcard";
 import { useAuth } from "../../context/AuthContext";
 import { useNavigate } from "react-router-dom";
-import { Link } from "react-router-dom";
 import { useForumAPI } from "./hooks/useForumAPI";
 
 export const Forum = () => {
