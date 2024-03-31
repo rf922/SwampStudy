@@ -8,18 +8,22 @@ const Navbar = () => {
   if (isLoading) return null;
 
   return (
-    <div className="sticky top-0 bg-purple-600 text-white p-4 flex flex-wrap justify-center items-center gap-4">
+    <div
+      className="sticky top-0 text-white p-4 flex flex-wrap justify-center items-center gap-4"
+      style={{ backgroundColor: "#463077" }} // Updated background color
+    >
       {!isLoggedIn ? (
         <>
           <Link
             to="/about"
             className="mr-4"
             style={{
-              backgroundColor: "yellow",
+              backgroundColor: "gold",
               borderRadius: "20px",
               padding: "5px 10px",
               display: "inline-block",
               color: "black",
+              text: "sfsuPurple",
             }}
           >
             About
@@ -28,7 +32,7 @@ const Navbar = () => {
           <Link
             to="/login"
             className="text-x1 font-bold flex items-center"
-            style={{ fontSize: "1.25rem", color: "yellow" }}
+            style={{ fontSize: "1.25rem", color: "gold" }}
           >
             <span> Swamp Study</span>
           </Link>
@@ -45,7 +49,7 @@ const Navbar = () => {
             to="/about"
             className="mr-4"
             style={{
-              backgroundColor: "yellow",
+              backgroundColor: "gold",
               borderRadius: "20px",
               padding: "5px 10px",
               display: "inline-block",
@@ -58,7 +62,7 @@ const Navbar = () => {
           <Link
             to="/"
             className="text-x1 font-bold flex items-center"
-            style={{ fontSize: "1.25rem", color: "yellow" }}
+            style={{ fontSize: "1.25rem", color: "gold" }}
           >
             <span> Swamp Study</span>
           </Link>
@@ -73,7 +77,7 @@ const Navbar = () => {
             to="/account"
             className="mr-4"
             style={{
-              backgroundColor: "yellow",
+              backgroundColor: "gold",
               borderRadius: "20px",
               padding: "5px 10px",
               display: "inline-block",
@@ -87,7 +91,7 @@ const Navbar = () => {
             onClick={handleLogout}
             className="mr-4"
             style={{
-              backgroundColor: "yellow",
+              backgroundColor: "gold",
               borderRadius: "20px",
               padding: "5px 10px",
               display: "inline-block",

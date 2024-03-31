@@ -5,7 +5,10 @@ module.exports = {
     extend: {
       colors: {
         gold: {
-          DEFAULT: "#ffd700",
+          DEFAULT: "#c99700",
+        },
+        sfsuPurple: {
+          DEFAULT: "#463077",
         },
       },
     },
