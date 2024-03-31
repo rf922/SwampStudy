@@ -51,13 +51,13 @@ const Home = () => {
     <div>
       <div className="flex justify-between items-center bg-purple-200 p-3">
         <button
-          className={`flex-1 text-left " ${view === "matching" ? "bg-purple-400 font-bold" : "bg-purple-400"}`}
-          onClick={() => setView(view === "matching" ? "forum" : "matching")}
+          className={`flex-1 text-left " ${view === "matching" ? "bg-purple-400" : "text-purple-400 font-bold"}`}
+          onClick={() => setView("matching")}
         >
           {view === "matching" ? "Currently in Matching!" : "Go To Matching"}
         </button>
         <button
-          className={`flex-1 text-right ${view === "forum" ? "text-purple-400 font-bold" : "bg-purple-400"}`}
+          className={`flex-1 text-right ${view === "forum" ? "bg-purple-400" : "text-purple-400 font-bold"}`}
           onClick={() => setView("forum")}
         >
           {view === "forum" ? "Currently in Forums!" : "Forums"}

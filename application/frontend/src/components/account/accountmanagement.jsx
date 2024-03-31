@@ -46,7 +46,9 @@ const UpdateAccount = () => {
             onChange={handleChange}
             className="input"
           />
-          {errors.firstName && <p className="error">{errors.firstName}</p>}{" "}
+          {errors.firstName && (
+            <p className="text-red-500 text-xs italic">{errors.firstName}</p>
+          )}{" "}
         </div>
         <div className="mb-4">
           <label htmlFor="lastName" className="block">
@@ -61,7 +63,9 @@ const UpdateAccount = () => {
             onChange={handleChange}
             className="input"
           />
-          {errors.lastName && <p className="error">{errors.lastName}</p>}
+          {errors.lastName && (
+            <p className="text-red-500 text-xs italic">{errors.lastName}</p>
+          )}
         </div>
         <div className="mb-4">
           <label htmlFor="email" className="block">
@@ -76,7 +80,9 @@ const UpdateAccount = () => {
             onChange={handleChange}
             className="input"
           />
-          {errors.email && <p className="error">{errors.email}</p>}
+          {errors.email && (
+            <p className="text-red-500 text-xs italic">{errors.email}</p>
+          )}
         </div>
 
         <div className="mb-4">
@@ -92,7 +98,9 @@ const UpdateAccount = () => {
             onChange={handleChange}
             className="input"
           />
-          {errors.newPassword && <p className="error">{errors.newPassword}</p>}
+          {errors.newPassword && (
+            <p className="text-red-500 text-xs italic">{errors.newPassword}</p>
+          )}
         </div>
 
         <div className="mb-4">
@@ -109,15 +117,19 @@ const UpdateAccount = () => {
             className="input"
           />
           {errors.confirmPassword && (
-            <p className="error">{errors.confirmPassword}</p>
+            <p className="text-red-500 text-xs italic">
+              {errors.confirmPassword}
+            </p>
           )}
         </div>
 
-        {errors.form && <p className="error">{errors.form}</p>}
+        {errors.form && (
+          <p className="text-red-500 text-xs italic">{errors.form}</p>
+        )}
 
         <button
           type="submit"
-          className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded mt-4"
+          className="bg-purple-500 hover:bg-violet-700 text-white  font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline disabled:opacity-50 mr-10"
         >
           Update Account
         </button>

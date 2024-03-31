@@ -1,9 +1,10 @@
 import axios from "axios";
+import { useNavigate } from "react-router-dom";
 import { useAuth } from "../../../context/AuthContext";
 
 export const useUserAPI = () => {
   //hook for login
-  //const navigate = useNavigate();
+  const navigate = useNavigate();
   const { setIsLoggedIn } = useAuth();
 
   const login = async (email, password, setErrors) => {
@@ -16,6 +17,7 @@ export const useUserAPI = () => {
 
       if (response.status === 200) {
         setIsLoggedIn(true);
+        navigate("/");
       }
     } catch (err) {
       const errorMessages = {};

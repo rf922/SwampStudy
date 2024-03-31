@@ -1,6 +1,7 @@
 import React from "react";
 import { useForm } from "./hooks/useForm";
 import { useUserAPI } from "./hooks/useUserAPI";
+//import { useAuth } from "./../../context/AuthContext";
 
 export const Login = () => {
   const { values, errors, handleChange, validate, setErrors } = useForm({
@@ -8,6 +9,7 @@ export const Login = () => {
     password: "",
   });
   const { login } = useUserAPI();
+  //  const { isLoggedIn} = useAuth();
 
   const handleLogin = async (e) => {
     e.preventDefault();

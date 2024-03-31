@@ -56,7 +56,7 @@ const Navbar = () => {
           </Link>
 
           <Link
-            to="/forum"
+            to="/"
             className="text-x1 font-bold flex items-center"
             style={{ fontSize: "1.25rem", color: "yellow" }}
           >

@@ -39,42 +39,46 @@ export const Forum = () => {
         <div className="w-1/5">
           {" "}
           {/* nested box */}
-          <div className="max-h-60 block overflow-y-auto font-semibold text-lg bg-yellow-500 text-white py-2 px-4">
-            <label
-              htmlFor="departmentSelect"
-              className=" text-sm font-medium text-gray-700"
-            >
-              Department:
-            </label>
-            <div className="mt-1">
-              {Object.keys(threadsMap).map((dept) => (
-                <div
-                  key={dept}
-                  className="cursor-pointer flex items-center justify-between px-4 py-2 text-sm font-medium text-gray-900 bg-white hover:bg-gray-100"
-                  onClick={() => handleDepartmentChange(dept)}
-                >
-                  {dept}
-                </div>
-              ))}
+          <div className="max-w-xs mx-auto rounded-lg overflow-hidden shadow-lg bg-white my-4 border border-purple-200 text-center mr-4">
+            <div className="px-6 py-4 bg-purple-100 text-gray-800">
+              <label
+                htmlFor="departmentSelect"
+                className="font-bold text-xl mb-2 text-purple-600"
+              >
+                Department:
+              </label>
+              <div className="mt-1 mb-4">
+                {Object.keys(threadsMap).map((dept) => (
+                  <div
+                    key={dept}
+                    className="cursor-pointer flex items-center justify-center px-4 py-2 text-sm font-medium text-gray-900 bg-white hover:bg-gray-100"
+                    onClick={() => handleDepartmentChange(dept)}
+                  >
+                    {dept}
+                  </div>
+                ))}
+              </div>
             </div>
-          </div>{" "}
+
+            {isLoggedIn && (
+              <div className="px-6 py-4 bg-purple-50">
+                <button
+                  onClick={() => navigate("/makepost")}
+                  className="inline-block bg-purple-200 hover:bg-purple-300 rounded-full px-3 py-1 text-sm font-semibold text-purple-700 mr-2 mb-2"
+                >
+                  Ask a question
+                </button>
+              </div>
+            )}
+          </div>
           {/* dep select box */}
-          {isLoggedIn && (
-            <button
-              onClick={() => navigate("/makepost")}
-              className="mb-4 bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
-            >
-              Ask a question
-            </button>
-          )}
         </div>
         <div className="w-4/5">
           <p>this should be the 4/5 part</p>
 
           <div>
             {selectedDepartment && (
-              <h2 className="text-2x1 font-bold mb-4 bg-blue-500 text-white font-bold py-2 px-4 rounded">
-                {" "}
+              <h2 className="text-3x1 mb-4 bg-purple-300 text-white py-2 px-4 rounded">
                 {selectedDepartment} Department
               </h2>
             )}
