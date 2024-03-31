@@ -1,7 +1,6 @@
 import {
   isValidName,
   isValidEmail,
-  isValidPassword,
   isValidConfirmPassword,
 } from "../../utils/validationUtils";
 
@@ -24,7 +23,7 @@ export const validateRegistrationForm = ({
     errors.email = "Invalid email format";
   }
 
-  if (!isValidPassword(password)) {
+  if (!followsPasswordReqs(password)) {
     errors.password = "Invalid Password";
   }
 
@@ -37,7 +36,7 @@ export const validateRegistrationForm = ({
     errors,
   };
 };
-const isValidPassword = (password) => {
+const followsPasswordReqs = (password) => {
   const passwordRegex = /^(?=.*[a-zA-Z])(?=.*\d)[A-Za-z\d]{8,16}$/;
   return passwordRegex.test(password);
 };

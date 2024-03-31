@@ -31,7 +31,7 @@ const Login = () => {
           email: email,
           password: password,
         },
-        { withCredentials: true }
+        { withCredentials: true },
       );
       if (response.status === 200) {
         console.log("User Login successful");

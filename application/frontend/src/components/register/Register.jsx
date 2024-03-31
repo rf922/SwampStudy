@@ -88,7 +88,7 @@ const Register = () => {
             />
             <p className="text-gray-600 text-xs italic">
               <p>Password must be at least 8-16 characters long.</p>
-              <p>Password must contain at least 1 capital letter and number.</p>
+              <p>Password must contain at least 1 number.</p>
               <p></p>
             </p>
             {errors.password && (
