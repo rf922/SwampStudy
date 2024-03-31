@@ -2,7 +2,7 @@ import React from "react";
 import { useForm } from "./hooks/useForm";
 import { useUserAPI } from "./hooks/useUserAPI";
 
-const Login = () => {
+export const Login = () => {
   const { values, errors, handleChange, validate, setErrors } = useForm({
     email: "",
     password: "",

@@ -23,7 +23,7 @@ function App() {
         <Router>
           <Navbar />
           <Routes>
-            <Route path="/" element={<Home />} />{" "}
+            <Route path="/" element={<Home />} />
             {/*landing should be straight to login*/}
             <Route path="/forum" element={<Forum />} />
             <Route path="/post/:questionId" element={<Post />} />

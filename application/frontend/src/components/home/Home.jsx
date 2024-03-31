@@ -1,8 +1,7 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
 import { useAuth } from "../../context/AuthContext";
-//import { Link } from "react-router-dom";
-
+import { Login } from "./../login/Login";
 const Home = () => {
   const [userFirstName, setUserFirstName] = useState("");
   const { isLoggedIn, isLoading } = useAuth();
@@ -18,7 +17,7 @@ const Home = () => {
             //            "http://localhost:8080/api/forum/departments/listing",
             { withCredentials: true },
           );
-          //console.log(userDetailsResponse);
+          console.log(userDetailsResponse);
           setUserFirstName(userDetailsResponse.data.first_name);
         } else {
           setUserFirstName("please log in.");
@@ -39,6 +38,10 @@ const Home = () => {
         {<p>Content Loading . . . </p>}
       </div>
     );
+
+  if (!isLoggedIn) {
+    return <Login />;
+  }
 
   return (
     <div>
