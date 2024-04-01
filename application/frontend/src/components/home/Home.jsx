@@ -49,18 +49,20 @@ const Home = () => {
 
   return (
     <div>
-      <div className="flex justify-between items-center bg-purple-200 p-3">
+      <div className="flex justify-between items-center bg-yellow-400 p-3">
         <button
-          className={`flex-1 text-left " ${view === "matching" ? "bg-purple-400" : "text-purple-400 font-bold"}`}
-          onClick={() => setView("matching")}
+          className={`flex-1 text-left " ${view === "matching" ? "bg-blue-100" : "bg-red-100"} border border-gold border-4 rounded-l`}
+          onClick={() => setView(view === "matching" ? "forum" : "matching")}
         >
           {view === "matching" ? "Currently in Matching!" : "Go To Matching"}
         </button>
+
+        {/* forum*/}
         <button
-          className={`flex-1 text-right ${view === "forum" ? "bg-purple-400" : "text-purple-400 font-bold"}`}
+          className={`flex-1 text-left " ${view === "forum" ? "bg-blue-100" : "bg-red-100"} border border-yellow-400 border-4 rounded-r`}
           onClick={() => setView("forum")}
         >
-          {view === "forum" ? "Currently in Forums!" : "Forums"}
+          {view === "forum" ? "Currently in Forums!" : "Go To Forums"}
         </button>
       </div>
 

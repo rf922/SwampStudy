@@ -36,46 +36,44 @@ export const Forum = () => {
       <div className="flex">
         {" "}
         {/* bottom box */}
-        <div className="w-1/5">
+        <div className="w-1/5 mt-4 mr-4 ml-4">
           {" "}
           {/* nested box */}
-          <div className="max-w-xs mx-auto rounded-lg overflow-hidden shadow-lg bg-white my-4 border border-purple-200 text-center mr-4">
-            <div className="px-6 py-4 bg-purple-100 text-gray-800">
-              <label
-                htmlFor="departmentSelect"
-                className="font-bold text-xl mb-2 text-purple-600"
-              >
-                Department:
-              </label>
-              <div className="mt-1 mb-4">
-                {Object.keys(threadsMap).map((dept) => (
-                  <div
-                    key={dept}
-                    className="cursor-pointer flex items-center justify-center px-4 py-2 text-sm font-medium text-gray-900 bg-white hover:bg-gray-100"
-                    onClick={() => handleDepartmentChange(dept)}
-                  >
-                    {dept}
-                  </div>
-                ))}
-              </div>
-            </div>
+          <div
+            className="max-h-150 block overflow-y-auto font-semibold text-lg  py-2 px-4 rounded-md"
+            style={{ backgroundColor: "#FFCF01", padding: "2rem 1rem" }}
+          >
+            <label
+              htmlFor="departmentSelect"
+              className=" text-lg font-medium text-gray-700"
+            >
+              Department:
+            </label>
 
-            {isLoggedIn && (
-              <div className="px-6 py-4 bg-purple-50">
-                <button
-                  onClick={() => navigate("/makepost")}
-                  className="inline-block bg-purple-200 hover:bg-purple-300 rounded-full px-3 py-1 text-sm font-semibold text-purple-700 mr-2 mb-2"
+            <div className="mt-4" style={{ padding: "0 1rem" }}>
+              {Object.keys(threadsMap).map((dept) => (
+                <div
+                  key={dept}
+                  className="cursor-pointer flex items-center border border-purple-200 justify-between px-4 py-2 text-sm font-medium text-gray-900 bg-purple-100 hover:bg-gray-100"
+                  onClick={() => handleDepartmentChange(dept)}
                 >
-                  Ask a question
-                </button>
-              </div>
-            )}
-          </div>
+                  {dept}
+                </div>
+              ))}
+            </div>
+          </div>{" "}
           {/* dep select box */}
+          {isLoggedIn && (
+            <button
+              onClick={() => navigate("/makepost")}
+              className="mb-4 bg-blue-500 hover:bg-blue-700 text-white font-bold py-4 px-20 rounded mt-4"
+            >
+              Ask A Question
+            </button>
+          )}
         </div>
-        <div className="w-4/5">
-          <p>this should be the 4/5 part</p>
-
+        {/*----*/}
+        <div className="w-4/5 mr-4 mt-4">
           <div>
             {selectedDepartment && (
               <h2 className="text-3x1 mb-4 bg-purple-300 text-white py-2 px-4 rounded">
@@ -84,32 +82,35 @@ export const Forum = () => {
             )}
           </div>
 
-          <label
-            htmlFor="classSelect"
-            className="block text-lg font-medium text-grey-700 mb-2"
-          >
-            Class Selection:
-          </label>
-          <select
-            id="classSelect"
-            value={selectedClass}
-            onChange={handleClassChange}
-            disabled={
-              !selectedDepartment ||
-              !Object.keys(threadsMap[selectedDepartment] || {}).length
-            }
-            className="block w-full px-4 py-2 mt-1 bg-white border border-grey-300 rounded-md shadow-sm focus:ouline-none focus:ring-indigo-500 foucs: border-indigo-500 sm:text-sm"
-          >
-            {selectedDepartment &&
-              Object.entries(threadsMap[selectedDepartment] || {}).map(
-                // eslint-disable-next-line no-unused-vars
-                ([className, _]) => (
-                  <option key={className} value={className}>
-                    {className}
-                  </option>
-                ),
-              )}
-          </select>
+          <div className="flex">
+            <label
+              htmlFor="classSelect"
+              className="block text-lg font-medium text-white mb-2 bg-blue-500  rounded"
+              style={{ minWidth: "150px" }}
+            >
+              Class Selection:
+            </label>
+            <select
+              id="classSelect"
+              value={selectedClass}
+              onChange={handleClassChange}
+              disabled={
+                !selectedDepartment ||
+                !Object.keys(threadsMap[selectedDepartment] || {}).length
+              }
+              className="ml-2 block w-full px-4 py-2 mt-1 bg-white border border-grey-300 rounded-md shadow-sm focus:ouline-none focus:ring-indigo-500 foucs: border-indigo-500 sm:text-sm"
+            >
+              {selectedDepartment &&
+                Object.entries(threadsMap[selectedDepartment] || {}).map(
+                  // eslint-disable-next-line no-unused-vars
+                  ([className, _]) => (
+                    <option key={className} value={className}>
+                      {className}
+                    </option>
+                  ),
+                )}
+            </select>
+          </div>
 
           <div className=" gap-4">
             {filteredThreads.map((thread) => (
