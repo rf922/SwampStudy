@@ -8,14 +8,21 @@ const Navbar = () => {
   if (isLoading) return null;
 
   return (
-    <div className="sticky top-0 bg-purple-600 text-white p-4 flex flex-wrap justify-center items-center gap-4">
+    <div
+      className="sticky top-0 bg-green-600 text-white p-4 flex flex-wrap justify-center items-center gap-4"
+      style={{
+        backgroundColor: "#52247F",
+        color: "FFFFF",
+        padding: "2rem 1rem",
+      }}
+    >
       {!isLoggedIn ? (
         <>
           <Link
             to="/about"
             className="mr-4"
             style={{
-              backgroundColor: "yellow",
+              backgroundColor: "#FFCF01",
               borderRadius: "20px",
               padding: "5px 10px",
               display: "inline-block",
@@ -28,7 +35,7 @@ const Navbar = () => {
           <Link
             to="/login"
             className="text-x1 font-bold flex items-center"
-            style={{ fontSize: "1.25rem", color: "yellow" }}
+            style={{ fontSize: "1.5rem", color: "#FFCF01" }}
           >
             <span> Swamp Study</span>
           </Link>
@@ -45,7 +52,7 @@ const Navbar = () => {
             to="/about"
             className="mr-4"
             style={{
-              backgroundColor: "yellow",
+              backgroundColor: "#FFCF01",
               borderRadius: "20px",
               padding: "5px 10px",
               display: "inline-block",
@@ -58,22 +65,22 @@ const Navbar = () => {
           <Link
             to="/"
             className="text-x1 font-bold flex items-center"
-            style={{ fontSize: "1.25rem", color: "yellow" }}
+            style={{ fontSize: "1.25rem", color: "#FFCF01" }}
           >
             <span> Swamp Study</span>
           </Link>
 
-          <Link to="/forum" className="flex items-center">
+          <Link to="/" className="flex items-center">
             <span>
               <img src="/images/alli.png" className="ml-2 w-17 h-9" />
             </span>
           </Link>
 
           <Link
-            to="/account"
+            to="/settings"
             className="mr-4"
             style={{
-              backgroundColor: "yellow",
+              backgroundColor: "#FFCF01",
               borderRadius: "20px",
               padding: "5px 10px",
               display: "inline-block",
@@ -87,7 +94,7 @@ const Navbar = () => {
             onClick={handleLogout}
             className="mr-4"
             style={{
-              backgroundColor: "yellow",
+              backgroundColor: "#FFCF01",
               borderRadius: "20px",
               padding: "5px 10px",
               display: "inline-block",
