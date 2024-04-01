@@ -13,7 +13,7 @@ export const Login = () => {
 
   const handleLogin = async (e) => {
     e.preventDefault();
-    if (!validate()) return; // qt if val fails
+    if (!validate()) return; // quit if validation fails
 
     login(values.email, values.password, setErrors);
   };
@@ -27,6 +27,8 @@ export const Login = () => {
           {errors.form && (
             <div className="text-red-500 text-xs italic">{errors.form}</div>
           )}
+
+          <h1>Welcome!</h1>
 
           <label htmlFor="email" className="block text-sm font-bold mb-2">
             Email
@@ -67,13 +69,15 @@ export const Login = () => {
           <button
             type="submit"
             disabled={Object.keys(errors).length > 0}
-            className="bg-purple-500 hover:bg-violet-700 text-white  font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline disabled:opacity-50 mr-10"
+            className="bg-purple-500 hover:bg-purple-800 text-white  font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline disabled:opacity-50 mr-10"
+            style={{ backgroundColor: "#c99700", borderColor: "#c99700" }} // Updated button color
           >
             Login
           </button>
           <a
             href="/register"
             className="inline-block align-baseline font-bold text-sm text-purple-500 hover:text-purple-800"
+            style={{ color: "#463077" }} // Updated link color
           >
             Don&apos;t have an account? Register
           </a>

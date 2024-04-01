@@ -27,6 +27,7 @@ const Navbar = () => {
               padding: "5px 10px",
               display: "inline-block",
               color: "black",
+              text: "sfsuPurple",
             }}
           >
             About

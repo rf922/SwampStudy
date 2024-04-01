@@ -37,6 +37,6 @@ export const validateRegistrationForm = ({
   };
 };
 const followsPasswordReqs = (password) => {
-  const passwordRegex = /^(?=.*[a-zA-Z])(?=.*\d)[A-Za-z\d]{8,16}$/;
+  const passwordRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[A-Za-z\d]{8,16}$/;
   return passwordRegex.test(password);
 };
