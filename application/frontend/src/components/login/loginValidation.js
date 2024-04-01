@@ -1,15 +1,14 @@
 import { isValidEmail, isValidPassword } from "../../utils/validationUtils";
 
 export const validateLoginForm = ({ email, password }) => {
-  const errors = {};
+  let errors = { email: [], password: [] };
+  isValidEmail(email, errors);
+  isValidPassword(password, errors);
 
-  if (!isValidEmail(email)) {
-    errors.email = "Invalid email format";
-  }
-
-  if (!isValidPassword(password)) {
-    errors.password = "invalid email or Password";
-  }
+  // filt out any empty error arrays to maintain the original structure
+  Object.keys(errors).forEach((key) => {
+    if (errors[key].length === 0) delete errors[key];
+  });
 
   return {
     isValid: Object.keys(errors).length === 0,

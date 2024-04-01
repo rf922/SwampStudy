@@ -8,7 +8,7 @@ const UpdateAccount = () => {
     firstName: "",
     lastName: "",
     email: "",
-    newPassword: "",
+    password: "",
     confirmPassword: "",
   });
 
@@ -86,20 +86,20 @@ const UpdateAccount = () => {
         </div>
 
         <div className="mb-4">
-          <label htmlFor="newPassword" className="block">
+          <label htmlFor="password" className="block">
             New Password (optional)
           </label>
           <input
-            name="newPassword"
-            id="newPassword"
+            name="password"
+            id="password"
             type="password"
             placeholder="New Password"
-            value={formData.newPassword}
+            value={formData.password}
             onChange={handleChange}
             className="input"
           />
-          {errors.newPassword && (
-            <p className="text-red-500 text-xs italic">{errors.newPassword}</p>
+          {errors.password && (
+            <p className="text-red-500 text-xs italic">{errors.password}</p>
           )}
         </div>
 

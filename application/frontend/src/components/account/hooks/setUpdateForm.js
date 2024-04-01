@@ -1,5 +1,11 @@
 import { useState } from "react";
 import { validateUpdateForm } from "./../updateAccountValidation";
+import {
+  isValidName,
+  isValidEmail,
+  isValidPassword,
+  isValidConfirmPassword,
+} from "../../../utils/validationUtils";
 
 export const useUpdateForm = (initialValues) => {
   const [formData, setFormData] = useState(initialValues);
@@ -11,11 +17,32 @@ export const useUpdateForm = (initialValues) => {
       ...prevFormData,
       [name]: value,
     }));
-    const formErrors = validateUpdateForm({ ...formData, [name]: value });
-    setErrors(formErrors.errors);
+    setErrors((prevErrors) => {
+      const newErrors = { ...prevErrors, [name]: [] };
+      delete newErrors.form;
+      return newErrors;
+    });
+    validateField(name, value);
   };
 
-  return { formData, handleChange, errors, setErrors };
+  const validateField = (name, value) => {
+    let fieldErrors = [];
+    if (name === "firstName") isValidName(value, fieldErrors);
+    if (name === "lastName") isValidName(value, fieldErrors);
+    if (name === "email") isValidEmail(value, fieldErrors);
+    if (name === "password") isValidPassword(value, fieldErrors);
+    if (name === "confirmPassword")
+      isValidConfirmPassword(formData.password, value, fieldErrors);
+    setErrors((prevErrors) => ({ ...prevErrors, [name]: fieldErrors }));
+  };
+
+  const validate = () => {
+    const { isValid, errors: validationErrors } = validateUpdateForm(formData);
+    setErrors(validationErrors);
+    return isValid;
+  };
+
+  return { formData, handleChange, errors, validate, setErrors };
 };
 
 export default useUpdateForm;

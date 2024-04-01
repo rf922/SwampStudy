@@ -9,25 +9,26 @@ export const validateUpdateForm = ({
   firstName,
   lastName,
   email,
-  newPassword,
+  password,
   confirmPassword,
 }) => {
   const errors = {};
 
-  if (firstName && !isValidName(firstName)) {
-    errors.firstName = "Invalid First Name";
+  if (firstName) {
+    isValidName(firstName, errors);
   }
-  if (lastName && !isValidName(lastName)) {
-    errors.lastName = "Invalid Last Name";
+  if (lastName) {
+    isValidName(lastName, errors);
   }
-  if (email && !isValidEmail(email)) {
-    errors.email = "Invalid email format";
+  if (email) {
+    isValidEmail(email, errors);
   }
-  if (newPassword && !isValidPassword(newPassword)) {
-    errors.newPassword = "Invalid Password";
+
+  if (password) {
+    isValidPassword(password, errors);
   }
-  if (newPassword && !isValidConfirmPassword(newPassword, confirmPassword)) {
-    errors.confirmPassword = "Password and Confirm Password must match";
+  if (confirmPassword) {
+    isValidConfirmPassword(password, confirmPassword, errors);
   }
 
   return {

@@ -1,5 +1,6 @@
 import { useState } from "react";
-import { validateLoginForm } from "./../loginValidation";
+import { validateLoginForm } from "../loginValidation";
+import { isValidEmail, isValidPassword } from "../../../utils/validationUtils";
 
 export const useForm = (initialState) => {
   const [values, setValues] = useState(initialState);
@@ -7,22 +8,26 @@ export const useForm = (initialState) => {
 
   const handleChange = (e) => {
     const { name, value } = e.target;
-    // update field vals/ form vals
     setValues((prevValues) => ({ ...prevValues, [name]: value }));
-
-    // update errors based on new values
-    setValues((prevValues) => {
-      const updatedValues = { ...prevValues, [name]: value };
-      const validationResult = validateLoginForm(updatedValues);
-      setErrors(validationResult.isValid ? {} : validationResult.errors);
-      return updatedValues;
+    setErrors((prevErrors) => {
+      const newErrors = { ...prevErrors, [name]: [] };
+      delete newErrors.form;
+      return newErrors;
     });
+    validateField(name, value);
+  };
+
+  const validateField = (name, value) => {
+    let fieldErrors = [];
+    if (name === "email") isValidEmail(value, fieldErrors);
+    if (name === "password") isValidPassword(value, fieldErrors);
+    setErrors((prevErrors) => ({ ...prevErrors, [name]: fieldErrors }));
   };
 
   const validate = () => {
-    const validationResult = validateLoginForm(values);
-    setErrors(validationResult.errors);
-    return validationResult.isValid;
+    const { isValid, errors: validationErrors } = validateLoginForm(values);
+    setErrors(validationErrors);
+    return isValid;
   };
 
   return { handleChange, values, errors, validate, setErrors };

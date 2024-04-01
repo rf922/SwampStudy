@@ -3,7 +3,7 @@ import { useForm } from "./hooks/useForm";
 import { useUserAPI } from "./hooks/useUserAPI";
 
 const Register = () => {
-  const { formData, handleChange, errors, validateForm, setErrors } = useForm({
+  const { formData, handleChange, errors, validate, setErrors } = useForm({
     firstName: "",
     lastName: "",
     email: "",
@@ -11,11 +11,11 @@ const Register = () => {
     confirmPassword: "",
   });
 
-  const { handleRegister, apiError } = useUserAPI();
+  const { handleRegister } = useUserAPI();
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    if (validateForm()) {
+    if (validate()) {
       handleRegister(formData, setErrors);
     }
   };
@@ -31,8 +31,8 @@ const Register = () => {
           {errors.form && (
             <p className="text-red-500 text-xs italic">{errors.form}</p>
           )}
-          {apiError && (
-            <p className="text-red-500 text-xs italic">{apiError}</p>
+          {errors.form && (
+            <p className="text-red-500 text-xs italic">{errors.form}</p>
           )}
           <div className="mb-4">
             <input
@@ -89,15 +89,6 @@ const Register = () => {
             {errors.password && (
               <p className="text-red-500 text-xs italic">{errors.password}</p>
             )}
-          </div>
-          <div>
-            <p className="text-sm">Password must:</p>
-            <p></p>
-            <p className="text-xs italic"> Contain 8 to 16 characters</p>
-            <p className="text-xs italic">
-              Contain at least 1 uppercase letter
-            </p>
-            <p className="text-xs italic"> Contain at least 1 number</p>
           </div>
           <div className="mb-4">
             <input

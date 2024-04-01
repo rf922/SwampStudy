@@ -9,12 +9,10 @@ export const Login = () => {
     password: "",
   });
   const { login } = useUserAPI();
-  //  const { isLoggedIn} = useAuth();
 
   const handleLogin = async (e) => {
     e.preventDefault();
     if (!validate()) return; // qt if val fails
-
     login(values.email, values.password, setErrors);
   };
   return (
@@ -41,11 +39,14 @@ export const Login = () => {
             placeholder="Enter your email"
             value={values.email}
             onChange={handleChange}
-            className={`shadow appearance-none border ${errors.email ? "border-red-500" : ""} rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline`}
+            className={`shadow appearance-none border ${errors.email && errors.email.length > 0 ? "border-red-500" : ""} rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline`}
           />
-          {errors.email && (
-            <p className="text-red-500 text-xs italic">{errors.email}</p>
-          )}
+          {errors.email &&
+            errors.email.map((error, index) => (
+              <p key={index} className="text-red-500 text-xs italic">
+                {error}
+              </p>
+            ))}
         </div>
         <div className="mb-6">
           <label htmlFor="password" className="block text-sm font-bold mb-2">
@@ -59,16 +60,19 @@ export const Login = () => {
             placeholder="Enter your password"
             value={values.password}
             onChange={handleChange}
-            className={`shadow appearance-none border ${errors.password ? "border-red-500" : ""} rounded w-full py-2 px-3 text-gray-700 mb-3 leading-tight focus:outline-none focus:shadow-outline`}
+            className={`shadow appearance-none border ${errors.password && errors.password.length > 0 ? "border-red-500" : ""} rounded w-full py-2 px-3 text-gray-700 mb-3 leading-tight focus:outline-none focus:shadow-outline`}
           />
-          {errors.password && (
-            <p className="text-red-500 text-xs italic">{errors.password}</p>
-          )}
+          {errors.password &&
+            errors.password.map((error, index) => (
+              <p key={index} className="text-red-500 text-xs italic">
+                {error}
+              </p>
+            ))}
         </div>
         <div className="flex items-center justify-between">
           <button
             type="submit"
-            disabled={Object.keys(errors).length > 0}
+            disabled={Object.keys(errors).some((key) => errors[key].length > 0)}
             className="bg-purple-500 hover:bg-violet-700 text-white  font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline disabled:opacity-50 mr-10"
           >
             Login
