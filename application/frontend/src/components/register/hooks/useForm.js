@@ -48,7 +48,7 @@ export const useForm = (initialValues) => {
     setErrors((prevErrors) => ({ ...prevErrors, [name]: errors }));
   };
 
-  const validateForm = () => {
+  const validate = () => {
     const validationResult = validateRegistrationForm(formData);
     if (!validationResult.isValid) {
       setErrors(validationResult.errors);
@@ -57,5 +57,5 @@ export const useForm = (initialValues) => {
     return true;
   };
 
-  return { formData, handleChange, errors, validateForm, setErrors };
+  return { formData, handleChange, errors, validate, setErrors };
 };
