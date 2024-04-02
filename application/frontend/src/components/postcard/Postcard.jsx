@@ -8,7 +8,10 @@ const Postcard = ({ thread }) => {
     <div className="flex flex-col max-w-full mx-auto min-w-[320px] min-h-[320px] rounded-lg overflow-hidden shadow-lg bg-white my-4 border border-purple-200">
       <div className="px-6 py-4 bg-violet-200 text-gray-800">
         <p className="text-gray-700 text-base">
-          Asked By: <span className="text-purple-500">{thread.question.account.first_name}</span>
+          Asked By:{" "}
+          <span className="text-purple-500">
+            {thread.question.account.first_name}
+          </span>
         </p>
         <p className="font-bold text-lg text-purple-800 whitespace-nowrap overflow-hidden overflow-ellipsis">
           {thread.title}
@@ -29,10 +32,6 @@ const Postcard = ({ thread }) => {
       </div>
     </div>
   );
-  
-  
-  
-  
 };
 
 Postcard.propTypes = {
