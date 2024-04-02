@@ -22,7 +22,7 @@ const useForumAPI = (questionId) => {
     const getAnswers = async () => {
       try {
         const response = await axios.get(
-          `http://localhost:8080/api/forum/questions/${questionId}/answers`,
+          `https://swamp-study.global.ssl.fastly.net/api/forum/questions/${questionId}/answers`,
           { withCredentials: true },
         );
         setAnswers(response.data);
