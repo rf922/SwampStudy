@@ -22,7 +22,7 @@ export const useForumAPI = () => {
   const postQuestion = async (formData) => {
     try {
       await axios.post(
-        "http://localhost:8080/api/forum/question",
+        "https://swamp-study.global.ssl.fastly.net/api/forum/question",
         {
           threadTitle: formData.threadTitle,
           questionText: formData.questionText,
