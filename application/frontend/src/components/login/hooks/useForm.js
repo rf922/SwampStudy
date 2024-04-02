@@ -14,7 +14,8 @@ export const useForm = (initialState) => {
       delete newErrors.form;
       return newErrors;
     });
-    validateField(name, value);
+
+    //validateField(name, value);
   };
 
   const validateField = (name, value) => {

@@ -12,7 +12,7 @@ export const Login = () => {
 
   const handleLogin = async (e) => {
     e.preventDefault();
-    if (!validate()) return; // qt if val fails
+    //if (!validate()) return; // qt if val fails
     login(values.email, values.password, setErrors);
   };
   return (
