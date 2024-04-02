@@ -30,7 +30,7 @@ export const Forum = () => {
 
   return (
     <div className="flex flex-col max-w-5xl mx-auto my-4">
-      <div className="rounded-lg overflow-hidden shadow-lg bg-white border border-purple-200">
+      <div className="rounded-lg overflow-hidden shadow-lg bg-white border border-purple-100">
         <div className="px-6 py-4 bg-purple-100 text-gray-800">
           <div className="font-bold text-xl mb-2 text-purple-600">
             Department: {selectedDepartment}
@@ -89,6 +89,7 @@ export const Forum = () => {
       {/* threads / quetions Display */}
       <div className="grid grid-cols-3 sm:grid-cols-2 lg:grid-cols-3 gap-4 mt-4">
         {filteredThreads.map((thread) => (
+          
           <Postcard key={thread.id} thread={thread} />
         ))}
       </div>

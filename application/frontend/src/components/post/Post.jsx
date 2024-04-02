@@ -49,42 +49,49 @@ const Post = () => {
 
   return (
     <div className="max-w-md mx-auto rounded-lg overflow-hidden shadow-lg bg-white my-4 border border-purple-200">
-      <div className="px-6 py-4 bg-purple-100 text-gray-800">
-        <div className="font-bold text-xl mb-2 text-purple-600">
-          {question.question}
-        </div>
-        <div className="mt-4 mb-4 overflow-auto h-48 border border-gray-300 rounded-lg p-2">
-          {answers.map((answer, index) => (
-            <div key={index} className="mb-2 p-2 bg-gray-100 rounded">
-              <strong>{answer.account.first_name}:</strong> {answer.answer}
-            </div>
-          ))}
-        </div>
-        {/* Display login prompt if the user is not logged in and tries to submit a answer */}
-        {showLoginPrompt && (
-          <div className="text-red-500 mb-2">
-            Please log in to submit a answer.
+      <div className="w-full bg-purple-100 text-gray-800">
+        <div className="px-6 py-4">
+          <div className="font-bold text-xl mb-2 text-purple-600 text-center ">
+            {question.thread.title}
           </div>
-        )}
-        <form onSubmit={handleSubmit}>
-          <textarea
-            className="w-full p-2 border border-gray-300 rounded-lg"
-            value={answer}
-            onChange={(e) => setAnswer(e.target.value)}
-            onInput={adjustTextAreaHeight}
-            placeholder="Add your answer "
-            style={{ overflow: "hidden" }}
-          ></textarea>
-          <button
-            type="submit"
-            className="mt-2 px-4 py-2 bg-purple-500 text-white rounded-lg"
-          >
-            Submit
-          </button>
-        </form>
+        </div>
       </div>
+      <div className="w-full bg-purple-50 rounded-b-lg p-4 mb-4">
+        <p className="text-gray-700">{question.question}</p>
+        <p className="text-base mb-2 text-right">
+          Asked by:{" "}
+          <span className="font-semibold">{question.account.first_name}</span>
+        </p>
+      </div>
+      <div className="overflow-auto h-48 border border-gray-300 rounded-lg p-4 mb-4">
+        {answers.map((answer, index) => (
+          <div key={index} className="mb-2 p-3 bg-gray-100 rounded">
+            <strong>{answer.account.first_name}:</strong> {answer.answer}
+          </div>
+        ))}
+      </div>
+      {showLoginPrompt && (
+        <div className="text-red-500 mb-2 px-6">
+          Please log in to submit an answer.
+        </div>
+      )}
+      <form onSubmit={handleSubmit} className="px-6 pb-6">
+        <textarea
+          className="w-full p-3 border border-gray-300 rounded-lg mb-2"
+          value={answer}
+          onChange={(e) => setAnswer(e.target.value)}
+          onInput={adjustTextAreaHeight}
+          placeholder="Add your answer"
+          style={{ overflow: "hidden" }}
+        ></textarea>
+        <button
+          type="submit"
+          className="w-full px-4 py-2 bg-purple-500 text-white rounded-lg"
+        >
+          Submit
+        </button>
+      </form>
     </div>
   );
 };
-
 export default Post;

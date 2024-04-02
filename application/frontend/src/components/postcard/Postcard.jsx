@@ -5,24 +5,21 @@ import { Link } from "react-router-dom";
 const Postcard = ({ thread }) => {
   // small container for quick summary of a post/ question
   return (
-    <div className="max-w-full mx-auto rounded-lg overflow-hidden shadow-lg bg-white my-4 border border-purple-200">
-      <div className="px-6 py-4 bg-purple-100 text-gray-800">
+    <div className="flex flex-col max-w-full mx-auto min-w-[320px] min-h-[320px] rounded-lg overflow-hidden shadow-lg bg-white my-4 border border-purple-200">
+      <div className="px-6 py-4 bg-violet-200 text-gray-800">
         <p className="text-gray-700 text-base">
-          Asked By :{" "}
-          <span className="text-purple-500">
-            {thread.question.account.first_name}
-          </span>
+          Asked By: <span className="text-purple-500">{thread.question.account.first_name}</span>
         </p>
-        <p className="text-gray-700 text-base">{thread.title}</p>
+        <p className="font-bold text-lg text-purple-800 whitespace-nowrap overflow-hidden overflow-ellipsis">
+          {thread.title}
+        </p>
       </div>
-
-      <div className="px-6 pt-4 pb-2">
-        <div className="font-bold text-xl mb-2 text-purple-600">
+      <div className="flex-grow px-6 py-4 bg-purple-100  border-t border-b border-indigo-200 text-gray-800">
+        <div className="font-bold text-xl mb-2 text-purple-600 overflow-hidden text-ellipsis line-clamp-3">
           {thread.question.question}
         </div>
       </div>
-
-      <div className="px-6 py-4 bg-purple-50">
+      <div className="px-6 py-4 bg-purple-50 mt-auto">
         <Link
           to={`/post/${thread.question.id}`}
           className="inline-block bg-purple-200 hover:bg-purple-300 rounded-full px-3 py-1 text-sm font-semibold text-purple-700 mr-2 mb-2"
@@ -32,6 +29,10 @@ const Postcard = ({ thread }) => {
       </div>
     </div>
   );
+  
+  
+  
+  
 };
 
 Postcard.propTypes = {

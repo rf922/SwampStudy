@@ -144,7 +144,7 @@ export const getQuestion = async (req: Request, res: Response) => {
     const question = await myDataSource.getRepository(Question).findOneOrFail({
       //get a question and the associated account
       where: { id: questionId },
-      relations: { account: true },
+      relations: { account: true, thread: true },
     });
 
     return res.status(StatusCodes.ACCEPTED).json(question);
