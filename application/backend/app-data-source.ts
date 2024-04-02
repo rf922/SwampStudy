@@ -4,7 +4,7 @@ export const myDataSource = new DataSource({
   host: "csc648-db.ceezzsxgwws1.us-west-1.rds.amazonaws.com",
   port: 3306,
   username: "admin",
-  password: "admincsc648",
+  password: "swampstudy648",
   database: "swampstudydb",
   entities: ["./entities/*.ts"],
   logging: true,
