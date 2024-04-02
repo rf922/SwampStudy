@@ -10,7 +10,7 @@ export const Auth = ({ children }) => {
 
   useEffect(() => {
     axios
-      .get("http://localhost:8080/api/auth/checkSession", {
+      .get("https://swamp-study.global.ssl.fastly.net/api/auth/checkSession", {
         withCredentials: true,
       })
       .then((response) => {
@@ -27,7 +27,7 @@ export const Auth = ({ children }) => {
   const handleLogout = async () => {
     try {
       await axios.post(
-        "http://localhost:8080/api/user/logout",
+        "https://swamp-study.global.ssl.fastly.net/api/user/logout",
         {},
         { withCredentials: true },
       );

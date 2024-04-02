@@ -11,7 +11,9 @@ export const useForumAPI = () => {
   useEffect(() => {
     // get threads/questions by class then by department
     axios
-      .get("http://localhost:8080/api/forum/departments/threads")
+      .get(
+        "https://swamp-study.global.ssl.fastly.net/api/forum/departments/threads",
+      )
       .then((response) => {
         setThreadsMap(response.data);
         const departments = Object.keys(response.data);

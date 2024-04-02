@@ -8,7 +8,7 @@ export const useForumAPI = () => {
     const getDepartments = async () => {
       try {
         const response = await axios.get(
-          `http://localhost:8080/api/forum/departments/listing`,
+          `https://swamp-study.global.ssl.fastly.net/api/forum/departments/listing`,
         );
         setDepartmentClassesMap(response.data);
       } catch (error) {
