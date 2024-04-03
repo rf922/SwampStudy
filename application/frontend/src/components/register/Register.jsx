@@ -11,12 +11,19 @@ const Register = () => {
     confirmPassword: "",
   });
 
+  const [termsAccepted, setTermsAccepted] = React.useState(false);
+
   const { handleRegister } = useUserAPI();
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    if (validate()) {
+    if (validate() && termsAccepted) {
       handleRegister(formData, setErrors);
+    } else if (!termsAccepted) {
+      setErrors((prevErrors) => ({
+        ...prevErrors,
+        terms: "You must accept the terms and conditions.",
+      }));
     }
   };
 
@@ -28,9 +35,6 @@ const Register = () => {
       >
         <div className="register-card">
           <h1>Register</h1>
-          {errors.form && (
-            <p className="text-red-500 text-xs italic">{errors.form}</p>
-          )}
           {errors.form && (
             <p className="text-red-500 text-xs italic">{errors.form}</p>
           )}
@@ -104,6 +108,28 @@ const Register = () => {
               <p className="text-red-500 text-xs italic">
                 {errors.confirmPassword}
               </p>
+            )}
+          </div>
+          <div className="mb-4">
+            <label className="inline-flex items-center">
+              <input
+                type="checkbox"
+                checked={termsAccepted}
+                onChange={(e) => setTermsAccepted(e.target.checked)}
+                className="form-checkbox text-purple-600"
+              />
+              <span className="ml-2 text-sm text-gray-600">
+                I accept the{" "}
+                <a
+                  href="terms-and-conditions"
+                  className="text-purple-500 hover:text-purple-800"
+                >
+                  terms and conditions
+                </a>
+              </span>
+            </label>
+            {errors.terms && (
+              <p className="text-red-500 text-xs italic">{errors.terms}</p>
             )}
           </div>
           <div className="flex items-center justify-between">
