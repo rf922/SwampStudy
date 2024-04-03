@@ -15,6 +15,7 @@ import Makepost from "./components/makepost/Makepost";
 import Matching from "./components/matching/Matching";
 import Settings from "./components/settings/Settings";
 import UserProfile from "./components/userProfile/UserProfile";
+import TermsAndConditions from "./components/termsAndConditions/termsAndConditions";
 
 import { Auth } from "./context/AuthContext";
 
@@ -37,7 +38,10 @@ function App() {
             <Route path="/settings" element={<Settings />} />
             <Route path="/profile" element={<Profile />} />
             <Route path="/userProfile" element={<UserProfile />} />
-
+            <Route
+              path="/terms-and-conditions"
+              element={<TermsAndConditions />}
+            />
             <Route
               path="/account"
               element={

@@ -119,7 +119,7 @@ const Register = () => {
                 className="form-checkbox text-purple-600"
               />
               <span className="ml-2 text-sm text-gray-600">
-                I accept the{" "}
+                I have read and accept the{" "}
                 <a
                   href="terms-and-conditions"
                   className="text-purple-500 hover:text-purple-800"
