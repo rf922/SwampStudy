@@ -16,7 +16,7 @@ const forumRouter = Router();
 
 // Routes for questions
 forumRouter.get("/questions", getAllQuestions);
-forumRouter.get("/questions/:questionId", getQuestion);
+forumRouter.get("/questions/:questionId", isAuthenticated,getQuestion);
 forumRouter.post("/question", isAuthenticated, createPost);
 
 // Routes for answers
@@ -28,10 +28,10 @@ forumRouter.post(
 );
 
 // Route for getting all classes
-forumRouter.get("/classes", getClasses);
+forumRouter.get("/classes", isAuthenticated,getClasses);
 
-forumRouter.get("/departments/listing", getClassesByDepartment);
+forumRouter.get("/departments/listing", isAuthenticated,getClassesByDepartment);
 
-forumRouter.get("/departments/threads", getThreadsByDepartment);
+forumRouter.get("/departments/threads", isAuthenticated,getThreadsByDepartment);
 
 export default forumRouter;
