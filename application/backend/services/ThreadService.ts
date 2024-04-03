@@ -87,6 +87,20 @@ export class ThreadService {
   }
 
   /**
+   * retrieves 10 threads starting from the given page number
+   * @param page 
+   * @returns 
+   */
+  public async getThreadPage(page:number){
+    try {
+      return await  this.threadRepository.getThreadPage(page);
+    } catch (error) {
+      console.error("Failed to get thread page:", error);      
+    }
+  }
+
+
+  /**
    * helper method which groups threads into a map like structure
    * the map holds k = department, v = a nestd map with k_ = class , v_ = thread
    * @param threads

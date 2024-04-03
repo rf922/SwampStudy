@@ -38,4 +38,8 @@ forumRouter.get("/departments/threads", (req, _res) =>
   req.forumController.getThreadsByDepartment(req, _res),
 );
 
+forumRouter.get("/threads/page/:page", (req, _res) =>
+  req.forumController.getThreadPage(req, _res),
+);
+
 export default forumRouter;

@@ -81,7 +81,7 @@ export const QuestionRepository = myDataSource.getRepository(Question).extend({
   async getQuestion(questionId: number) {
     return this.findOneOrFail({
       where: { id: questionId },
-      relations: ["account"],
+      relations: ["account", "thread"],
     });
   },
 

@@ -62,6 +62,24 @@ export const ThreadRepository = myDataSource.getRepository(Thread).extend({
   },
 
   /**
+   * gets a specified number of threads from db starting from page number
+   * going forward
+   * @returns 
+   */
+  async getThreadPage(page: number) {
+    const take = 10; // number of threads per page
+    const offSet = (page -1) * take; // offset
+
+    return this.createQueryBuilder("thread")
+      .leftJoinAndSelect("thread.class", "class") 
+      .leftJoinAndSelect("thread.question", "question")
+      .leftJoinAndSelect("question.account", "account") //may add answers later 
+      .skip(offSet) //  offset
+      .take(take) //  LIMIT
+      .getMany(); 
+  },
+
+  /**
    * get all answers correspinding to a specific thread i,e question by questionId
    * @param questionId
    * @returns the answer and its assoc account
