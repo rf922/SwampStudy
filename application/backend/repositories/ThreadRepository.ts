@@ -64,19 +64,19 @@ export const ThreadRepository = myDataSource.getRepository(Thread).extend({
   /**
    * gets a specified number of threads from db starting from page number
    * going forward
-   * @returns 
+   * @returns
    */
   async getThreadPage(page: number) {
     const take = 10; // number of threads per page
-    const offSet = (page -1) * take; // offset
+    const offSet = (page - 1) * take; // offset
 
     return this.createQueryBuilder("thread")
-      .leftJoinAndSelect("thread.class", "class") 
+      .leftJoinAndSelect("thread.class", "class")
       .leftJoinAndSelect("thread.question", "question")
-      .leftJoinAndSelect("question.account", "account") //may add answers later 
+      .leftJoinAndSelect("question.account", "account") //may add answers later
       .skip(offSet) //  offset
       .take(take) //  LIMIT
-      .getMany(); 
+      .getMany();
   },
 
   /**
@@ -90,5 +90,19 @@ export const ThreadRepository = myDataSource.getRepository(Thread).extend({
       where: { question: { id: questionId } },
       relations: ["answers", "answers.account"],
     });
+  },
+
+  /**
+   * search threads by title,
+   * @param word
+   * @returns the thread or threads containing the passed word
+   */
+  async threadTitleContains(word: string) {
+    return this.createQueryBuilder("thread")
+      .where("thread.title LIKE :phrase", { phrase: `%${word}%` }) //using LIKE and wild card to check contains
+      .leftJoinAndSelect("thread.class", "class") //bring the class
+      .leftJoinAndSelect("thread.question", "question") //teh question
+      .leftJoinAndSelect("question.account", "account") //the acc
+      .getMany();
   },
 });

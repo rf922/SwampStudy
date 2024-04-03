@@ -14,7 +14,7 @@ accountRouter.get(
   "/details",
   (req, res) => req.accountController.getAccountDetails(req, res), //controller is attached to req
 );
-accountRouter.get("/:id",isAuthenticated, (req, res) =>
+accountRouter.get("/:id", isAuthenticated, (req, res) =>
   req.accountController.getAccount(req, res),
 );
 //accountRouter.post("/", accountController.postAccount);

@@ -42,4 +42,8 @@ forumRouter.get("/threads/page/:page", (req, _res) =>
   req.forumController.getThreadPage(req, _res),
 );
 
+forumRouter.get("/threads/search/", (req, _res) =>
+  req.forumController.threadSearch(req, _res),
+);
+
 export default forumRouter;

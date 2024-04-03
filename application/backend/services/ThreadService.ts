@@ -88,17 +88,28 @@ export class ThreadService {
 
   /**
    * retrieves 10 threads starting from the given page number
-   * @param page 
-   * @returns 
+   * @param page
+   * @returns
    */
-  public async getThreadPage(page:number){
+  public async getThreadPage(page: number) {
     try {
-      return await  this.threadRepository.getThreadPage(page);
+      return await this.threadRepository.getThreadPage(page);
     } catch (error) {
-      console.error("Failed to get thread page:", error);      
+      console.error("Failed to get thread page:", error);
     }
   }
 
+  /**
+   * method to search for a thread whose title contains the passed word
+   * @param word
+   * @returns
+   */
+  public async threadSearch(word: string) {
+    /**
+     * pos sanitize , clean word/ phrase
+     */
+    return await this.threadRepository.threadTitleContains(word);
+  }
 
   /**
    * helper method which groups threads into a map like structure

@@ -222,21 +222,38 @@ export class ForumController {
 
   /**
    * gets 10 threads starting from the specified page
-   * 
+   *
    */
-  public async getThreadPage(req: Request, res: Response){
+  public async getThreadPage(req: Request, res: Response) {
     try {
       const page = parseInt(req.params.page);
-      if (isNaN(page) || page < 1) {//page needs to be valid, 
-        return res.status(StatusCodes.BAD_REQUEST).json({ message: "Invalid page number" });
+      if (isNaN(page) || page < 1) {
+        //page needs to be valid,
+        return res
+          .status(StatusCodes.BAD_REQUEST)
+          .json({ message: "Invalid page number" });
       }
       const threads = await this.threadService.getThreadPage(page);
       res.status(StatusCodes.NOT_IMPLEMENTED).json(threads);
     } catch (error) {
       res.status(StatusCodes.INTERNAL_SERVER_ERROR).send(error.message);
-      
     }
   }
 
-  
+  /**
+   * implementing search based on thread title
+   * @param req
+   * @param res
+   */
+  public async threadSearch(req: Request, res: Response) {
+    try {
+      const { phrase } = req.body; // have the phrase be pased along by axios from the front
+      const result = await this.threadService.threadSearch(phrase);
+      res.json(result);
+    } catch (error) {
+      res
+        .status(StatusCodes.BAD_REQUEST)
+        .send("Could not complete search : " + error.message);
+    }
+  }
 }
