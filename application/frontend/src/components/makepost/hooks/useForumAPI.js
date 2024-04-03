@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import axios from "axios";
 
 export const useForumAPI = () => {
-  const [departmentClassesMap, setDepartmentClassesMap] = useState({});
+  const [departmentClassesMap, setDepartmentClassesMap] = useState([]);
 
   useEffect(() => {
     const getDepartments = async () => {
