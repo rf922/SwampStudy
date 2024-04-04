@@ -1,3 +1,4 @@
+import { isAuthenticated } from "./../middleware/isAuthenticated";
 import {
   postUser,
   register,
@@ -8,12 +9,12 @@ import express from "express";
 
 const userRouter = express.Router();
 
-userRouter.post("/", postUser);
+userRouter.post("/", isAuthenticated, postUser);
 
 userRouter.post("/login", login);
 
 userRouter.post("/register", register);
 
-userRouter.post("/logout", logout);
+userRouter.post("/logout", isAuthenticated, logout);
 
 export default userRouter;

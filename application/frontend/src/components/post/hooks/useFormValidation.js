@@ -1,14 +1,9 @@
 import { useState } from "react";
-import { validateRegistrationForm } from "./../registrationValidation";
-import {
-  isValidName,
-  isValidEmail,
-  isValidPassword,
-  isValidConfirmPassword,
-} from "./../../../utils/validationUtils";
-export const useForm = (initialValues) => {
+import { isValidTextFieldEntry } from "../../../utils/validationUtils";
+import { validateAnswerForm } from "../../post/postAnswerValidation";
+export const useFormValidation = (initialValues) => {
   const [formData, setFormData] = useState(initialValues);
-  const [errors, setErrors] = useState({});
+  const [errors, setErrors] = useState([]);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -27,20 +22,8 @@ export const useForm = (initialValues) => {
   const validateField = (name, value) => {
     let errors = [];
     switch (name) {
-      case "firstName":
-        isValidName(value, errors);
-        break;
-      case "lastName":
-        isValidName(value, errors);
-        break;
-      case "email":
-        isValidEmail(value, errors);
-        break;
-      case "password":
-        isValidPassword(value, errors);
-        break;
-      case "confirmPassword":
-        isValidConfirmPassword(formData.password, value, errors);
+      case "answer":
+        isValidTextFieldEntry(value, errors);
         break;
       default:
         break;
@@ -49,7 +32,7 @@ export const useForm = (initialValues) => {
   };
 
   const validate = () => {
-    const validationResult = validateRegistrationForm(formData);
+    const validationResult = validateAnswerForm(formData);
     if (!validationResult.isValid) {
       setErrors(validationResult.errors);
       return false;

@@ -9,6 +9,7 @@ import {
   getQuestion,
   getThreadsByDepartment,
   getClassesByDepartment,
+  threadSearch,
 } from "../controllers/forumController";
 //es6 syntax for import exports
 
@@ -33,5 +34,7 @@ forumRouter.get("/classes", getClasses);
 forumRouter.get("/departments/listing", getClassesByDepartment);
 
 forumRouter.get("/departments/threads", getThreadsByDepartment);
+
+forumRouter.get("/threads/search", threadSearch);
 
 export default forumRouter;

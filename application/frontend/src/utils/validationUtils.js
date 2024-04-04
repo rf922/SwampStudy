@@ -26,6 +26,21 @@ export const isValidPassword = (password, errors) => {
   }
 };
 
+export const isValidTextFieldEntry = (textEntry, errors) => {
+  if (textEntry.length > 195) {
+    errors.push("Text Entry must be less than 196 characters.");
+  }
+};
+
+export const isValidThreadTitle = (title, errors) => {
+  if (!title) {
+    errors.push("Title must not be empty .");
+  }
+  if (title.length > 64) {
+    errors.push("Title Length must be less than 65 characters");
+  }
+};
+
 export const isValidName = (name, errors) => {
   const nameRegex = /^[A-Za-z]{2,16}$/; // alpha betwen 2 , 16
   const numberRegex = /\d/; // num

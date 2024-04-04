@@ -10,6 +10,7 @@ import userRouter from "./routers/userRouter";
 import likeRouter from "./routers/likeRouter";
 import matchRouter from "./routers/matchRouter";
 import forumRouter from "./routers/forumRouter";
+import ratingRouter from "./routers/ratingRouter";
 
 import authenticationRouter from "./routers/authenticationRouter";
 import { Session } from "./entities/session.entity";
@@ -70,6 +71,7 @@ export class Server {
     this.app.use("/api/like", likeRouter);
     this.app.use("/api/match", matchRouter);
     this.app.use("/api/forum", forumRouter);
+    this.app.use("/api/rating", ratingRouter);
     this.app.get("/api", (req: Request, res: Response) =>
       res.send("You have reached the API!"),
     );

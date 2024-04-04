@@ -27,6 +27,9 @@ export const useUserAPI = () => {
           case 401: //
             errorMessages.form = "Invalid email or password.";
             break;
+          case 404:
+            errorMessages.form = "User Was not found .. ";
+            break;
           default:
             errorMessages.form = "An error occurred. Please try again later.";
             break;

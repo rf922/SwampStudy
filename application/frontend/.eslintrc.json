@@ -30,7 +30,7 @@
     "react/jsx-uses-react": "off",
     "react/react-in-jsx-scope": "off",
     "react/jsx-no-target-blank": "off",
-    "no-unused-vars": ["error", { "varsIgnorePattern": "React||^_" }]
+    "no-unused-vars": ["error", { "varsIgnorePattern": "^React$|^_*" }]
   },
   "settings": {
     "react": {
