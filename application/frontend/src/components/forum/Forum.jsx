@@ -54,7 +54,7 @@ export const Forum = () => {
       {/* main content area with side column for filters */}
       <div className="flex">
         {/* side col for dept and cls filters */}
-        <div className="w-1/4 p-4 bg-violet-300 shadow-lg">
+        <div className="w-1/4 h-96 p-4 bg-violet-300 shadow-lg">
           <h2 className="font-bold font-size-lg text-xl mb-2 text-yellow-300">
             Filters
           </h2>
