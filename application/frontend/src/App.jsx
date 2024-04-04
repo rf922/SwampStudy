@@ -22,53 +22,55 @@ import { Auth } from "./context/AuthContext";
 function App() {
   return (
     <Auth>
-      <div className="wrapper">
-        <Router>
+      <Router>
+        <div className="flex flex-col h-screen">
           <Navbar />
-          <Routes>
-            <Route path="/" element={<Home />} />
-            <Route path="/forum" element={<Forum />} />
-            <Route path="/post/:questionId" element={<Post />} />
-            <Route path="/about/:name" element={<Profile />} />
-            <Route path="/about/" element={<About />} />
-            <Route path="/login" element={<Login />} />
-            <Route path="/register" element={<Register />} />
-            <Route path="/matching" element={<Matching />} />
-            <Route path="/profile" element={<Profile />} />
-            <Route path="/userProfile" element={<UserProfile />} />
-            <Route
-              path="/terms-and-conditions"
-              element={<TermsAndConditions />}
-            />
+          <div className="grow">
+            <Routes>
+              <Route path="/" element={<Home />} />
+              <Route path="/forum" element={<Forum />} />
+              <Route path="/post/:questionId" element={<Post />} />
+              <Route path="/about/:name" element={<Profile />} />
+              <Route path="/about/" element={<About />} />
+              <Route path="/login" element={<Login />} />
+              <Route path="/register" element={<Register />} />
+              <Route path="/matching" element={<Matching />} />
+              <Route path="/profile" element={<Profile />} />
+              <Route path="/userProfile" element={<UserProfile />} />
+              <Route
+                path="/terms-and-conditions"
+                element={<TermsAndConditions />}
+              />
 
-            <Route
-              path="/settings"
-              element={
-                <ProtectedRoute>
-                  <Settings /> {/* wrp acc comp in ProtectedRoute */}
-                </ProtectedRoute>
-              }
-            />
+              <Route
+                path="/settings"
+                element={
+                  <ProtectedRoute>
+                    <Settings /> {/* wrp acc comp in ProtectedRoute */}
+                  </ProtectedRoute>
+                }
+              />
 
-            <Route
-              path="/account"
-              element={
-                <ProtectedRoute>
-                  <Account /> {/* wrp acc comp in ProtectedRoute */}
-                </ProtectedRoute>
-              }
-            />
-            <Route
-              path="/makepost"
-              element={
-                <ProtectedRoute>
-                  <Makepost />
-                </ProtectedRoute>
-              }
-            />
-          </Routes>
-        </Router>
-      </div>
+              <Route
+                path="/account"
+                element={
+                  <ProtectedRoute>
+                    <Account /> {/* wrp acc comp in ProtectedRoute */}
+                  </ProtectedRoute>
+                }
+              />
+              <Route
+                path="/makepost"
+                element={
+                  <ProtectedRoute>
+                    <Makepost />
+                  </ProtectedRoute>
+                }
+              />
+            </Routes>
+          </div>
+        </div>
+      </Router>
     </Auth>
   );
 }
