@@ -7,6 +7,24 @@ export const useForumAPI = () => {
   const [selectedDepartment, setSelectedDepartment] = useState("");
   const [selectedClass, setSelectedClass] = useState("");
   const [filteredThreads, setFilteredThreads] = useState([]);
+  const [classId, setClassId] = useState(null);
+  const search = async (phrase, classId) => {
+    try {
+      const searchResponse = await axios.get(
+        `http://localhost:8080/api/forum/threads/search`,
+        {
+          params: {
+            phrase: phrase,
+            classId: classId,
+          },
+        },
+      );
+      return searchResponse.data;
+    } catch (error) {
+      console.log(error);
+      return [];
+    }
+  };
 
   useEffect(() => {
     // get threads/questions by class then by department
@@ -41,6 +59,7 @@ export const useForumAPI = () => {
     if (selectedDepartment && selectedClass) {
       const threads = threadsMap[selectedDepartment]?.[selectedClass] || [];
       setFilteredThreads(threads);
+      if (threads[0]) setClassId(threads[0].class.id);
     }
   }, [selectedDepartment, selectedClass, threadsMap]);
 
@@ -50,7 +69,11 @@ export const useForumAPI = () => {
     setSelectedDepartment,
     selectedClass,
     setSelectedClass,
+    setFilteredThreads,
+    setThreadsMap,
+    classId,
     filteredThreads,
+    search,
   };
 };
 

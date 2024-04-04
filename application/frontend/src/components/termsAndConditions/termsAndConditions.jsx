@@ -1,7 +1,7 @@
 const TermsAndConditions = () => {
   return (
     <div>
-      <h1>Don't sue us</h1>
+      <h1>Don&apos;t sue us</h1>
     </div>
   );
 };

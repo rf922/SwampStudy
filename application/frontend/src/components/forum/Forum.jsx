@@ -1,5 +1,4 @@
-import React from "react";
-//import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 //import axios from "axios";
 import Postcard from "../postcard/Postcard";
 import { useAuth } from "../../context/AuthContext";
@@ -14,14 +13,36 @@ export const Forum = () => {
     setSelectedDepartment,
     selectedClass,
     setSelectedClass,
+    classId,
     filteredThreads,
+    setFilteredThreads,
+    search,
   } = useForumAPI();
   const { isLoggedIn } = useAuth();
   const navigate = useNavigate();
+  const [searchPhrase, setSearchPhrase] = useState("");
+
+  const handleSearchChange = (event) => {
+    setSearchPhrase(event.target.value);
+  };
+
+  const handleSearchSubmit = async () => {
+    if (!searchPhrase.trim()) {
+      console.log("Search bar was empty !");
+      return;
+    }
+    try {
+      const searchRes = await search(searchPhrase, classId);
+      console.log(`Searching with ${searchPhrase}, ${classId}`);
+      console.log(searchRes);
+      setFilteredThreads(searchRes);
+    } catch (error) {
+      console.log("error getting search results " + error);
+    }
+  };
 
   const handleDepartmentChange = (e) => {
     setSelectedDepartment(e.target.value);
-    setSelectedClass("");
   };
 
   const handleClassChange = (e) => {
@@ -30,28 +51,28 @@ export const Forum = () => {
 
   return (
     <div className="flex flex-col max-w-5xl mx-auto my-4">
-      <div className="rounded-lg overflow-hidden shadow-lg bg-white border border-purple-100">
-        <div className="px-6 py-4 bg-purple-100 text-gray-800">
-          <div className="font-bold text-xl mb-2 text-purple-600">
-            Department: {selectedDepartment}
+      {/* main content area with side column for filters */}
+      <div className="flex">
+        {/* side col for dept and cls filters */}
+        <div className="w-1/4 p-4 bg-purple-100 shadow-lg">
+          <h2 className="font-bold text-xl mb-2 text-purple-600">Filters</h2>
+          <div>
+            <div className="font-bold mb-2">Department:</div>
+            <select
+              id="departmentSelect"
+              value={selectedDepartment}
+              onChange={handleDepartmentChange}
+              className="block w-full pl-3 pr-10 py-2 mb-4 text-base border-gray-300 focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm rounded-md bg-white"
+            >
+              {Object.keys(threadsMap).map((dept) => (
+                <option key={dept} value={dept}>
+                  {dept}
+                </option>
+              ))}
+            </select>
           </div>
-          <select
-            id="departmentSelect"
-            value={selectedDepartment}
-            onChange={handleDepartmentChange}
-            className="mt-1 block w-full pl-3 pr-10 py-2 text-base border-gray-300 focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm rounded-md bg-white"
-          >
-            {Object.keys(threadsMap).map((dept) => (
-              <option key={dept} value={dept}>
-                {dept}
-              </option>
-            ))}
-          </select>
-
-          <div className="flex items-center my-4">
-            <div className="mr-2 bg-purple-500 text-white font-bold py-2 px-4 rounded-lg">
-              Class:
-            </div>
+          <div>
+            <div className="font-bold mb-2">Class:</div>
             <select
               id="classSelect"
               value={selectedClass}
@@ -60,7 +81,7 @@ export const Forum = () => {
                 !selectedDepartment ||
                 !Object.keys(threadsMap[selectedDepartment] || {}).length
               }
-              className="flex-grow mt-1 pl-3 pr-10 py-2 text-base border-gray-300 focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm rounded-md bg-white"
+              className="block w-full pl-3 pr-10 py-2 text-base border-gray-300 focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm rounded-md bg-white"
             >
               {selectedDepartment &&
                 Object.entries(threadsMap[selectedDepartment] || {}).map(
@@ -72,25 +93,40 @@ export const Forum = () => {
                 )}
             </select>
           </div>
-
-          {/* make a Post Button */}
-          {isLoggedIn && (
-            <button
-              onClick={() => navigate("/makepost")}
-              className="bg-gold hover:bg-purple-700 text-white font-bold py-2 px-4 rounded transition duration-200 ease-in-out transform hover:-translate-y-1 hover:scale-110"
-              style={{ backgroundColor: "#FFD700" }}
-            >
-              Make a Post
-            </button>
-          )}
         </div>
-      </div>
 
-      {/* threads / quetions Display */}
-      <div className="grid grid-cols-3 sm:grid-cols-2 lg:grid-cols-3 gap-4 mt-4">
-        {filteredThreads.map((thread) => (
-          <Postcard key={thread.id} thread={thread} />
-        ))}
+        {/* 2snd col */}
+        <div className="w-3/4 p-4">
+          <div className="rounded-lg overflow-hidden shadow-lg bg-purple-400 border border-purple-100 mb-4 p-6 bg-purple-100 text-gray-800">
+            <input
+              type="text"
+              value={searchPhrase}
+              onChange={handleSearchChange}
+              placeholder="Search for threads..."
+              className="block w-full pl-3 pr-10 py-2 text-base border-gray-300 focus:outline-none focus:ring-purple-500 focus:border-purple-500 sm:text-sm rounded-md bg-white"
+            />
+            <div className="flex justify-between items-center my-2">
+              <button
+                type="submit"
+                onClick={handleSearchSubmit}
+                className="bg-yellow-300 hover:bg-gold text-purple-400 font-bold py-2 px-4 rounded transition duration-200 ease-in-out"
+              >
+                Search
+              </button>
+              <button
+                onClick={() => navigate("/makepost")}
+                className={`bg-yellow-300 hover:bg-gold text-purple-400 font-bold py-2 px-4 rounded transition duration-200 ease-in-out ${!isLoggedIn ? "hidden" : ""}`}
+              >
+                Make a Post
+              </button>
+            </div>
+          </div>
+          <div className="grid grid-cols-1 gap-4">
+            {filteredThreads.map((thread) => (
+              <Postcard key={thread.id} thread={thread} />
+            ))}
+          </div>
+        </div>
       </div>
     </div>
   );

@@ -5,17 +5,21 @@ import { Link } from "react-router-dom";
 const Postcard = ({ thread }) => {
   // small container for quick summary of a post/ question
   return (
-    <div className="flex flex-col max-w-full mx-auto min-w-[320px] min-h-[320px] rounded-lg overflow-hidden shadow-lg bg-white my-4 border border-purple-200">
-      <div className="px-6 py-4 bg-violet-200 text-gray-800">
-        <p className="text-gray-700 text-base">
-          Asked By:{" "}
-          <span className="text-purple-500">
-            {thread.question.account.first_name}
-          </span>
-        </p>
+    <div className="flex flex-col max-w-full  min-w-[220px] min-h-[220px] rounded-lg overflow-hidden shadow-lg bg-white my-4 border border-purple-200">
+      <div className="flex flex-col justify-between px-6 py-4 bg-violet-200 text-gray-800 h-full">
         <p className="font-bold text-lg text-purple-800 whitespace-nowrap overflow-hidden overflow-ellipsis">
           {thread.title}
         </p>
+        <div className="flex-grow"></div>
+
+        <div className="text-right mt-4">
+          <p className="text-gray-700 text-base">
+            Asked By:{" "}
+            <span className="text-purple-500">
+              {thread.question.account.first_name}
+            </span>
+          </p>
+        </div>
       </div>
       <div className="flex-grow px-6 py-4 bg-purple-100  border-t border-b border-indigo-200 text-gray-800">
         <div className="font-bold text-xl mb-2 text-purple-600 overflow-hidden text-ellipsis line-clamp-3">

@@ -13,9 +13,9 @@ import express from "express";
  */
 
 const accountRouter = express.Router();
-accountRouter.get("/details",isAuthenticated ,details);
-accountRouter.get("/",isAuthenticated ,getAccount);
-accountRouter.post("/",isAuthenticated,postAccount);
+accountRouter.get("/details", isAuthenticated, details);
+accountRouter.get("/", isAuthenticated, getAccount);
+accountRouter.post("/", isAuthenticated, postAccount);
 
 /**
  * protect sensitive routes usingmiddleware

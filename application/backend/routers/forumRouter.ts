@@ -9,6 +9,7 @@ import {
   getQuestion,
   getThreadsByDepartment,
   getClassesByDepartment,
+  threadSearch,
 } from "../controllers/forumController";
 //es6 syntax for import exports
 
@@ -16,7 +17,7 @@ const forumRouter = Router();
 
 // Routes for questions
 forumRouter.get("/questions", getAllQuestions);
-forumRouter.get("/questions/:questionId", isAuthenticated,getQuestion);
+forumRouter.get("/questions/:questionId", getQuestion);
 forumRouter.post("/question", isAuthenticated, createPost);
 
 // Routes for answers
@@ -28,10 +29,12 @@ forumRouter.post(
 );
 
 // Route for getting all classes
-forumRouter.get("/classes", isAuthenticated,getClasses);
+forumRouter.get("/classes", getClasses);
 
-forumRouter.get("/departments/listing", isAuthenticated,getClassesByDepartment);
+forumRouter.get("/departments/listing", getClassesByDepartment);
 
-forumRouter.get("/departments/threads", isAuthenticated,getThreadsByDepartment);
+forumRouter.get("/departments/threads", getThreadsByDepartment);
+
+forumRouter.get("/threads/search", threadSearch);
 
 export default forumRouter;

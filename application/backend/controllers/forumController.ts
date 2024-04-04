@@ -392,3 +392,38 @@ export const getThreadsByDepartment = async (req: Request, res: Response) => {
     });
   }
 };
+
+/**
+ * searches threads corresponding to the passed classid for threads with a
+ * title matching or containing the phrase passed.
+ * @param req
+ * @param res
+ */
+export const threadSearch = async (req: Request, res: Response) => {
+  try {
+    const { phrase, classId } = req.query;
+    const parseClassId = parseInt(classId as string);
+    if (!phrase || isNaN(parseClassId)) {
+      // check params
+      res.status(StatusCodes.BAD_REQUEST);
+      throw new Error("Invalid params");
+    }
+    // performs the db operation to search through threads for those threads whose
+    // titles contain the phrase passed, eventually all db ops will be moved
+    // to a dedicated repository layer for handling db ops.
+    const threadResults = await myDataSource
+      .getRepository(Thread)
+      .createQueryBuilder("thread") // searching threads
+      .leftJoinAndSelect("thread.class", "class") //bring yhe question
+      .leftJoinAndSelect("thread.question", "question") //bring yhe question
+      .leftJoinAndSelect("question.account", "account") // bring the account
+      .where("thread.title LIKE :phrase", { phrase: `%${phrase}%` }) // my sql LIKE plus wild card to check title and question body
+      .andWhere("class.id = :classId", { classId }) // filtering on results corr to classId
+      .getMany();
+    res.status(StatusCodes.ACCEPTED).json(threadResults);
+  } catch (error) {
+    res
+      .status(StatusCodes.BAD_REQUEST)
+      .send("Search could not be completed : " + error.message);
+  }
+};

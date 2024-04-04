@@ -4,7 +4,7 @@ import { useUserAPI } from "./hooks/useUserAPI";
 //import { useAuth } from "./../../context/AuthContext";
 
 export const Login = () => {
-  const { values, errors, handleChange, validate, setErrors } = useForm({
+  const { values, errors, handleChange, setErrors } = useForm({
     email: "",
     password: "",
   });
