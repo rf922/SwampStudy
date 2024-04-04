@@ -12,7 +12,7 @@ export const validateUpdateForm = ({
   password,
   confirmPassword,
 }) => {
-  const errors = {};
+  const errors = [];
 
   if (firstName) {
     isValidName(firstName, errors);

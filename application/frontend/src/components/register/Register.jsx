@@ -1,15 +1,16 @@
 import React from "react";
-import { useForm } from "./hooks/useForm";
+import { useFormValidation } from "./hooks/useFormValidation";
 import { useUserAPI } from "./hooks/useUserAPI";
 
 const Register = () => {
-  const { formData, handleChange, errors, validate, setErrors } = useForm({
-    firstName: "",
-    lastName: "",
-    email: "",
-    password: "",
-    confirmPassword: "",
-  });
+  const { formData, handleChange, errors, validate, setErrors } =
+    useFormValidation({
+      firstName: "",
+      lastName: "",
+      email: "",
+      password: "",
+      confirmPassword: "",
+    });
 
   const [termsAccepted, setTermsAccepted] = React.useState(false);
 

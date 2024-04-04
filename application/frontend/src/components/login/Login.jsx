@@ -1,9 +1,9 @@
 import React from "react";
-import { useForm } from "./hooks/useForm";
+import { useFormValidation } from "./hooks/useFormValidation";
 import { useUserAPI } from "./hooks/useUserAPI";
 
 export const Login = () => {
-  const { values, errors, handleChange, setErrors } = useForm({
+  const { values, errors, handleChange, setErrors } = useFormValidation({
     email: "",
     password: "",
   });
