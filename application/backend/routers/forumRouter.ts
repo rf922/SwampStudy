@@ -29,12 +29,12 @@ forumRouter.post(
 );
 
 // Route for getting all classes
-forumRouter.get("/classes", getClasses);
+forumRouter.get("/classes", isAuthenticated,getClasses);
 
-forumRouter.get("/departments/listing", getClassesByDepartment);
+forumRouter.get("/departments/listing", isAuthenticated,getClassesByDepartment);
 
-forumRouter.get("/departments/threads", getThreadsByDepartment);
+forumRouter.get("/departments/threads", isAuthenticated, getThreadsByDepartment);
 
-forumRouter.get("/threads/search", threadSearch);
+forumRouter.get("/threads/search", isAuthenticated,threadSearch);
 
 export default forumRouter;

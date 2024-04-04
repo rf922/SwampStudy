@@ -9,7 +9,7 @@ import {
 import express from "express";
 
 /**
- * to - do sensitive routes here will use isAuthenticated middle ware
+ *  sensitive routes here will use isAuthenticated middle ware to protect them from unauthorized access
  */
 
 const accountRouter = express.Router();
