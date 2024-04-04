@@ -26,6 +26,15 @@ export const useForumAPI = () => {
     }
   };
 
+  const resetFilteredThreads = () => {
+    if (selectedDepartment && selectedClass) {
+      const threads = threadsMap[selectedDepartment]?.[selectedClass] || [];
+      setFilteredThreads(threads);
+    } else {
+      setFilteredThreads([]);
+    }
+  };
+
   useEffect(() => {
     // get threads/questions by class then by department
     axios
@@ -71,6 +80,7 @@ export const useForumAPI = () => {
     setSelectedClass,
     setFilteredThreads,
     setThreadsMap,
+    resetFilteredThreads,
     classId,
     filteredThreads,
     search,

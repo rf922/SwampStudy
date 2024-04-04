@@ -15,6 +15,7 @@ export const Forum = () => {
     setSelectedClass,
     classId,
     filteredThreads,
+    resetFilteredThreads,
     setFilteredThreads,
     search,
   } = useForumAPI();
@@ -23,19 +24,30 @@ export const Forum = () => {
   const [searchPhrase, setSearchPhrase] = useState("");
 
   const handleSearchChange = (event) => {
-    setSearchPhrase(event.target.value);
+    const searchPhrase = event.target.value;
+    setSearchPhrase(searchPhrase);
+    if (!searchPhrase) {
+      // no input is , reset the threads to default
+      console.log("Input cleared, resetting threads to default");
+      resetFilteredThreads(); // helper for resetting threads to display
+    }
   };
 
   const handleSearchSubmit = async () => {
     if (!searchPhrase.trim()) {
+      // no blank phrases !
       console.log("Search bar was empty !");
       return;
     }
     try {
       const searchRes = await search(searchPhrase, classId);
       console.log(`Searching with ${searchPhrase}, ${classId}`);
-      console.log(searchRes);
-      setFilteredThreads(searchRes);
+      if (searchRes.length === 0) {
+        alert("search yielded no results !! ");
+        resetFilteredThreads();
+      } else {
+        setFilteredThreads(searchRes);
+      }
     } catch (error) {
       console.log("error getting search results " + error);
     }
