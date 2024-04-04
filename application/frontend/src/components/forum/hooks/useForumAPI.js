@@ -17,7 +17,7 @@ export const useForumAPI = () => {
             phrase: phrase,
             classId: classId,
           },
-        }
+        },
       );
       return searchResponse.data;
     } catch (error) {
@@ -39,7 +39,7 @@ export const useForumAPI = () => {
     // get threads/questions by class then by department
     axios
       .get(
-        "https://swamp-study.global.ssl.fastly.net/api/forum/departments/threads"
+        "https://swamp-study.global.ssl.fastly.net/api/forum/departments/threads",
       )
       .then((response) => {
         setThreadsMap(response.data);
