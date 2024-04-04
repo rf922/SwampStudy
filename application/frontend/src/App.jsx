@@ -8,7 +8,7 @@ import Navbar from "./components/navbar/Navbar";
 import Register from "./components/register/Register";
 import Home from "./components/home/Home";
 import Forum from "./components/forum/Forum";
-import Account from "./components/account/accountmanagement";
+import Account from "./components/account/accountsettings";
 import ProtectedRoute from "./components/protectedroute/protectedroute";
 import Post from "./components/post/Post";
 import Makepost from "./components/makepost/Makepost";
@@ -27,7 +27,6 @@ function App() {
           <Navbar />
           <Routes>
             <Route path="/" element={<Home />} />
-            {/*landing should be straight to login*/}
             <Route path="/forum" element={<Forum />} />
             <Route path="/post/:questionId" element={<Post />} />
             <Route path="/about/:name" element={<Profile />} />
@@ -35,13 +34,22 @@ function App() {
             <Route path="/login" element={<Login />} />
             <Route path="/register" element={<Register />} />
             <Route path="/matching" element={<Matching />} />
-            <Route path="/settings" element={<Settings />} />
             <Route path="/profile" element={<Profile />} />
             <Route path="/userProfile" element={<UserProfile />} />
             <Route
               path="/terms-and-conditions"
               element={<TermsAndConditions />}
             />
+
+            <Route
+              path="/settings"
+              element={
+                <ProtectedRoute>
+                  <Settings /> {/* wrp acc comp in ProtectedRoute */}
+                </ProtectedRoute>
+              }
+            />
+
             <Route
               path="/account"
               element={

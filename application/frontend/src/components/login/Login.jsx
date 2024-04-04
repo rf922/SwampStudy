@@ -1,7 +1,6 @@
 import React from "react";
 import { useForm } from "./hooks/useForm";
 import { useUserAPI } from "./hooks/useUserAPI";
-//import { useAuth } from "./../../context/AuthContext";
 
 export const Login = () => {
   const { values, errors, handleChange, setErrors } = useForm({

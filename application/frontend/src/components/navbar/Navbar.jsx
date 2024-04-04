@@ -13,7 +13,7 @@ const Navbar = () => {
       style={{
         backgroundColor: "#52247F",
         color: "FFFFF",
-        padding: "2rem 1rem",
+        padding: "1rem 1rem",
       }}
     >
       {!isLoggedIn ? (

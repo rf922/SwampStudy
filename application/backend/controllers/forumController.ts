@@ -417,7 +417,9 @@ export const threadSearch = async (req: Request, res: Response) => {
       .leftJoinAndSelect("thread.class", "class") //bring yhe question
       .leftJoinAndSelect("thread.question", "question") //bring yhe question
       .leftJoinAndSelect("question.account", "account") // bring the account
-      .where("thread.title LIKE :phrase", { phrase: `%${phrase}%` }) // my sql LIKE plus wild card to check title and question body
+      .where("thread.title LIKE :phrase OR question.question LIKE :phrase", {
+        phrase: `%${phrase}%`,
+      }) // my sql LIKE plus wild card to check title and question body
       .andWhere("class.id = :classId", { classId }) // filtering on results corr to classId
       .getMany();
     res.status(StatusCodes.ACCEPTED).json(threadResults);

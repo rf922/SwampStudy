@@ -54,8 +54,10 @@ export const Forum = () => {
       {/* main content area with side column for filters */}
       <div className="flex">
         {/* side col for dept and cls filters */}
-        <div className="w-1/4 p-4 bg-purple-100 shadow-lg">
-          <h2 className="font-bold text-xl mb-2 text-purple-600">Filters</h2>
+        <div className="w-1/4 p-4 bg-violet-300 shadow-lg">
+          <h2 className="font-bold font-size-lg text-xl mb-2 text-yellow-300">
+            Filters
+          </h2>
           <div>
             <div className="font-bold mb-2">Department:</div>
             <select
@@ -97,7 +99,7 @@ export const Forum = () => {
 
         {/* 2snd col */}
         <div className="w-3/4 p-4">
-          <div className="rounded-lg overflow-hidden shadow-lg bg-purple-400 border border-purple-100 mb-4 p-6 bg-purple-100 text-gray-800">
+          <div className="rounded-lg overflow-hidden shadow-lg bg-violet-300 border border-purple-100 mb-4 p-6  text-gray-800">
             <input
               type="text"
               value={searchPhrase}
