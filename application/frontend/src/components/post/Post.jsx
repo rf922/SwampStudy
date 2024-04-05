@@ -23,20 +23,17 @@ const Post = () => {
       setShowLoginPrompt(true); // show login prompt if the user is not logged in
       return;
     }
-    if (validate()) {
-      try {
-        const response = await axios.post(
-          `https://swamp-study.global.ssl.fastly.net/api/forum/questions/${questionId}/answers`,
-          formData,
-          { withCredentials: true },
-        );
-        // append answers to list of existing answers && clear text field
-        setAnswers((prevAnswers) => [...prevAnswers, response.data]);
-      } catch (error) {
-        console.error("Error submitting answer:", error);
-      }
-    } else {
-      alert("Please correct the errors before submitting.");
+    try {
+      const response = await axios.post(
+        `https://swamp-study.global.ssl.fastly.net/api/forum/questions/${questionId}/answers`,
+        { answer: answer },
+        { withCredentials: true },
+      );
+      // append answers to list of existing answers && clear text field
+      setAnswers((prevAnswers) => [...prevAnswers, response.data]);
+      setAnswer("");
+    } catch (error) {
+      console.error("Error submitting answer:", error);
     }
   };
 

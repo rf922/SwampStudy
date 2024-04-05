@@ -35,11 +35,8 @@ export class Server {
   }
 
   private configureMiddleware(): void {
-    const corsOptions = {
-      origin: [
-        "https://swamp-study.global.ssl.fastly.net/",
-        "http://ec2-13-57-247-71.us-west-1.compute.amazonaws.com/",
-      ],
+    const corsOptions = 
+      origin: "https://https://swamp-study.global.ssl.fastly.net/",
       credentials: true,
     };
 
