@@ -5,7 +5,7 @@ import express from "express";
 const app = express();
 
 //port was changed from 80 to 8080
-const port = 8080;
+const port = 80;
 
 const server = new Server();
 server.start(port);

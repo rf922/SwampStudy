@@ -1,10 +1,10 @@
 import { DataSource } from "typeorm";
 export const myDataSource = new DataSource({
   type: "mysql",
-  host: "localhost",
+  host: "csc648-db.ceezzsxgwws1.us-west-1.rds.amazonaws.com",
   port: 3306,
-  username: "root",
-  password: "MyNewPass",
+  username: "admin",
+  password: "swampstudy648",
   database: "swampstudydb",
   entities: ["./entities/*.ts"],
   logging: true,
