@@ -1,10 +1,17 @@
-import { postRating, getRating } from "../controllers/ratingController";
-import { isAuthenticated } from "./../middleware/isAuthenticated";
+import { resolveRatingController } from "./../middleware/resolveControllers";
+//import { isAuthenticated } from "./../middleware/isAuthenticated";
 import express from "express";
 
-const ratingrouter = express.Router();
+const ratingRouter = express.Router();
 
-ratingrouter.post("/", isAuthenticated, postRating);
-ratingrouter.get("/", isAuthenticated, getRating);
+ratingRouter.use(resolveRatingController);
 
-export default ratingrouter;
+ratingRouter.post("/ping/:msg", (req, _res) =>
+  req.ratingController.pingController(req, _res),
+);
+ratingRouter.post("/", (req, _res) =>
+  req.ratingController.postRating(req, _res),
+);
+ratingRouter.get("/", (req, _res) => req.ratingController.getRating(req, _res));
+
+export default ratingRouter;
