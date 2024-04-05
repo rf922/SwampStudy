@@ -11,30 +11,10 @@ import userRouter from "./routers/userRouter";
 import likeRouter from "./routers/likeRouter";
 import matchRouter from "./routers/matchRouter";
 import forumRouter from "./routers/forumRouter";
-import { DIContainer } from "./config/DIContainer";
-import { UserService } from "./services/UserService";
-import { UserController } from "./controllers/userController";
-import { SessionService } from "./services/SessionService";
 import authenticationRouter from "./routers/authenticationRouter";
 import { Session } from "./entities/session.entity";
-import { UserRepository } from "./repositories/UserRepository";
-import { AccountRepository } from "./repositories/AccountRepository";
-import { AuthenticationController } from "./controllers/authenticationController";
-import { QuestionRepository } from "./repositories/QuestionRepository";
-import { ThreadRepository } from "./repositories/ThreadRepository";
-import { AccountController } from "./controllers/accountController";
-import { AccountService } from "./services/AccountService";
-import { ClassService } from "./services/ClassService";
-import { QuestionService } from "./services/QuestionService";
-import { ThreadService } from "./services/ThreadService";
-import { ForumController } from "./controllers/ForumController";
-import { ClassRepository } from "./repositories/ClassRepository";
-import { SessionRepository } from "./repositories/SessionRepository";
-import { LikeRepository } from "./repositories/LikeRepository";
-import { LikeService } from "./services/LikeService";
-import { MatchRepository } from "./repositories/MatchRepository";
-import { MatchService } from "./services/MatchService";
-import { MatchController } from "./controllers/matchController";
+import { DIContainer } from "./config/DIContainer";
+import { DIContainerConfig } from "./config/DIContainerConfig";
 
 import ratingRouter from "./routers/ratingRouter";
 
@@ -44,7 +24,7 @@ export class Server {
   constructor() {
     this.app = express();
     this.initializeDataSource();
-    this.configureDIContainer();
+    DIContainerConfig(DIContainer);
     this.configureMiddleware();
     this.configureRoutes();
   }
@@ -56,117 +36,6 @@ export class Server {
     } catch (err) {
       console.error("Database connection failed", err);
     }
-  }
-
-  /**
-   * // this is sets up the dep injection by registering  repositories,
-   * services, and controllers—with the DI container.
-   */
-  private configureDIContainer(): void {
-    /* register repos here as instances */
-    DIContainer.registerInstance("UserRepository", UserRepository);
-    DIContainer.registerInstance("AccountRepository", AccountRepository);
-    DIContainer.registerInstance("ThreadRepository", ThreadRepository);
-    DIContainer.registerInstance("QuestionRepository", QuestionRepository);
-    DIContainer.registerInstance("ClassRepository", ClassRepository);
-    DIContainer.registerInstance("SessionRepository", SessionRepository);
-    DIContainer.registerInstance("LikeRepository", LikeRepository);
-    DIContainer.registerInstance("MatchRepository", MatchRepository);
-
-    /* add other repositories as needed... */
-
-    /* register services to factory here, inject dependencies */
-    DIContainer.registerFactory(
-      "UserService",
-      () => new UserService(DIContainer.resolve("UserRepository")),
-    );
-    DIContainer.registerFactory(
-      "SessionService",
-      () =>
-        new SessionService(
-          DIContainer.resolve("UserRepository"),
-          DIContainer.resolve("SessionRepository"),
-        ),
-    );
-    DIContainer.registerFactory(
-      "AccountService",
-      () =>
-        new AccountService(
-          DIContainer.resolve("AccountRepository"),
-          DIContainer.resolve("UserRepository"),
-        ),
-    );
-    DIContainer.registerFactory(
-      "ClassService",
-      () => new ClassService(DIContainer.resolve("ClassRepository")),
-    );
-    DIContainer.registerFactory(
-      "QuestionService",
-      () => new QuestionService(DIContainer.resolve("QuestionRepository")),
-    );
-    DIContainer.registerFactory(
-      "ThreadService",
-      () => new ThreadService(DIContainer.resolve("ThreadRepository")),
-    );
-    DIContainer.registerFactory(
-      "LikeService",
-      () => new LikeService(DIContainer.resolve("LikeRepository")),
-    );
-
-    DIContainer.registerFactory(
-      "MatchService",
-      () => new MatchService(DIContainer.resolve("MatchRepository")),
-    );
-    /* expand services as needed */
-
-    /* register controllers here passing factory methods to get instances */
-    DIContainer.registerFactory(
-      "UserController",
-      () =>
-        new UserController(
-          DIContainer.resolve("UserService"),
-          DIContainer.resolve("SessionService"),
-        ),
-    );
-    DIContainer.registerFactory(
-      "AccountController",
-      () =>
-        new AccountController(
-          DIContainer.resolve("AccountService"),
-          DIContainer.resolve("SessionService"),
-        ),
-    );
-    DIContainer.registerFactory(
-      "AuthenticationController",
-      () => new AuthenticationController(DIContainer.resolve("SessionService")),
-    );
-    DIContainer.registerFactory(
-      "ForumController",
-      () =>
-        new ForumController(
-          DIContainer.resolve("QuestionService"),
-          DIContainer.resolve("ThreadService"),
-          DIContainer.resolve("ClassService"),
-        ),
-    );
-    DIContainer.registerFactory(
-      "LikeController",
-      () =>
-        new ForumController(
-          DIContainer.resolve("LikeService"),
-          DIContainer.resolve("AccountService"),
-          DIContainer.resolve("ClassService"),
-        ),
-    );
-    DIContainer.registerFactory(
-      "MatchController",
-      () =>
-        new MatchController(
-          DIContainer.resolve("MatchService"),
-          //DIContainer.resolve("LikeService") /* might need to add more here ad matches and like are dev */
-        ),
-    );
-    /* add as project expands */
   }
 
   private configureMiddleware(): void {
