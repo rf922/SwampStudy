@@ -35,14 +35,13 @@ export class Server {
   }
 
   private configureMiddleware(): void {
-    // const corsOptions = {
-    //   origin: "https://https://swamp-study.global.ssl.fastly.net",
-    //   credentials: true,
-    // };
-    this.app.use(cors());
+    const corsOptions = {
+      origin: "https://https://swamp-study.global.ssl.fastly.net",
+      credentials: false,
+    };
 
     this.app.use(express.json());
-    //this.app.use(cors(corsOptions));
+    this.app.use(cors(corsOptions));
     this.app.use(bodyParser.urlencoded({ extended: false }));
     this.app.use(bodyParser.json());
     this.app.use(express.static(path.resolve("./") + "/dist"));
