@@ -4,7 +4,7 @@ import express from "express";
 
 const ratingrouter = express.Router();
 
-ratingrouter.post("/", isAuthenticated, postRating);
-ratingrouter.get("/", isAuthenticated, getRating);
+ratingrouter.post("/", postRating);
+ratingrouter.get("/", getRating);
 
 export default ratingrouter;

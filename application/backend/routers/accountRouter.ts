@@ -13,14 +13,14 @@ import express from "express";
  */
 
 const accountRouter = express.Router();
-accountRouter.get("/details", isAuthenticated, details);
-accountRouter.get("/", isAuthenticated, getAccount);
-accountRouter.post("/", isAuthenticated, postAccount);
+accountRouter.get("/details", details);
+accountRouter.get("/", getAccount);
+accountRouter.post("/", postAccount);
 
 /**
  * protect sensitive routes usingmiddleware
  */
-accountRouter.post("/delete", isAuthenticated, deleteAccount);
-accountRouter.post("/update", isAuthenticated, updateAccount);
+accountRouter.post("/delete", deleteAccount);
+accountRouter.post("/update", updateAccount);
 
 export default accountRouter;

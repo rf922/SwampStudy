@@ -15,6 +15,6 @@ userRouter.post("/login", login);
 
 userRouter.post("/register", register);
 
-userRouter.post("/logout", isAuthenticated, logout);
+userRouter.post("/logout", logout);
 
 export default userRouter;

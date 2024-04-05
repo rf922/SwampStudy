@@ -18,15 +18,11 @@ const forumRouter = Router();
 // Routes for questions
 forumRouter.get("/questions", getAllQuestions);
 forumRouter.get("/questions/:questionId", getQuestion);
-forumRouter.post("/question", isAuthenticated, createPost);
+forumRouter.post("/question", createPost);
 
 // Routes for answers
 forumRouter.get("/questions/:questionId/answers", getAnswersToQuestion);
-forumRouter.post(
-  "/questions/:questionId/answers",
-  isAuthenticated,
-  createAnswer,
-);
+forumRouter.post("/questions/:questionId/answers", createAnswer);
 
 // Route for getting all classes
 forumRouter.get("/classes", getClasses);
