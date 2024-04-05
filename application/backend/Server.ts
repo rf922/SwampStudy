@@ -36,7 +36,10 @@ export class Server {
 
   private configureMiddleware(): void {
     const corsOptions = {
-      origin: "*",
+      origin: [
+        "https://swamp-study.global.ssl.fastly.net/",
+        "http://http://ec2-13-57-247-71.us-west-1.compute.amazonaws.com/",
+      ],
       credentials: true,
     };
 
@@ -60,7 +63,7 @@ export class Server {
           httpOnly: true,
           maxAge: 1000 * 60 * 60 * 24 * 365,
         },
-      }),
+      })
     );
   }
 
@@ -73,16 +76,16 @@ export class Server {
     this.app.use("/api/forum", forumRouter);
     this.app.use("/api/rating", ratingRouter);
     this.app.get("/api", (req: Request, res: Response) =>
-      res.send("You have reached the API!"),
+      res.send("You have reached the API!")
     );
     this.app.get("*", (req: Request, res: Response) =>
-      res.sendFile(path.resolve("./") + "/dist/index.html"),
+      res.sendFile(path.resolve("./") + "/dist/index.html")
     );
   }
 
   public start(port: number): void {
     this.app.listen(port, () =>
-      console.log(`Server listening on port ${port}!`),
+      console.log(`Server listening on port ${port}!`)
     );
   }
 }
