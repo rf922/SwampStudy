@@ -384,7 +384,7 @@ export const getThreadsByDepartment = async (req: Request, res: Response) => {
   } catch (error) {
     console.error(
       "Error retrieving questions with their threads and classes:",
-      error,
+      error
     );
     return res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({
       message: "Error retrieving questions with their threads and classes",
@@ -417,9 +417,13 @@ export const threadSearch = async (req: Request, res: Response) => {
       .leftJoinAndSelect("thread.class", "class") //bring yhe question
       .leftJoinAndSelect("thread.question", "question") //bring yhe question
       .leftJoinAndSelect("question.account", "account") // bring the account
-      .where("thread.title LIKE :phrase OR question.question LIKE :phrase", {
-        phrase: `%${phrase}%`,
-      }) // my sql LIKE plus wild card to check title and question body
+      .leftJoinAndSelect("thread.answers", "answer")
+      .where(
+        "thread.title LIKE :phrase OR question.question LIKE :phrase OR answer.answer LIKE :phrase",
+        {
+          phrase: `%${phrase}%`,
+        }
+      ) // my sql LIKE plus wild card to check title and question body
       .andWhere("class.id = :classId", { classId }) // filtering on results corr to classId
       .getMany();
     res.status(StatusCodes.ACCEPTED).json(threadResults);
