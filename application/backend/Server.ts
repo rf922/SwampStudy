@@ -35,6 +35,7 @@ export class Server {
   }
 
   private configureMiddleware(): void {
+    //These are now the correct CORS options
     const corsOptions = {
       origin: "https://https://swamp-study.global.ssl.fastly.net/",
       credentials: true,
