@@ -1,10 +1,8 @@
-import { useState } from "react";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
 
 export const useUserAPI = () => {
   const navigate = useNavigate();
-  const [apiError, setApiError] = useState(null);
 
   const handleRegister = async (formData, setErrors) => {
     try {
@@ -19,7 +17,7 @@ export const useUserAPI = () => {
       if (err.response) {
         const errorMessage =
           err.response.data.message || "An error occurred during registration.";
-        setApiError(errorMessage);
+        setErrors(errorMessage);
         if (err.response.status === 409) {
           setErrors((prevErrors) => ({
             ...prevErrors,
@@ -33,10 +31,10 @@ export const useUserAPI = () => {
         }
       } else {
         console.error("Error during registration:", err);
-        setApiError("An unknown error occurred.");
+        setErrors("An unknown error occurred.");
       }
     }
   };
 
-  return { handleRegister, apiError };
+  return { handleRegister };
 };

@@ -247,13 +247,24 @@ export class ForumController {
    */
   public async threadSearch(req: Request, res: Response) {
     try {
-      const { phrase } = req.body; // have the phrase be pased along by axios from the front
-      const result = await this.threadService.threadSearch(phrase);
+      const { phrase, classId } = req.query;
+
+      const parseClassId = parseInt(classId as string);
+      const parsedPhrase = phrase as string;
+      if (!parsedPhrase || isNaN(parseClassId)) {
+        // check params
+        res.status(StatusCodes.BAD_REQUEST);
+        throw new Error("Invalid params");
+      }
+      const result = await this.threadService.threadSearch(
+        parsedPhrase,
+        parseClassId,
+      );
       res.json(result);
     } catch (error) {
       res
         .status(StatusCodes.BAD_REQUEST)
-        .send("Could not complete search : " + error.message);
+        .send("Search could not be completed : " + error.message);
     }
   }
 }

@@ -101,14 +101,14 @@ export class ThreadService {
 
   /**
    * method to search for a thread whose title contains the passed word
-   * @param word
+   * @param phrase
    * @returns
    */
-  public async threadSearch(word: string) {
+  public async threadSearch(phrase: string, classId: number) {
     /**
      * pos sanitize , clean word/ phrase
      */
-    return await this.threadRepository.threadTitleContains(word);
+    return await this.threadRepository.threadTitleContains(phrase, classId);
   }
 
   /**

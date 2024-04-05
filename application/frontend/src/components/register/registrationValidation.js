@@ -13,24 +13,11 @@ export const validateRegistrationForm = ({
   confirmPassword,
 }) => {
   const errors = {};
-
-  if (!isValidName(firstName)) {
-    errors.firstName = "Invalid First Name";
-  }
-  if (!isValidName(lastName)) {
-    errors.lastName = "Invalid Last Name";
-  }
-  if (!isValidEmail(email)) {
-    errors.email = "Invalid email format";
-  }
-
-  if (!isValidPassword(password)) {
-    errors.password = "Invalid Password";
-  }
-
-  if (!isValidConfirmPassword(password, confirmPassword)) {
-    errors.confirmPassword = "Password and confirm Password must match";
-  }
+  isValidName(firstName, errors);
+  isValidName(lastName, errors);
+  isValidEmail(email, errors);
+  isValidPassword(password, errors);
+  isValidConfirmPassword(password, confirmPassword);
 
   return {
     isValid: Object.keys(errors).length === 0,

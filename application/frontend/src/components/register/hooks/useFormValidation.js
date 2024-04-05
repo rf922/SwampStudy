@@ -1,12 +1,13 @@
 import { useState } from "react";
-import { validateRegistrationForm } from "./../registrationValidation";
+import { validateRegistrationForm } from "../registrationValidation";
 import {
   isValidName,
   isValidEmail,
   isValidPassword,
   isValidConfirmPassword,
-} from "./../../../utils/validationUtils";
-export const useForm = (initialValues) => {
+} from "../../../utils/validationUtils";
+
+export const useFormValidation = (initialValues) => {
   const [formData, setFormData] = useState(initialValues);
   const [errors, setErrors] = useState({});
 
@@ -16,33 +17,39 @@ export const useForm = (initialValues) => {
       ...prevData,
       [name]: value,
     }));
+    setErrors((prevErrors) => {
+      const newErrors = { ...prevErrors, [name]: [] };
+      delete newErrors.form;
+      return newErrors;
+    });
     validateField(name, value);
   };
 
   const validateField = (name, value) => {
-    let error = "";
+    let errors = [];
     switch (name) {
       case "firstName":
+        isValidName(value, errors);
+        break;
       case "lastName":
-        if (!isValidName(value)) error = "Invalid Name";
+        isValidName(value, errors);
         break;
       case "email":
-        if (!isValidEmail(value)) error = "Invalid email format";
+        isValidEmail(value, errors);
         break;
       case "password":
-        if (!isValidPassword(value)) error = "Invalid Password";
+        isValidPassword(value, errors);
         break;
       case "confirmPassword":
-        if (!isValidConfirmPassword(formData.password, value))
-          error = "Passwords must match";
+        isValidConfirmPassword(formData.password, value, errors);
         break;
       default:
         break;
     }
-    setErrors((prevErrors) => ({ ...prevErrors, [name]: error }));
+    setErrors((prevErrors) => ({ ...prevErrors, [name]: errors }));
   };
 
-  const validateForm = () => {
+  const validate = () => {
     const validationResult = validateRegistrationForm(formData);
     if (!validationResult.isValid) {
       setErrors(validationResult.errors);
@@ -51,5 +58,5 @@ export const useForm = (initialValues) => {
     return true;
   };
 
-  return { formData, handleChange, errors, validateForm, setErrors };
+  return { formData, handleChange, errors, validate, setErrors };
 };

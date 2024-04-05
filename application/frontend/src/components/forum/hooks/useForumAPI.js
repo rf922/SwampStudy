@@ -7,13 +7,39 @@ export const useForumAPI = () => {
   const [selectedDepartment, setSelectedDepartment] = useState("");
   const [selectedClass, setSelectedClass] = useState("");
   const [filteredThreads, setFilteredThreads] = useState([]);
+  const [classId, setClassId] = useState(null);
+  const search = async (phrase, classId) => {
+    try {
+      const searchResponse = await axios.get(
+        `${process.env.REACT_APP_API_URL}/forum/threads/search`,
+        {
+          params: {
+            phrase: phrase,
+            classId: classId,
+          },
+        },
+      );
+      return searchResponse.data;
+    } catch (error) {
+      console.log(error);
+      return [];
+    }
+  };
+
+  const resetFilteredThreads = () => {
+    if (selectedDepartment && selectedClass) {
+      const threads = threadsMap[selectedDepartment]?.[selectedClass] || [];
+      setFilteredThreads(threads);
+    } else {
+      setFilteredThreads([]);
+    }
+  };
 
   useEffect(() => {
     // get threads/questions by class then by department
     axios
       .get(`${process.env.REACT_APP_API_URL}/forum/departments/threads`)
       .then((response) => {
-        console.log(response.data);
         setThreadsMap(response.data);
         const departments = Object.keys(response.data);
         if (departments.length > 0) {
@@ -42,6 +68,7 @@ export const useForumAPI = () => {
     if (selectedDepartment && selectedClass) {
       const threads = threadsMap[selectedDepartment]?.[selectedClass] || [];
       setFilteredThreads(threads);
+      if (threads[0]) setClassId(threads[0].class.id);
     }
   }, [selectedDepartment, selectedClass, threadsMap]);
 
@@ -51,7 +78,12 @@ export const useForumAPI = () => {
     setSelectedDepartment,
     selectedClass,
     setSelectedClass,
+    setFilteredThreads,
+    setThreadsMap,
+    resetFilteredThreads,
+    classId,
     filteredThreads,
+    search,
   };
 };
 

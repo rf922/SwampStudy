@@ -94,15 +94,19 @@ export const ThreadRepository = myDataSource.getRepository(Thread).extend({
 
   /**
    * search threads by title,
-   * @param word
+   * @param phrase
    * @returns the thread or threads containing the passed word
    */
-  async threadTitleContains(word: string) {
+  async threadTitleContains(phrase: string, classId: number) {
     return this.createQueryBuilder("thread")
-      .where("thread.title LIKE :phrase", { phrase: `%${word}%` }) //using LIKE and wild card to check contains
+      .where("thread.title LIKE :phrase", { phrase: `%${phrase}%` }) //using LIKE and wild card to check contains
       .leftJoinAndSelect("thread.class", "class") //bring the class
       .leftJoinAndSelect("thread.question", "question") //teh question
       .leftJoinAndSelect("question.account", "account") //the acc
+      .where("thread.title LIKE :phrase OR question.question LIKE :phrase", {
+        phrase: `%${phrase}%`,
+      }) // my sql LIKE plus wild card to check title and question body
+      .andWhere("class.id = :classId", { classId }) // filtering on results corr to classId
       .getMany();
   },
 });

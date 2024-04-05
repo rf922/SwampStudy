@@ -36,6 +36,8 @@ import { MatchRepository } from "./repositories/MatchRepository";
 import { MatchService } from "./services/MatchService";
 import { MatchController } from "./controllers/matchController";
 
+import ratingRouter from "./routers/ratingRouter";
+
 export class Server {
   private app: Express;
 
@@ -169,6 +171,7 @@ export class Server {
 
   private configureMiddleware(): void {
     const corsOptions = {
+      //change to url when in production
       origin: "http://localhost:3000",
       credentials: true,
     };
@@ -204,6 +207,7 @@ export class Server {
     this.app.use("/api/like", likeRouter);
     this.app.use("/api/match", matchRouter);
     this.app.use("/api/forum", forumRouter);
+    this.app.use("/api/rating", ratingRouter);
     this.app.get("/api", (req: Request, res: Response) =>
       res.send("You have reached the API!"),
     );

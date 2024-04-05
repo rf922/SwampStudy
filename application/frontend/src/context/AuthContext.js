@@ -17,7 +17,7 @@ export const Auth = ({ children }) => {
         setIsLoggedIn(response.data.isLoggedIn);
       })
       .catch((error) => {
-        console.error("Failed to check login status !", error);
+        console.error("Failed to check login status", error);
       })
       .finally(() => {
         setIsLoading(false);
@@ -26,11 +26,9 @@ export const Auth = ({ children }) => {
 
   const handleLogout = async () => {
     try {
-      await axios.post(
-        `${process.env.REACT_APP_API_URL}/user/logout`,
-        {},
-        { withCredentials: true },
-      );
+      await axios.post(`${process.env.REACT_APP_API_URL}/user/logout`, {
+        withCredentials: true,
+      });
       setIsLoggedIn(false);
     } catch (error) {
       console.error("Logout failed", error);
