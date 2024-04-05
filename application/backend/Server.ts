@@ -38,7 +38,7 @@ export class Server {
     const corsOptions = {
       origin: [
         "https://swamp-study.global.ssl.fastly.net/",
-        "http://http://ec2-13-57-247-71.us-west-1.compute.amazonaws.com/",
+        "http://ec2-13-57-247-71.us-west-1.compute.amazonaws.com/",
       ],
       credentials: true,
     };
