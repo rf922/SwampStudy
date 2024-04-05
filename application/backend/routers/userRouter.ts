@@ -9,7 +9,7 @@ import express from "express";
 
 const userRouter = express.Router();
 
-userRouter.post("/", isAuthenticated, postUser);
+userRouter.post("/", postUser);
 
 userRouter.post("/login", login);
 
