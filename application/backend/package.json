@@ -1,7 +1,7 @@
 {
   "name": "backend",
   "version": "1.0.0",
-  "description": "Testing another description",
+  "description": "",
   "main": "index.js",
   "scripts": {
     "lint": "eslint .",
