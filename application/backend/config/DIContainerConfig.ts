@@ -1,5 +1,4 @@
 import { DIContainer } from "./DIContainer";
-
 import { UserService } from "../services/UserService";
 import { UserController } from "../controllers/userController";
 import { SessionService } from "../services/SessionService";
@@ -21,7 +20,9 @@ import { LikeService } from "../services/LikeService";
 import { MatchRepository } from "../repositories/MatchRepository";
 import { MatchService } from "../services/MatchService";
 import { MatchController } from "../controllers/matchController";
-
+import { RatingRepository } from "./../repositories/RatingRepository";
+import { RatingService } from "./../services/RatingService";
+import { RatingController } from "./../controllers/ratingController";
 /**
  * // this is sets up the dep injection by registering  repositories,
  * services, and controllers—with the DI container.
@@ -37,6 +38,7 @@ export const DIContainerConfig = (diContainer: typeof DIContainer) => {
   diContainer.registerInstance("LikeRepository", LikeRepository);
   diContainer.registerInstance("MatchRepository", MatchRepository);
 
+  diContainer.registerInstance("RatingRepository", RatingRepository);
   /* add other repositories as needed... */
 
   /* register services to factory here, inject dependencies */
@@ -80,6 +82,11 @@ export const DIContainerConfig = (diContainer: typeof DIContainer) => {
   diContainer.registerFactory(
     "MatchService",
     () => new MatchService(diContainer.resolve("MatchRepository")),
+  );
+
+  diContainer.registerFactory(
+    "RatingService",
+    () => new RatingService(diContainer.resolve("RatingRepository")),
   );
   /* expand services as needed */
 
@@ -130,5 +137,11 @@ export const DIContainerConfig = (diContainer: typeof DIContainer) => {
         //diContainer.resolve("LikeService") /* might need to add more here ad matches and like are dev */
       ),
   );
+
+  diContainer.registerFactory(
+    "RatingController",
+    () => new RatingController(diContainer.resolve("RatingService")),
+  );
+
   /* add as project expands */
 };

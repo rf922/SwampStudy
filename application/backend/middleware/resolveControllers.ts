@@ -77,3 +77,15 @@ export const resolveMatchController = (req, res, next) => {
   req.matchController = matchController;
   next();
 };
+
+/**
+ * uses DIContainer to resolve the rating controller
+ * @param req //request controller will be attached to
+ * @param res
+ * @param next // call to next to pass on to the next midlware or route hndlr
+ */
+export const resolveRatingController = (req, res, next) => {
+  const ratingController = DIContainer.resolve("RatingController");
+  req.ratingController = ratingController;
+  next();
+};
