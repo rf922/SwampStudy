@@ -9,18 +9,18 @@ import {
 import express from "express";
 
 /**
- * to - do sensitive routes here will use isAuthenticated middle ware
+ *  sensitive routes here will use isAuthenticated middle ware to protect them from unauthorized access
  */
 
 const accountRouter = express.Router();
-accountRouter.get("/details", isAuthenticated, details);
-accountRouter.get("/", isAuthenticated, getAccount);
-accountRouter.post("/", isAuthenticated, postAccount);
+accountRouter.get("/details", details);
+accountRouter.get("/", getAccount);
+accountRouter.post("/", postAccount);
 
 /**
  * protect sensitive routes usingmiddleware
  */
-accountRouter.post("/delete", isAuthenticated, deleteAccount);
-accountRouter.post("/update", isAuthenticated, updateAccount);
+accountRouter.post("/delete", deleteAccount);
+accountRouter.post("/update", updateAccount);
 
 export default accountRouter;

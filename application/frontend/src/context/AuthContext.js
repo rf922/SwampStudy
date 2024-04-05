@@ -33,6 +33,7 @@ export const Auth = ({ children }) => {
       );
       setIsLoggedIn(false);
     } catch (error) {
+      setIsLoggedIn(false);
       console.error("Logout failed", error);
     }
   };

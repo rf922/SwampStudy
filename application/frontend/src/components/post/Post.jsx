@@ -3,26 +3,26 @@ import { useParams } from "react-router-dom";
 import axios from "axios";
 import useForumAPI from "./hooks/useForumAPI";
 import { useAuth } from "./../../context/AuthContext";
+import { useFormValidation } from "./hooks/useFormValidation";
 
 const Post = () => {
   let { questionId } = useParams();
   const { question, answers, setAnswers } = useForumAPI(questionId);
-  const [answer, setAnswer] = useState("");
   const { isLoggedIn } = useAuth();
   const [showLoginPrompt, setShowLoginPrompt] = useState(false);
+  const { validate, errors, handleChange, formData } = useFormValidation({
+    answer: "",
+  });
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     setShowLoginPrompt(false); // reset login prompt on each submit attempt
-
-    if (!answer.trim()) return;
 
     // check if the user is logged in before attempting to post a answer
     if (!isLoggedIn) {
       setShowLoginPrompt(true); // show login prompt if the user is not logged in
       return;
     }
-
     try {
       const response = await axios.post(
         `https://swamp-study.global.ssl.fastly.net/api/forum/questions/${questionId}/answers`,
@@ -75,11 +75,16 @@ const Post = () => {
           Please log in to submit an answer.
         </div>
       )}
+
       <form onSubmit={handleSubmit} className="px-6 pb-6">
+        {errors.answer && (
+          <p className="text-red-500 text-md italic">{errors.answer}</p>
+        )}
         <textarea
           className="w-full p-3 border border-gray-300 rounded-lg mb-2"
-          value={answer}
-          onChange={(e) => setAnswer(e.target.value)}
+          name="answer"
+          value={formData.answer}
+          onChange={handleChange}
           onInput={adjustTextAreaHeight}
           placeholder="Add your answer"
           style={{ overflow: "hidden" }}

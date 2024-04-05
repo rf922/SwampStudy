@@ -4,6 +4,6 @@ import express from "express";
 
 const matchRouter = express.Router();
 
-matchRouter.get("/", isAuthenticated, getMatch);
+matchRouter.get("/", getMatch);
 
 export default matchRouter;
