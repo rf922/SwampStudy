@@ -10,11 +10,7 @@ export const useUserAPI = () => {
   const login = async (email, password, setErrors) => {
     try {
       const response = await axios.post(
-<<<<<<< HEAD
-        `https://swamp-study.global.ssl.fastly.net/api/user/login`,
-=======
         `${process.env.REACT_APP_API_URL}/user/login`,
->>>>>>> development-forums-api
         { email, password },
         { withCredentials: true },
       );

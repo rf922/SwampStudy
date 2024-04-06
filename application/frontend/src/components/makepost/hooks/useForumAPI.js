@@ -10,11 +10,7 @@ export const useForumAPI = () => {
     const getDepartments = async () => {
       try {
         const response = await axios.get(
-<<<<<<< HEAD
-          `https://swamp-study.global.ssl.fastly.net/api/forum/departments/listing`,
-=======
           `${process.env.REACT_APP_API_URL}/forum/departments/listing`,
->>>>>>> development-forums-api
         );
         setDepartmentClassesMap(response.data);
       } catch (error) {
@@ -28,11 +24,7 @@ export const useForumAPI = () => {
   const postQuestion = async (formData) => {
     try {
       await axios.post(
-<<<<<<< HEAD
-        "https://swamp-study.global.ssl.fastly.net/api/forum/question",
-=======
         `${process.env.REACT_APP_API_URL}/forum/question`,
->>>>>>> development-forums-api
         {
           threadTitle: formData.threadTitle,
           questionText: formData.questionText,

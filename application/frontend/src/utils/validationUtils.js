@@ -26,23 +26,6 @@ export const isValidPassword = (password, errors) => {
   }
 };
 
-<<<<<<< HEAD
-export const isValidName = (name, errors) => {
-  const nameRegex = /^[A-Za-z]{2,16}$/; // alpha betwen 2 , 16
-  const numberRegex = /\d/; // num
-
-  if (numberRegex.test(name)) {
-    // no nums in field
-    errors.push("must not contain numbers");
-  }
-
-  if (!nameRegex.test(name)) {
-    // alpha length check
-    errors.push("Must have between 2 and 16 letters");
-  }
-};
-
-=======
 export const isValidTextFieldEntry = (textEntry, errors) => {
   if (textEntry.length > 195) {
     errors.push("Text Entry must be less than 196 characters.");
@@ -73,7 +56,6 @@ export const isValidName = (name, errors) => {
   }
 };
 
->>>>>>> development-forums-api
 export const isValidConfirmPassword = (password, confirmPassword, errors) => {
   if (password !== confirmPassword) {
     errors.push("password and confirm password must match");

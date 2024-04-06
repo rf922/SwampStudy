@@ -23,20 +23,6 @@ const Post = () => {
       setShowLoginPrompt(true); // show login prompt if the user is not logged in
       return;
     }
-<<<<<<< HEAD
-
-    try {
-      const response = await axios.post(
-        `https://swamp-study.global.ssl.fastly.net/api/forum/questions/${questionId}/answers`,
-        { answer: answer },
-        { withCredentials: true },
-      );
-      // append answers to list of existing answers && clear text field
-      setAnswers((prevAnswers) => [...prevAnswers, response.data]);
-      setAnswer("");
-    } catch (error) {
-      console.error("Error submitting answer:", error);
-=======
     if (validate()) {
       try {
         const response = await axios.post(
@@ -51,7 +37,6 @@ const Post = () => {
       }
     } else {
       alert("Please correct the errors before submitting.");
->>>>>>> development-forums-api
     }
   };
 
@@ -93,13 +78,6 @@ const Post = () => {
           Please log in to submit an answer.
         </div>
       )}
-<<<<<<< HEAD
-      <form onSubmit={handleSubmit} className="px-6 pb-6">
-        <textarea
-          className="w-full p-3 border border-gray-300 rounded-lg mb-2"
-          value={answer}
-          onChange={(e) => setAnswer(e.target.value)}
-=======
 
       <form onSubmit={handleSubmit} className="px-6 pb-6">
         {errors.answer && (
@@ -110,7 +88,6 @@ const Post = () => {
           name="answer"
           value={formData.answer}
           onChange={handleChange}
->>>>>>> development-forums-api
           onInput={adjustTextAreaHeight}
           placeholder="Add your answer"
           style={{ overflow: "hidden" }}
