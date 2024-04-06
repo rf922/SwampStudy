@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { validateUpdateForm } from "./../updateAccountValidation";
+import { validateUpdateForm } from "../accountsettingsvalidation";
 import {
   isValidName,
   isValidEmail,
@@ -7,9 +7,9 @@ import {
   isValidConfirmPassword,
 } from "../../../utils/validationUtils";
 
-export const useUpdateForm = (initialValues) => {
+export const useFormValidation = (initialValues) => {
   const [formData, setFormData] = useState(initialValues);
-  const [errors, setErrors] = useState({});
+  const [errors, setErrors] = useState([]);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -45,4 +45,4 @@ export const useUpdateForm = (initialValues) => {
   return { formData, handleChange, errors, validate, setErrors };
 };
 
-export default useUpdateForm;
+export default useFormValidation;

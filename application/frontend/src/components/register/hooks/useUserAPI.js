@@ -7,7 +7,11 @@ export const useUserAPI = () => {
   const handleRegister = async (formData, setErrors) => {
     try {
       const result = await axios.post(
+<<<<<<< HEAD
         "https://swamp-study.global.ssl.fastly.net/api/user/register",
+=======
+        `${process.env.REACT_APP_API_URL}/user/register`,
+>>>>>>> development-forums-api
         formData,
       );
       if (result.status === 201) {

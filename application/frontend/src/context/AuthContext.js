@@ -10,7 +10,11 @@ export const Auth = ({ children }) => {
 
   useEffect(() => {
     axios
+<<<<<<< HEAD
       .get("https://swamp-study.global.ssl.fastly.net/api/auth/checkSession", {
+=======
+      .get(`${process.env.REACT_APP_API_URL}/auth/checkSession`,{}, {
+>>>>>>> development-forums-api
         withCredentials: true,
       })
       .then((response) => {
@@ -26,11 +30,17 @@ export const Auth = ({ children }) => {
 
   const handleLogout = async () => {
     try {
+<<<<<<< HEAD
       await axios.post(
         "https://swamp-study.global.ssl.fastly.net/api/user/logout",
         {},
         { withCredentials: true },
       );
+=======
+      await axios.post(`${process.env.REACT_APP_API_URL}/user/logout`, {
+        withCredentials: true,
+      });
+>>>>>>> development-forums-api
       setIsLoggedIn(false);
     } catch (error) {
       console.error("Logout failed", error);

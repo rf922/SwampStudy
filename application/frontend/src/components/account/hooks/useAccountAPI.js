@@ -9,7 +9,7 @@ export const useAccountAPI = () => {
   const updateAccount = async (dataToSend, setErrors) => {
     try {
       const response = await axios.post(
-        "https://swamp-study.global.ssl.fastly.net/api/account/update",
+        `${process.env.REACT_APP_API_URL}/account/update`,
         dataToSend,
         { withCredentials: true },
       );
@@ -30,7 +30,7 @@ export const useAccountAPI = () => {
   const deleteAccount = async () => {
     try {
       const response = await axios.post(
-        "https://swamp-study.global.ssl.fastly.net/api/account/delete",
+        `${process.env.REACT_APP_API_URL}/account/delete`,
         {},
         { withCredentials: true },
       );

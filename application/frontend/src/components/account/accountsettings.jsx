@@ -1,10 +1,10 @@
 import React from "react";
-import { useUpdateForm } from "./hooks/setUpdateForm";
+import { useFormValidation } from "./hooks/useFormValidation";
 import { useAccountAPI } from "./hooks/useAccountAPI";
 
 const UpdateAccount = () => {
   //component for accountmanagement / update
-  const { formData, handleChange, errors } = useUpdateForm({
+  const { formData, handleChange, validate, errors } = useFormValidation({
     firstName: "",
     lastName: "",
     email: "",
@@ -16,16 +16,18 @@ const UpdateAccount = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-
-    // filt out empty fields and confirmPassword
     const dataToSend = Object.entries(formData).reduce((acc, [key, value]) => {
       if (value && key !== "confirmPassword") {
         acc[key] = value;
       }
       return acc;
     }, {});
-
-    updateAccount(dataToSend, (errors) => console.log(errors));
+    if (validate(dataToSend)) {
+      updateAccount(dataToSend, (errors) => console.log(errors));
+    } else {
+      console.error("Please Try again");
+      alert("Please Try Again");
+    }
   };
 
   return (

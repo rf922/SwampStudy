@@ -16,9 +16,8 @@ const Home = () => {
       try {
         if (isLoggedIn) {
           const userDetailsResponse = await axios.get(
-            "https://swamp-study.global.ssl.fastly.net/api/account/details", // The following lines were for dev. /debug will be removed
-            //"https://swamp-study.global.ssl.fastly.net/api/forum/departments/dev",
-            //            "https://swamp-study.global.ssl.fastly.net/api/forum/departments/listing",
+            `${process.env.REACT_APP_API_URL}/account/details`, //
+
             { withCredentials: true },
           );
           console.log(userDetailsResponse);
