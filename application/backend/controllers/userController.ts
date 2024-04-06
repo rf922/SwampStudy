@@ -1,141 +1,94 @@
 import { Request, Response } from "express";
-import { myDataSource } from "../app-data-source";
 import { StatusCodes } from "http-status-codes";
-import { User } from "../entities/user.entity";
-import { Account } from "../entities/account.entity";
+import { SessionService } from "./../services/SessionService";
+import { UserService } from "./../services/UserService";
 
-import { Session } from "../entities/session.entity";
-import { validate } from "class-validator";
-import { hash, compare } from "bcrypt";
-
-export const postUser = async (req: Request, res: Response) => {
-  const user = myDataSource.getRepository(User).create(req.body);
-
-  const errors = await validate(user);
-  if (errors.length > 0) {
-    console.log("Data Validation Failed");
-    return res
-      .status(StatusCodes.UNPROCESSABLE_ENTITY)
-      .send("Failed Data Validation");
+/**
+ * user controller responsible for handing http request and sending respnse data
+ */
+export class UserController {
+  /**
+   * user controller depends on userService to handle user related ops and a
+   * session service to handle session related ops
+   * @param userService
+   * @param sessionService
+   */
+  constructor(
+    private userService: UserService,
+    private sessionService: SessionService,
+  ) {
+    this.userService = userService;
+    this.sessionService = sessionService;
   }
 
-  try {
-    const results = await myDataSource.getRepository(User).insert(user);
-    return res.status(StatusCodes.CREATED).send(results);
-  } catch (error) {
-    return res
-      .status(StatusCodes.UNPROCESSABLE_ENTITY)
-      .send("Duplicate Request or DB Error");
-  }
-};
-
-export const register = async (req: Request, res: Response) => {
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  const { firstName, lastName, email, password } = req.body;
-  if (!firstName || !lastName || !email || !password) {
-    return res.status(StatusCodes.BAD_REQUEST).send("Missing required fields.");
-  }
-
-  const existingUser = await myDataSource
-    .getRepository(User)
-    .findOneBy({ email });
-  if (existingUser) {
-    return res.status(StatusCodes.CONFLICT).send("User already exists.");
-  }
-  const hashedPassword = await hash(password, 10);
-
-  try {
-    await myDataSource.transaction(async (transactionalEntityManager) => {
-      // create the user
-      const user = transactionalEntityManager.create(User, {
-        email: email,
-        password: hashedPassword,
-      });
-
-      // validate user
-      const userErrors = await validate(user);
-      if (userErrors.length > 0) {
-        throw new Error("Failed User Data Validation");
-      }
-
-      const newUser = await transactionalEntityManager.save(User, user);
-
-      // create and validate the account entity
-      const account = transactionalEntityManager.create(Account, {
-        first_name: firstName,
-        last_name: lastName,
-        profile_picture: "picture that well put in s3 bucket",
-        user_FK: newUser,
-      });
-
-      const accountErrors = await validate(account);
-      if (accountErrors.length > 0) {
-        throw new Error("Failed Account Data Validation");
-      }
-
-      await transactionalEntityManager.save(Account, account);
-    });
-
-    return res
-      .status(StatusCodes.CREATED)
-      .send(`User and account registered with email: ${email}`);
-  } catch (error) {
-    return res.status(StatusCodes.UNPROCESSABLE_ENTITY).send(error.message);
-  }
-};
-
-export const login = async (req: Request, res: Response) => {
-  const { email, password } = req.body;
-
-  if (!email || !password) {
-    // check params
-    return res
-      .status(StatusCodes.BAD_REQUEST)
-      .send("Email and password are required.");
-  }
-  try {
-    const user = await myDataSource.getRepository(User).findOneBy({ email });
-
-    if (!user) {
-      return res.status(StatusCodes.NOT_FOUND).send("User not found.");
+  /**
+   * register a new user
+   * @param req
+   * @param res
+   * @returns a success message conveying that the user was registered
+   */
+  public async register(req: Request, res: Response) {
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    const { firstName, lastName, email, password } = req.body;
+    if (!firstName || !lastName || !email || !password) {
+      return res
+        .status(StatusCodes.BAD_REQUEST)
+        .send("Missing required fields.");
     }
-
-    const isPasswordMatch = await compare(password, user.password);
-
-    if (!isPasswordMatch) {
-      return res.status(StatusCodes.UNAUTHORIZED).send("Invalid credentials.");
+    try {
+      const message = await this.userService.registerUser(
+        firstName,
+        lastName,
+        email,
+        password,
+      );
+      return res.status(StatusCodes.CREATED).send(message);
+    } catch (error) {
+      return res.status(StatusCodes.UNPROCESSABLE_ENTITY).send(error.message);
     }
-
-    req.session.userId = user.id;
-    return res.status(StatusCodes.OK).send("Login successful.");
-  } catch (error) {
-    console.error(error);
-    return res
-      .status(StatusCodes.INTERNAL_SERVER_ERROR)
-      .send("An error occurred during login." + error.message);
-  }
-};
-
-export const logout = async (req: Request, res: Response) => {
-  const sessionId = req.sessionID; // Get the session ID
-  if (!sessionId) {
-    return res.status(StatusCodes.BAD_REQUEST).send("Session not found.");
   }
 
-  req.session.destroy(async (err) => {
-    if (err) {
+  /**
+   * handles the logging in of existing users
+   * @param req
+   * @param res
+   * @returns an appropriate http response on succ or failure
+   */
+  public async login(req: Request, res: Response) {
+    const { email, password } = req.body;
+    if (!email || !password) {
+      // check params
+      return res
+        .status(StatusCodes.BAD_REQUEST)
+        .send("Email and password are required.");
+    }
+    try {
+      const userId = await this.userService.loginUser(email, password);
+      await this.sessionService.createSession(req.session, email);
+      return res
+        .status(StatusCodes.OK)
+        .send(`Login successful for user ID ${userId}`);
+    } catch (error) {
+      console.error(error);
       return res
         .status(StatusCodes.INTERNAL_SERVER_ERROR)
-        .send("Error during logout");
+        .send("An error occurred during login. :" + error.message);
     }
-    res.clearCookie("connect.sid");
+  }
 
+  /**
+   * handles the logout of users
+   * @param req
+   * @param res
+   */
+  public async logout(req: Request, res: Response) {
     try {
-      await myDataSource.getRepository(Session).delete({ id: sessionId });
+      //destory the session,
+      await this.sessionService.destroySession(req);
       res.status(StatusCodes.OK).send("Logged out successfully");
     } catch (error) {
       console.error("Error deleting session from DB:", error);
       res.status(StatusCodes.INTERNAL_SERVER_ERROR).send("Error during logout");
     }
-  });
-};
+  }
+}

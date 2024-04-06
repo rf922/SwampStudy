@@ -10,7 +10,7 @@ export const Auth = ({ children }) => {
 
   useEffect(() => {
     axios
-      .get("http://localhost:8080/api/auth/checkSession", {
+      .get(`${process.env.REACT_APP_API_URL}/auth/checkSession`, {
         withCredentials: true,
       })
       .then((response) => {
@@ -27,7 +27,7 @@ export const Auth = ({ children }) => {
   const handleLogout = async () => {
     try {
       await axios.post(
-        "http://localhost:8080/api/user/logout",
+        `${process.env.REACT_APP_API_URL}/user/logout`,
         {},
         { withCredentials: true },
       );

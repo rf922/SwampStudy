@@ -10,7 +10,7 @@ const useForumAPI = (questionId) => {
     const getQuestion = async () => {
       try {
         const response = await axios.get(
-          `http://localhost:8080/api/forum/questions/${questionId}`,
+          `${process.env.REACT_APP_API_URL}/forum/questions/${questionId}`,
           { withCredentials: true },
         );
         console.log(response.data);
@@ -23,7 +23,7 @@ const useForumAPI = (questionId) => {
     const getAnswers = async () => {
       try {
         const response = await axios.get(
-          `http://localhost:8080/api/forum/questions/${questionId}/answers`,
+          `${process.env.REACT_APP_API_URL}/forum/questions/${questionId}/answers`,
           { withCredentials: true },
         );
         setAnswers(response.data);
