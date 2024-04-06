@@ -16,8 +16,7 @@ const Home = () => {
       try {
         if (isLoggedIn) {
           const userDetailsResponse = await axios.get(
-            `${process.env.REACT_APP_API_URL}/account/details`, //
-
+            `${process.env.REACT_APP_API_URL}/account/details`,
             { withCredentials: true },
           );
           console.log(userDetailsResponse);

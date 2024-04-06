@@ -10,7 +10,7 @@ export const Auth = ({ children }) => {
 
   useEffect(() => {
     axios
-      .get(`${process.env.REACT_APP_API_URL}/auth/checkSession`,{}, {
+      .get(`${process.env.REACT_APP_API_URL}/auth/checkSession`, {
         withCredentials: true,
       })
       .then((response) => {
@@ -26,9 +26,11 @@ export const Auth = ({ children }) => {
 
   const handleLogout = async () => {
     try {
-      await axios.post(`${process.env.REACT_APP_API_URL}/user/logout`, {
-        withCredentials: true,
-      });
+      await axios.post(
+        `${process.env.REACT_APP_API_URL}/user/logout`,
+        {},
+        { withCredentials: true },
+      );
       setIsLoggedIn(false);
     } catch (error) {
       console.error("Logout failed", error);
