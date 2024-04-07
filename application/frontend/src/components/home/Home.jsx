@@ -49,7 +49,7 @@ const Home = () => {
     <div className="flex flex-col min-h-screen">
       <div className="flex justify-between items-center bg-purple-200 p-3">
         <button
-          className={`flex-grow text-left " ${view === "matching" ? "bg-purple-400" : "text-purple-400 font-bold"}`}
+          className={`w-1/2 text-left " ${view === "matching" ? "bg-purple-400" : "text-purple-400 font-bold"}`}
           onClick={() => setView("matching")}
         >
           {view === "matching" ? "Currently in Matching!" : "Go To Matching"}
@@ -57,12 +57,13 @@ const Home = () => {
 
         {/* forum*/}
         <button
-          className={`flex-grow text-right ${view === "forum" ? "bg-purple-400" : "text-purple-400 font-bold"}`}
+          className={`w-1/2 text-right ${view === "forum" ? "bg-purple-400" : "text-purple-400 font-bold"}`}
           onClick={() => setView("forum")}
         >
           {view === "forum" ? "Currently in Forums!" : "Go To Forums"}
         </button>
       </div>
+
       <div className="flex-grow  overflow-auto bg-purple-100 p-4">
         {view === "forum" ? <Forum /> : <Matching />}
       </div>
