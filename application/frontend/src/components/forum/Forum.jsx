@@ -4,6 +4,7 @@ import Postcard from "../postcard/Postcard";
 import { useAuth } from "../../context/AuthContext";
 import { useNavigate } from "react-router-dom";
 import { useForumAPI } from "./hooks/useForumAPI";
+import Loading from "../loading/Loading";
 
 export const Forum = () => {
   //forum component displays a collection of postcards/summaries of posts
@@ -18,6 +19,7 @@ export const Forum = () => {
     resetFilteredThreads,
     setFilteredThreads,
     search,
+    isLoading,
   } = useForumAPI();
   const { isLoggedIn } = useAuth();
   const navigate = useNavigate();
@@ -135,11 +137,17 @@ export const Forum = () => {
               </button>
             </div>
           </div>
-          <div className="grid grid-cols-1 gap-4">
-            {filteredThreads.map((thread) => (
-              <Postcard key={thread.id} thread={thread} />
-            ))}
-          </div>
+          {isLoading ? (
+            <div className="flex justify-center items-center">
+              <Loading />
+            </div>
+          ) : (
+            <div className="grid grid-cols-1 gap-4">
+              {filteredThreads.map((thread) => (
+                <Postcard key={thread.id} thread={thread} />
+              ))}
+            </div>
+          )}
         </div>
       </div>
     </div>

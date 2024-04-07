@@ -4,6 +4,7 @@ import { useAuth } from "../../context/AuthContext";
 import { Login } from "./../login/Login";
 import { Matching } from "./../matching/Matching";
 import { Forum } from "./../forum/Forum";
+import Loading from "../loading/Loading";
 
 const Home = () => {
   const [_userFirstName, setUserFirstName] = useState("");
@@ -33,13 +34,13 @@ const Home = () => {
   }, [isLoggedIn]);
 
   //loading place holder, may replace with custom spinner / effect
-  if (isLoading)
+  if (isLoading) {
     return (
-      <div>
-        <h1>Swamp Study</h1>
-        {<p>Content Loading . . . </p>}
+      <div className="flex bg-purple-200 min-h-screen justify-center items-center">
+        <Loading />
       </div>
     );
+  }
 
   if (!isLoggedIn) {
     return <Login />;

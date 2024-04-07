@@ -43,16 +43,12 @@ export const isValidThreadTitle = (title, errors) => {
 
 export const isValidName = (name, errors) => {
   const nameRegex = /^[A-Za-z]{2,16}$/; // alpha betwen 2 , 16
-  const numberRegex = /\d/; // num
-
-  if (numberRegex.test(name)) {
-    // no nums in field
-    errors.push("must not contain numbers");
-  }
 
   if (!nameRegex.test(name)) {
-    // alpha length check
-    errors.push("Must have between 2 and 16 letters");
+    // If name doesn't match the regex, add an error
+    errors.push(
+      "Must have between 2 and 16 letters with no spaces or special characters",
+    );
   }
 };
 

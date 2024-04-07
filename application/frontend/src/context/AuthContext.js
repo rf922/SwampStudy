@@ -1,6 +1,7 @@
 import React, { createContext, useContext, useState, useEffect } from "react";
 import axios from "axios";
 import PropTypes from "prop-types";
+import Loading from "../components/loading/Loading";
 
 const AuthContext = createContext();
 
@@ -41,7 +42,13 @@ export const Auth = ({ children }) => {
     <AuthContext.Provider
       value={{ isLoggedIn, setIsLoggedIn, isLoading, handleLogout }}
     >
-      {!isLoading ? children : <div>Loading...</div>}
+      {!isLoading ? (
+        children
+      ) : (
+        <div className="flex bg-purple-200 min-h-screen justify-center items-center">
+          <Loading />
+        </div>
+      )}
     </AuthContext.Provider>
   );
 };

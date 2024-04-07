@@ -11,11 +11,12 @@ export const useFormValidation = (initialValues) => {
       ...prevData,
       [name]: value,
     }));
-    setErrors((prevErrors) => {
-      const newErrors = { ...prevErrors, [name]: [] };
-      delete newErrors.form;
-      return newErrors;
-    });
+    if (errors[name] && errors[name].length > 0) {
+      setErrors((prevErrors) => ({
+        ...prevErrors,
+        [name]: [],
+      }));
+    }
     validateField(name, value);
   };
 
