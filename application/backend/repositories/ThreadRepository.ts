@@ -1,4 +1,4 @@
-import { myDataSource } from "./../../backend/app-data-source";
+import { myDataSource } from "./../app-data-source";
 import { Thread } from "../entities/thread.entity";
 import { Question } from "../entities/question.entity";
 import { Answer } from "../entities/answer.entity";
