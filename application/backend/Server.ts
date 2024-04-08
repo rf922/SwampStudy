@@ -42,7 +42,7 @@ export class Server {
     //These are now the correct CORS options
     const corsOptions = {
       //change to url when in production
-      origin: "http://localhost:3000",
+      origin: "https://swamp-study.global.ssl.fastly.net",
       credentials: true,
     };
 
