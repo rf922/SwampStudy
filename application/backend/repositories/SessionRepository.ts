@@ -1,4 +1,4 @@
-import { myDataSource } from "./../../backend/app-data-source";
+import { myDataSource } from "./../app-data-source";
 import { Session } from "./../entities/session.entity";
 
 /**
