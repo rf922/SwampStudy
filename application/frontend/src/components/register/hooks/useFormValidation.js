@@ -1,12 +1,13 @@
 import { useState } from "react";
-import { validateRegistrationForm } from "./../registrationValidation";
+import { validateRegistrationForm } from "../registrationValidation";
 import {
   isValidName,
   isValidEmail,
   isValidPassword,
   isValidConfirmPassword,
-} from "./../../../utils/validationUtils";
-export const useForm = (initialValues) => {
+} from "../../../utils/validationUtils";
+
+export const useFormValidation = (initialValues) => {
   const [formData, setFormData] = useState(initialValues);
   const [errors, setErrors] = useState({});
 
@@ -16,11 +17,13 @@ export const useForm = (initialValues) => {
       ...prevData,
       [name]: value,
     }));
-    setErrors((prevErrors) => {
-      const newErrors = { ...prevErrors, [name]: [] };
-      delete newErrors.form;
-      return newErrors;
-    });
+    if (errors[name] && errors[name].length > 0) {
+      setErrors((prevErrors) => ({
+        ...prevErrors,
+        [name]: [],
+      }));
+    }
+
     validateField(name, value);
   };
 

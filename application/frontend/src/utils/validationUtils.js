@@ -26,18 +26,29 @@ export const isValidPassword = (password, errors) => {
   }
 };
 
+export const isValidTextFieldEntry = (textEntry, errors) => {
+  if (textEntry.length > 195) {
+    errors.push("Text Entry must be less than 196 characters.");
+  }
+};
+
+export const isValidThreadTitle = (title, errors) => {
+  if (!title) {
+    errors.push("Title must not be empty .");
+  }
+  if (title.length > 64) {
+    errors.push("Title Length must be less than 65 characters");
+  }
+};
+
 export const isValidName = (name, errors) => {
   const nameRegex = /^[A-Za-z]{2,16}$/; // alpha betwen 2 , 16
-  const numberRegex = /\d/; // num
-
-  if (numberRegex.test(name)) {
-    // no nums in field
-    errors.push("must not contain numbers");
-  }
 
   if (!nameRegex.test(name)) {
-    // alpha length check
-    errors.push("Must have between 2 and 16 letters");
+    // If name doesn't match the regex, add an error
+    errors.push(
+      "Must have between 2 and 16 letters with no spaces or special characters",
+    );
   }
 };
 

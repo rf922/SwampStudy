@@ -1,15 +1,13 @@
 import React, { useEffect, useState } from "react";
-import { useFormInputValidation } from "./hooks/useFormInputValidation";
+import { useFormValidation } from "./hooks/useFormValidation";
 import { useForumAPI } from "./hooks/useForumAPI";
 
 const Makepost = () => {
   const { departmentClassesMap, postQuestion } = useForumAPI();
-  const { formData, handleInputChange, errors, setFormData } =
-    useFormInputValidation({
+  const { formData, handleInputChange, errors, setFormData, validate } =
+    useFormValidation({
       threadTitle: "",
       questionText: "",
-      selectedDepartment: "",
-      selectedClassId: "",
     });
 
   const [uniqueClasses, setUniqueClasses] = useState([]);
@@ -47,7 +45,7 @@ const Makepost = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    if (!Object.values(errors).some((error) => error)) {
+    if (validate()) {
       postQuestion(formData);
     } else {
       alert("Please correct the errors before submitting.");
