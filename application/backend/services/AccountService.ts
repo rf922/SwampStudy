@@ -115,4 +115,10 @@ export class AccountService {
       throw new Error("Error updating account. : " + error.message);
     }
   }
+
+  /**
+   * Handles updating the profile picture for an Account
+   * @param userId
+   * @param 
+   */
 }
