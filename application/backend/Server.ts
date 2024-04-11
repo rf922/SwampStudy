@@ -39,6 +39,7 @@ export class Server {
   }
 
   private configureMiddleware(): void {
+    //These are now the correct CORS options
     const corsOptions = {
       //change to url when in production
       origin: "http://localhost:3000",

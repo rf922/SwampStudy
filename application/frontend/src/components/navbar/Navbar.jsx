@@ -1,11 +1,17 @@
 import React from "react";
 import { Link } from "react-router-dom";
 import { useAuth } from "../../context/AuthContext";
+import Loading from "./../loading/Loading";
 
 const Navbar = () => {
   const { isLoggedIn, isLoading, handleLogout } = useAuth();
 
-  if (isLoading) return null;
+  if (isLoading)
+    return (
+      <div className="flex bg-purple-200 justify-center items-center">
+        <Loading />
+      </div>
+    );
 
   return (
     <div

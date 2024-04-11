@@ -3,7 +3,7 @@ import { resolveAccountController } from "../middleware/resolveControllers";
 import express from "express";
 
 /**
- *  sensitive routes here will use isAuthenticated middle ware to protect them from unauthorized access
+ * to - do sensitive routes here will use isAuthenticated middle ware
  */
 
 const accountRouter = express.Router();

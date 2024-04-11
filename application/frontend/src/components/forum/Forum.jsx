@@ -4,6 +4,7 @@ import Postcard from "../postcard/Postcard";
 import { useAuth } from "../../context/AuthContext";
 import { useNavigate } from "react-router-dom";
 import { useForumAPI } from "./hooks/useForumAPI";
+import Loading from "../loading/Loading";
 
 export const Forum = () => {
   //forum component displays a collection of postcards/summaries of posts
@@ -18,6 +19,7 @@ export const Forum = () => {
     resetFilteredThreads,
     setFilteredThreads,
     search,
+    isLoading,
   } = useForumAPI();
   const { isLoggedIn } = useAuth();
   const navigate = useNavigate();
@@ -66,7 +68,7 @@ export const Forum = () => {
       {/* main content area with side column for filters */}
       <div className="flex">
         {/* side col for dept and cls filters */}
-        <div className="w-1/4 h-96 p-4 bg-violet-300 shadow-lg">
+        <div className="w-1/4 h-96 p-4 overflow-auto bg-violet-300 shadow-lg">
           <h2 className="font-bold font-size-lg text-xl mb-2 text-yellow-300">
             Filters
           </h2>
@@ -76,7 +78,7 @@ export const Forum = () => {
               id="departmentSelect"
               value={selectedDepartment}
               onChange={handleDepartmentChange}
-              className="block w-full pl-3 pr-10 py-2 mb-4 text-base border-gray-300 focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm rounded-md bg-white"
+              className="block w-full pl-3 pr-10 py-2 mb-4 text-base focus:ring-2 focus:ring-yellow-300 focus:border-yellow-200 sm:text-sm rounded-md bg-white"
             >
               {Object.keys(threadsMap).map((dept) => (
                 <option key={dept} value={dept}>
@@ -95,7 +97,7 @@ export const Forum = () => {
                 !selectedDepartment ||
                 !Object.keys(threadsMap[selectedDepartment] || {}).length
               }
-              className="block w-full pl-3 pr-10 py-2 text-base border-gray-300 focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm rounded-md bg-white"
+              className="block w-full pl-3 pr-10 py-2 text-base  focus:outline-none focus:ring-2 focus:ring-yellow-300 focus:border-yellow-200 sm:text-sm rounded-md bg-white"
             >
               {selectedDepartment &&
                 Object.entries(threadsMap[selectedDepartment] || {}).map(
@@ -117,29 +119,35 @@ export const Forum = () => {
               value={searchPhrase}
               onChange={handleSearchChange}
               placeholder="Search for threads..."
-              className="block w-full pl-3 pr-10 py-2 text-base border-gray-300 focus:outline-none focus:ring-purple-500 focus:border-purple-500 sm:text-sm rounded-md bg-white"
+              className="block w-full pl-3 pr-10 py-2 text-base border-gray-300 focus:outline-none focus:ring-2 focus:ring-yellow-300 focus:border-yellow-300 sm:text-sm rounded-md bg-white"
             />
-            <div className="flex justify-between items-center my-2">
+            <div className="flex flex-col sm:flex-row justify-between items-stretch my-2 space-y-2 sm:space-y-0 sm:space-x-2">
               <button
                 type="submit"
                 onClick={handleSearchSubmit}
-                className="bg-yellow-300 hover:bg-gold text-purple-400 font-bold py-2 px-4 rounded transition duration-200 ease-in-out"
+                className="bg-yellow-300 hover:bg-yellow-400 text-purple-600 font-bold py-2 px-4 rounded transition duration-200 ease-in-out"
               >
                 Search
               </button>
               <button
                 onClick={() => navigate("/makepost")}
-                className={`bg-yellow-300 hover:bg-gold text-purple-400 font-bold py-2 px-4 rounded transition duration-200 ease-in-out ${!isLoggedIn ? "hidden" : ""}`}
+                className={`bg-yellow-300 hover:bg-yellow-400 text-purple-600 font-bold py-2 px-4 rounded transition duration-200 ease-in-out ${!isLoggedIn ? "hidden" : ""}`}
               >
                 Make a Post
               </button>
             </div>
           </div>
-          <div className="grid grid-cols-1 gap-4">
-            {filteredThreads.map((thread) => (
-              <Postcard key={thread.id} thread={thread} />
-            ))}
-          </div>
+          {isLoading ? (
+            <div className="flex justify-center items-center">
+              <Loading />
+            </div>
+          ) : (
+            <div className="grid grid-cols-1 gap-4">
+              {filteredThreads.map((thread) => (
+                <Postcard key={thread.id} thread={thread} />
+              ))}
+            </div>
+          )}
         </div>
       </div>
     </div>
