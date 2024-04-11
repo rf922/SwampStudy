@@ -7,7 +7,7 @@ fileRouter.get("/", async (req, res) => {
   const { filename, path } = req.query;
   const urls = await generateUrl(filename, path);
 
-  res.send(urls);
+  res.send({ urls });
 });
 
 export default fileRouter;

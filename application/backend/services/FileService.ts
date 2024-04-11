@@ -1,6 +1,7 @@
 import * as AWS from "aws-sdk";
 const BUCKET_NAME = process.env.BUCKET_NAME;
 const s3 = new AWS.S3({ signatureVersion: "v4" });
+const urlExtra = "++++++++++";
 
 const generateUrl = async (filename, bucketPath) => {
   let signedUrl;
@@ -9,7 +10,7 @@ const generateUrl = async (filename, bucketPath) => {
     Bucket: BUCKET_NAME,
     Key: `${bucketPath}/${filename}`,
     Expires: 60,
-    ACL: "public-read",
+    //ACL: "public-read",
   };
 
   try {
@@ -22,7 +23,7 @@ const generateUrl = async (filename, bucketPath) => {
 };
 
 const getPublicUrl = (filename, bucketPath) => {
-  const publicUrl = `https://s3.amazonaws.com/${BUCKET_NAME}/${bucketPath}/${filename}`;
+  const publicUrl = `https://swampstudy.s3.us-west-1.amazonaws.com/${bucketPath}/${filename.trim()}${urlExtra}`;
   return publicUrl;
 };
 
