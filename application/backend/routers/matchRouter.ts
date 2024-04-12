@@ -1,9 +1,8 @@
-import { getMatch } from "../controllers/matchController";
-import { isAuthenticated } from "./../middleware/isAuthenticated";
 import express from "express";
-
+import { resolveMatchController } from "./../middleware/resolveControllers";
 const matchRouter = express.Router();
+matchRouter.use(resolveMatchController);
 
-matchRouter.get("/", isAuthenticated, getMatch);
+matchRouter.get("/", (req, _res) => req.matchController.getMatch(req, _res));
 
 export default matchRouter;

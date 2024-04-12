@@ -1,26 +1,32 @@
 import { isAuthenticated } from "./../middleware/isAuthenticated";
-import {
-  getAccount,
-  details,
-  postAccount,
-  deleteAccount,
-  updateAccount,
-} from "../controllers/accountController";
+import { resolveAccountController } from "../middleware/resolveControllers";
 import express from "express";
 
 /**
- *  sensitive routes here will use isAuthenticated middle ware to protect them from unauthorized access
+ * to - do sensitive routes here will use isAuthenticated middle ware
  */
 
 const accountRouter = express.Router();
-accountRouter.get("/details", isAuthenticated, details);
-accountRouter.get("/", isAuthenticated, getAccount);
-accountRouter.post("/", isAuthenticated, postAccount);
+// use middleware to resolve acc controller
+accountRouter.use(resolveAccountController);
+
+accountRouter.get(
+  "/details",
+  (req, res) => req.accountController.getAccountDetails(req, res), //controller is attached to req
+);
+accountRouter.get("/:id", isAuthenticated, (req, res) =>
+  req.accountController.getAccount(req, res),
+);
+//accountRouter.post("/", accountController.postAccount);
 
 /**
- * protect sensitive routes usingmiddleware
+ * protect sensitive routes using auth middleware
  */
-accountRouter.post("/delete", isAuthenticated, deleteAccount);
-accountRouter.post("/update", isAuthenticated, updateAccount);
+accountRouter.post("/delete", isAuthenticated, (req, res) =>
+  req.accountController.deleteAccount(req, res),
+);
 
+accountRouter.post("/update", isAuthenticated, (req, res) =>
+  req.accountController.updateAccount(req, res),
+);
 export default accountRouter;

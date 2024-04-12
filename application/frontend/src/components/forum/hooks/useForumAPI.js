@@ -8,10 +8,12 @@ export const useForumAPI = () => {
   const [selectedClass, setSelectedClass] = useState("");
   const [filteredThreads, setFilteredThreads] = useState([]);
   const [classId, setClassId] = useState(null);
+  const [isLoading, setIsLoading] = useState(false);
   const search = async (phrase, classId) => {
     try {
+      setIsLoading(true);
       const searchResponse = await axios.get(
-        `https://swamp-study.global.ssl.fastly.net/api/forum/threads/search`,
+        `${process.env.REACT_APP_API_URL}/forum/threads/search`,
         {
           params: {
             phrase: phrase,
@@ -23,6 +25,8 @@ export const useForumAPI = () => {
     } catch (error) {
       console.log(error);
       return [];
+    } finally {
+      setIsLoading(false);
     }
   };
 
@@ -36,19 +40,22 @@ export const useForumAPI = () => {
   };
 
   useEffect(() => {
+    setIsLoading(true);
     // get threads/questions by class then by department
     axios
-      .get(
-        "https://swamp-study.global.ssl.fastly.net/api/forum/departments/threads",
-      )
+      .get(`${process.env.REACT_APP_API_URL}/forum/departments/threads`)
       .then((response) => {
         setThreadsMap(response.data);
         const departments = Object.keys(response.data);
         if (departments.length > 0) {
           setSelectedDepartment(departments[0]);
         }
+        setIsLoading(false);
       })
-      .catch((error) => console.error("Error fetching threads:", error));
+      .catch((error) => {
+        console.error("Error fetching threads:", error);
+        setIsLoading(false);
+      });
   }, []);
 
   useEffect(() => {
@@ -86,6 +93,7 @@ export const useForumAPI = () => {
     classId,
     filteredThreads,
     search,
+    isLoading,
   };
 };
 

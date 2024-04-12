@@ -26,7 +26,7 @@ const Post = () => {
     if (validate()) {
       try {
         const response = await axios.post(
-          `https://swamp-study.global.ssl.fastly.net/api/forum/questions/${questionId}/answers`,
+          `${process.env.REACT_APP_API_URL}/forum/questions/${questionId}/answers`,
           formData,
           { withCredentials: true },
         );

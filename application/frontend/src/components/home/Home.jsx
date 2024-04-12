@@ -4,6 +4,7 @@ import { useAuth } from "../../context/AuthContext";
 import { Login } from "./../login/Login";
 import { Matching } from "./../matching/Matching";
 import { Forum } from "./../forum/Forum";
+import Loading from "../loading/Loading";
 
 const Home = () => {
   const [_userFirstName, setUserFirstName] = useState("");
@@ -16,9 +17,7 @@ const Home = () => {
       try {
         if (isLoggedIn) {
           const userDetailsResponse = await axios.get(
-            "https://swamp-study.global.ssl.fastly.net/api/account/details", // The following lines were for dev. /debug will be removed
-            //"http://localhost:8080/api/forum/departments/dev",
-            //            "http://localhost:8080/api/forum/departments/listing",
+            `${process.env.REACT_APP_API_URL}/account/details`,
             { withCredentials: true },
           );
           console.log(userDetailsResponse);
@@ -35,13 +34,13 @@ const Home = () => {
   }, [isLoggedIn]);
 
   //loading place holder, may replace with custom spinner / effect
-  if (isLoading)
+  if (isLoading) {
     return (
-      <div>
-        <h1>Swamp Study</h1>
-        {<p>Content Loading . . . </p>}
+      <div className="flex bg-purple-200 min-h-screen justify-center items-center">
+        <Loading />
       </div>
     );
+  }
 
   if (!isLoggedIn) {
     return <Login />;
@@ -51,7 +50,7 @@ const Home = () => {
     <div className="flex flex-col min-h-screen">
       <div className="flex justify-between items-center bg-purple-200 p-3">
         <button
-          className={`flex-grow text-left " ${view === "matching" ? "bg-purple-400" : "text-purple-400 font-bold"}`}
+          className={`w-1/2 text-left " ${view === "matching" ? "bg-purple-400" : "text-purple-400 font-bold"}`}
           onClick={() => setView("matching")}
         >
           {view === "matching" ? "Currently in Matching!" : "Go To Matching"}
@@ -59,12 +58,13 @@ const Home = () => {
 
         {/* forum*/}
         <button
-          className={`flex-grow text-right ${view === "forum" ? "bg-purple-400" : "text-purple-400 font-bold"}`}
+          className={`w-1/2 text-right ${view === "forum" ? "bg-purple-400" : "text-purple-400 font-bold"}`}
           onClick={() => setView("forum")}
         >
           {view === "forum" ? "Currently in Forums!" : "Go To Forums"}
         </button>
       </div>
+
       <div className="flex-grow  overflow-auto bg-purple-100 p-4">
         {view === "forum" ? <Forum /> : <Matching />}
       </div>

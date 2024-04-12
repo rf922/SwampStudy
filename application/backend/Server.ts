@@ -1,4 +1,5 @@
 import express, { Express, Request, Response } from "express";
+import "dotenv/config";
 import path from "path";
 import cors from "cors";
 import bodyParser from "body-parser";
@@ -10,10 +11,12 @@ import userRouter from "./routers/userRouter";
 import likeRouter from "./routers/likeRouter";
 import matchRouter from "./routers/matchRouter";
 import forumRouter from "./routers/forumRouter";
-import ratingRouter from "./routers/ratingRouter";
-
 import authenticationRouter from "./routers/authenticationRouter";
 import { Session } from "./entities/session.entity";
+import { DIContainer } from "./config/DIContainer";
+import { DIContainerConfig } from "./config/DIContainerConfig";
+
+import ratingRouter from "./routers/ratingRouter";
 
 export class Server {
   private app: Express;
@@ -21,6 +24,7 @@ export class Server {
   constructor() {
     this.app = express();
     this.initializeDataSource();
+    DIContainerConfig(DIContainer);
     this.configureMiddleware();
     this.configureRoutes();
   }
@@ -35,9 +39,11 @@ export class Server {
   }
 
   private configureMiddleware(): void {
+    //These are now the correct CORS options
     const corsOptions = {
-      origin: "https://https://swamp-study.global.ssl.fastly.net",
-      credentials: false,
+      //change to url when in production
+      origin: "https://swamp-study.global.ssl.fastly.net",
+      credentials: true,
     };
 
     this.app.use(express.json());
@@ -50,15 +56,15 @@ export class Server {
     const sessionRepository = myDataSource.getRepository(Session);
     this.app.use(
       session({
-        secret: "session_cookie_secret",
+        secret: process.env.SESSION_SECRET,
         store: new TypeormStore().connect(sessionRepository),
         resave: false,
         saveUninitialized: false,
         cookie: {
           secure: process.env.PRODUCTION === "true",
-          sameSite: "strict",
+          sameSite: process.env.PRODUCTION === "true" ? "none" : "lax",
           httpOnly: true,
-          maxAge: 1000 * 60 * 60 * 24 * 365,
+          maxAge: 1000 * 60 * 60 * 24 * 7, // millisec * sec * min * hour * day , 7 day exp
         },
       }),
     );
@@ -81,6 +87,7 @@ export class Server {
   }
 
   public start(port: number): void {
+    port = parseInt(process.env.PORT) || 80;
     this.app.listen(port, () =>
       console.log(`Server listening on port ${port}!`),
     );

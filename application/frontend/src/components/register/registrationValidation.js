@@ -12,7 +12,7 @@ export const validateRegistrationForm = ({
   password,
   confirmPassword,
 }) => {
-  const errors = {};
+  const errors = [];
   isValidName(firstName, errors);
   isValidName(lastName, errors);
   isValidEmail(email, errors);

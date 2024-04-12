@@ -13,6 +13,6 @@
     "experimentalDecorators": true,
     "typeRoots": ["./types", "./node_modules/@types"]
   },
-  "include": ["**.ts", "./middleware"],
+  "include": ["**.ts", "./repositories", "./services", "./middleware"],
   "exclude": ["./frontend"]
 }
