@@ -11,8 +11,8 @@ const accountRouter = express.Router();
 accountRouter.use(resolveAccountController);
 
 accountRouter.get(
-  "/details",
-  (req, res) => req.accountController.getAccountDetails(req, res), //controller is attached to req
+  "/details",isAuthenticated,
+  (req, res) => req.accountController.getAccountDetails(req, res),
 );
 accountRouter.get("/:id", isAuthenticated, (req, res) =>
   req.accountController.getAccount(req, res),
