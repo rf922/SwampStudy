@@ -16,6 +16,7 @@ import Matching from "./components/matching/Matching";
 import Settings from "./components/settings/Settings";
 import UserProfile from "./components/userProfile/UserProfile";
 import TermsAndConditions from "./components/termsAndConditions/termsAndConditions";
+import Image from "./components/image/Image";
 
 import { Auth } from "./context/AuthContext";
 
@@ -37,6 +38,7 @@ function App() {
               <Route path="/matching" element={<Matching />} />
               <Route path="/profile" element={<Profile />} />
               <Route path="/userProfile" element={<UserProfile />} />
+              <Route path="/image" element={<Image />} />
               <Route
                 path="/terms-and-conditions"
                 element={<TermsAndConditions />}
