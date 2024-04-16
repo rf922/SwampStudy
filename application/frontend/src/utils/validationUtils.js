@@ -1,17 +1,14 @@
 export const isValidEmail = (email, errors) => {
   const sfsuregex = /@sfsu\.edu$/; // regex for sfsu email
-  const emailRegExp = /^[a-zA-Z0-9._%+-]$/; // regex for email validity
+  const emailRegExp = /^[a-zA-Z0-9._%+-]+$/; // regex for email validity
   if (!sfsuregex.test(String(email))) {
-    errors.push ("Email must be a valid SFSU email."); //test if email is sfsu email
+    errors.push("Email must be a valid SFSU email");
+  } // test if email is sfsu email
+  else if (emailRegExp.test(String(email)) && sfsuregex.test(String(email))) {
+    // test if email is valid
+    errors.push("Invalid email");
   }
-  else if (emailRegExp.test(String(email))&& sfsuregex.test(String(email))) { //test if email is valid
-    errors.push("Invalid email.");
-  }
-  
 };
-
-
-
 
 /**
  * password validation util takes array of errors and pushes field specific error msgs
@@ -54,7 +51,7 @@ export const isValidName = (name, errors) => {
   if (!nameRegex.test(name)) {
     // If name doesn't match the regex, add an error
     errors.push(
-      "Must have between 2 and 16 letters with no spaces or special characters",
+      "Must have between 2 and 16 letters with no spaces or special characters"
     );
   }
 };
