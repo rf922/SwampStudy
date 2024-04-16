@@ -12,7 +12,7 @@ import { AccountService } from "../services/AccountService";
 import { ClassService } from "../services/ClassService";
 import { QuestionService } from "../services/QuestionService";
 import { ThreadService } from "../services/ThreadService";
-import { ForumController } from "../controllers/forumController";
+import { ForumController } from "../controllers/ForumController";
 import { ClassRepository } from "../repositories/ClassRepository";
 import { SessionRepository } from "../repositories/SessionRepository";
 import { LikeRepository } from "../repositories/LikeRepository";
