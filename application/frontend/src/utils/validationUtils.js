@@ -7,8 +7,7 @@ export const isValidEmail = (email, errors) => {
   else if (emailRegExp.test(String(email))&& sfsuregex.test(String(email))) {
     errors.push("Invalid email.");
   }
-  //work on this later
-  /* expand for other email domains */
+  
 };
 
 
