@@ -1,4 +1,4 @@
-import { myDataSource } from "./../../backend/app-data-source";
+import { myDataSource } from "./../app-data-source";
 import { Question } from "../entities/question.entity";
 import { validate } from "class-validator";
 import { User } from "./../entities/user.entity";
