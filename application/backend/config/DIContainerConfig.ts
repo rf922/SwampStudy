@@ -44,49 +44,49 @@ export const DIContainerConfig = (diContainer: typeof DIContainer) => {
   /* register services to factory here, inject dependencies */
   diContainer.registerFactory(
     "UserService",
-    () => new UserService(diContainer.resolve("UserRepository"))
+    () => new UserService(diContainer.resolve("UserRepository")),
   );
   diContainer.registerFactory(
     "SessionService",
     () =>
       new SessionService(
         diContainer.resolve("UserRepository"),
-        diContainer.resolve("SessionRepository")
-      )
+        diContainer.resolve("SessionRepository"),
+      ),
   );
   diContainer.registerFactory(
     "AccountService",
     () =>
       new AccountService(
         diContainer.resolve("AccountRepository"),
-        diContainer.resolve("UserRepository")
-      )
+        diContainer.resolve("UserRepository"),
+      ),
   );
   diContainer.registerFactory(
     "ClassService",
-    () => new ClassService(diContainer.resolve("ClassRepository"))
+    () => new ClassService(diContainer.resolve("ClassRepository")),
   );
   diContainer.registerFactory(
     "QuestionService",
-    () => new QuestionService(diContainer.resolve("QuestionRepository"))
+    () => new QuestionService(diContainer.resolve("QuestionRepository")),
   );
   diContainer.registerFactory(
     "ThreadService",
-    () => new ThreadService(diContainer.resolve("ThreadRepository"))
+    () => new ThreadService(diContainer.resolve("ThreadRepository")),
   );
   diContainer.registerFactory(
     "LikeService",
-    () => new LikeService(diContainer.resolve("LikeRepository"))
+    () => new LikeService(diContainer.resolve("LikeRepository")),
   );
 
   diContainer.registerFactory(
     "MatchService",
-    () => new MatchService(diContainer.resolve("MatchRepository"))
+    () => new MatchService(diContainer.resolve("MatchRepository")),
   );
 
   diContainer.registerFactory(
     "RatingService",
-    () => new RatingService(diContainer.resolve("RatingRepository"))
+    () => new RatingService(diContainer.resolve("RatingRepository")),
   );
   /* expand services as needed */
 
@@ -96,20 +96,20 @@ export const DIContainerConfig = (diContainer: typeof DIContainer) => {
     () =>
       new UserController(
         diContainer.resolve("UserService"),
-        diContainer.resolve("SessionService")
-      )
+        diContainer.resolve("SessionService"),
+      ),
   );
   diContainer.registerFactory(
     "AccountController",
     () =>
       new AccountController(
         diContainer.resolve("AccountService"),
-        diContainer.resolve("SessionService")
-      )
+        diContainer.resolve("SessionService"),
+      ),
   );
   diContainer.registerFactory(
     "AuthenticationController",
-    () => new AuthenticationController(diContainer.resolve("SessionService"))
+    () => new AuthenticationController(diContainer.resolve("SessionService")),
   );
   diContainer.registerFactory(
     "ForumController",
@@ -117,8 +117,8 @@ export const DIContainerConfig = (diContainer: typeof DIContainer) => {
       new ForumController(
         diContainer.resolve("QuestionService"),
         diContainer.resolve("ThreadService"),
-        diContainer.resolve("ClassService")
-      )
+        diContainer.resolve("ClassService"),
+      ),
   );
   diContainer.registerFactory(
     "LikeController",
@@ -126,21 +126,21 @@ export const DIContainerConfig = (diContainer: typeof DIContainer) => {
       new ForumController(
         diContainer.resolve("LikeService"),
         diContainer.resolve("AccountService"),
-        diContainer.resolve("ClassService")
-      )
+        diContainer.resolve("ClassService"),
+      ),
   );
   diContainer.registerFactory(
     "MatchController",
     () =>
       new MatchController(
-        diContainer.resolve("MatchService")
+        diContainer.resolve("MatchService"),
         //diContainer.resolve("LikeService") /* might need to add more here ad matches and like are dev */
-      )
+      ),
   );
 
   diContainer.registerFactory(
     "RatingController",
-    () => new RatingController(diContainer.resolve("RatingService"))
+    () => new RatingController(diContainer.resolve("RatingService")),
   );
 
   /* add as project expands */
