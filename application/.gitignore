@@ -1,6 +1,7 @@
 # Compiled source #
 /backend/dist/
 /frontend/build/
+/backend/build/
 
 # Dependencies #
 /node_modules/
