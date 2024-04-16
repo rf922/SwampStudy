@@ -51,7 +51,7 @@ export const isValidName = (name, errors) => {
   if (!nameRegex.test(name)) {
     // If name doesn't match the regex, add an error
     errors.push(
-      "Must have between 2 and 16 letters with no spaces or special characters"
+      "Must have between 2 and 16 letters with no spaces or special characters",
     );
   }
 };
