@@ -18,11 +18,11 @@ jobs:
           node-version: '20'
 
       - name: Install Dependencies 
-        run: (cd application && npm run install-server && npm run install-frontend && npm run build)
+        run: cd application && npm run install-server && npm run install-frontend && npm run build
     
       - name: Check Formatting 
-        run: (cd application && npm run format:check)
+        run: cd application && npm run format:check
     
       - name: Check Lint
-        run: (cd application && npm run lint) 
+        run: cd application && npm run lint
     
