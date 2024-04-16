@@ -8,7 +8,7 @@ export const myDataSource = new DataSource({
       .DB_USERNAME /** look in backend/.env if you need to chang pass etc*/,
   password: process.env.DB_PASSWORD,
   database: process.env.DB_DATABASE,
-  entities: ["./entities/*.ts"],
+  entities: ["./entities/*{.js,.ts}"],
   logging: true,
   synchronize: true,
 });
