@@ -1,10 +1,18 @@
 export const isValidEmail = (email, errors) => {
-  const emailRegExp = /^[a-zA-Z0-9._%+-]+@sfsu\.edu$/;
-  if (!emailRegExp.test(String(email))) {
+  const sfsuregex = /@sfsu\.edu$/;
+  const emailRegExp = /^[a-zA-Z0-9._%+-]$/;
+  if (!sfsuregex.test(String(email))) {
+    errors.push ("Email must be a valid SFSU email.");
+  }
+  else if (emailRegExp.test(String(email))&& sfsuregex.test(String(email))) {
     errors.push("Invalid email.");
   }
+  //work on this later
   /* expand for other email domains */
 };
+
+
+
 
 /**
  * password validation util takes array of errors and pushes field specific error msgs
