@@ -58,7 +58,28 @@ export const ThreadRepository = myDataSource.getRepository(Thread).extend({
     return this.find({
       //may expand to also bring along the assoc answers
       relations: ["class", "question", "question.account"],
+      take: 3,
     });
+  },
+
+  /**
+   * get the classes that have atleast one thread in them
+   * @returns array of class obj with their threadCount.
+   */
+  async getClassThreadCounts() {
+    return this.createQueryBuilder("thread")
+      .innerJoin("thread.class", "class")
+      .select("class.id", "id")
+      .addSelect("class.name", "name")
+      .addSelect("class.number", "number")
+      .addSelect("class.department", "department")
+      .addSelect("COUNT(thread.id)", "threadCount")
+      .groupBy("class.id")
+      .addGroupBy("class.name")
+      .addGroupBy("class.number")
+      .addGroupBy("class.department")
+      .orderBy("threadCount", "DESC")
+      .getRawMany();
   },
 
   /**
@@ -77,6 +98,28 @@ export const ThreadRepository = myDataSource.getRepository(Thread).extend({
       .skip(offSet) //  offset
       .take(take) //  LIMIT
       .getMany();
+  },
+
+  /**
+   * gets a specified number of threads from db starting from page number
+   * going forward
+   * @returns
+   */
+  async getThreadPageByClass(page: number, cls: string) {
+    const take = 10; // number of threads per page
+    const offSet = (page - 1) * take; // offset
+
+    return (
+      this.createQueryBuilder("thread")
+        .leftJoinAndSelect("thread.class", "class")
+        // Filter based on the cls name
+        .where("class.name = :name", { name: cls })
+        .leftJoinAndSelect("thread.question", "question")
+        .leftJoinAndSelect("question.account", "account") // may add answers later
+        .skip(offSet) // offset
+        .take(take) // LIMIT
+        .getMany()
+    );
   },
 
   /**
@@ -103,10 +146,11 @@ export const ThreadRepository = myDataSource.getRepository(Thread).extend({
       .leftJoinAndSelect("thread.class", "class") //bring the class
       .leftJoinAndSelect("thread.question", "question") //teh question
       .leftJoinAndSelect("question.account", "account") //the acc
-      .where("thread.title LIKE :phrase OR question.question LIKE :phrase", {
+      .where("class.id = :classId", { classId }) // filtering on results corr to classId
+      .andWhere("thread.title LIKE :phrase OR question.question LIKE :phrase", {
         phrase: `%${phrase}%`,
       }) // my sql LIKE plus wild card to check title and question body
-      .andWhere("class.id = :classId", { classId }) // filtering on results corr to classId
+
       .getMany();
   },
 });
