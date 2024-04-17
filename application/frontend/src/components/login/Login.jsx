@@ -90,13 +90,16 @@ export const Login = () => {
               >
                 Login
               </button>
-              <a
-                href="/register"
-                className="inline-block align-baseline font-bold text-sm text-purple-500 hover:text-purple-800"
-                style={{ color: "#463077" }} // Updated link color
-              >
-                Don&apos;t have an account? Register
-              </a>
+
+              <span className="text-sm text-right">
+                Don&apos;t have an account?
+                <a
+                  href="/register"
+                  className="font-bold text-purple-500 hover:text-purple-800 ml-1 text-right"
+                >
+                  Register
+                </a>
+              </span>
             </div>
           </form>
         </div>

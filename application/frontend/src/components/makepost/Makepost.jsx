@@ -1,8 +1,9 @@
 import React, { useEffect, useState } from "react";
+import PropTypes from "prop-types";
 import { useFormValidation } from "./hooks/useFormValidation";
 import { useForumAPI } from "./hooks/useForumAPI";
 
-const Makepost = () => {
+const Makepost = ({ close, setNewPost }) => {
   const { departmentClassesMap, postQuestion } = useForumAPI();
   const { formData, handleInputChange, errors, setFormData, validate } =
     useFormValidation({
@@ -46,16 +47,26 @@ const Makepost = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     if (validate()) {
-      postQuestion(formData);
+      close();
+      const { thread, _question } = await postQuestion(formData);
+      setNewPost(thread);
     } else {
       alert("Please correct the errors before submitting.");
     }
   };
 
   return (
-    <div className="my-8">
-      <h1 className="text-2xl font-bold mb-4">Make a Post</h1>
-      <form onSubmit={handleSubmit} className="w-full max-w-xs">
+    <div className="flex flex-col max-w-md mx-auto rounded-lg overflow-hidden shadow-lg bg-white my-8 border border-purple-200 transition duration-200 ease-in-out hover:shadow-2xl focus:ring-4 focus:ring-yellow-300">
+      <button
+        onClick={close}
+        className="absolute top-0 right-0 p-2 text-lg text-gray-800 hover:text-red-500"
+      >
+        ✖
+      </button>
+      <h1 className="text-2xl font-bold mb-4 px-6 py-4 bg-violet-200 text-gray-800">
+        Make a Post
+      </h1>
+      <form onSubmit={handleSubmit} className="w-full px-6 pb-6">
         <div className="mb-4">
           <label
             htmlFor="departmentSelect"
@@ -135,15 +146,29 @@ const Makepost = () => {
             <p className="text-red-500 text-xs italic">{errors.questionText}</p>
           )}
         </div>
-        <button
-          type="submit"
-          className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
-        >
-          Submit
-        </button>
+        <div className="flex justify-between items-center">
+          <button
+            type="button"
+            onClick={close}
+            className="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
+          >
+            Cancel
+          </button>
+          <button
+            type="submit"
+            className="bg-purple-500 hover:bg-purple-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
+          >
+            Submit
+          </button>
+        </div>
       </form>
     </div>
   );
 };
 
+Makepost.propTypes = {
+  //specify the type of prop being passed --
+  close: PropTypes.func.isRequired, // close - func
+  setNewPost: PropTypes.func.isRequired,
+};
 export default Makepost;
