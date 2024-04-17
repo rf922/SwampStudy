@@ -1,5 +1,5 @@
 import { AccountRepository } from "./../repositories/AccountRepository";
-import { hash } from "bcrypt";
+import { hash } from "bcryptjs";
 import { UserRepository } from "./../repositories/UserRepository";
 
 /**

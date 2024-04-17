@@ -17,7 +17,7 @@
   "dependencies": {
     "@types/express-session": "^1.18.0",
     "aws-sdk": "^2.1597.0",
-    "bcrypt": "^5.1.1",
+    "bcryptjs": "^2.4.3",
     "body-parser": "^1.20.2",
     "class-validator": "^0.14.1",
     "connect-typeorm": "^2.0.0",
@@ -34,7 +34,6 @@
     "typescript": "^5.3.3"
   },
   "devDependencies": {
-    "@types/bcrypt": "^5.0.2",
     "@types/cors": "^2.8.17",
     "@types/express": "^4.17.21",
     "@typescript-eslint/eslint-plugin": "^7.1.0",
