@@ -10,8 +10,8 @@ const accountRouter = express.Router();
 // use middleware to resolve acc controller
 accountRouter.use(resolveAccountController);
 
-accountRouter.get("/details",isAuthenticated,(req, res) =>
- req.accountController.getAccountDetails(req, res),
+accountRouter.get("/details", isAuthenticated, (req, res) =>
+  req.accountController.getAccountDetails(req, res),
 );
 accountRouter.get("/:id", isAuthenticated, (req, res) =>
   req.accountController.getAccount(req, res),
