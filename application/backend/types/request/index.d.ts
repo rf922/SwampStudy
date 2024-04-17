@@ -5,6 +5,7 @@ import { ForumController } from "./../../controllers/ForumController";
 import { LikeController } from "./../../controllers/likeController";
 import { MatchController } from "./../../controllers/matchController";
 import { RatingController } from "./../../controllers/ratingController";
+import { FileController } from "./../../controllers/fileController";
 /* this file is for extending Request so we caan attach our controllers, as controllers are added they should be added here */
 
 declare module "express-serve-static-core" {
@@ -17,5 +18,6 @@ declare module "express-serve-static-core" {
     matchController?: MatchController;
     authenticationController?: AuthenticationController;
     ratingController?: RatingController;
+    fileController?: FileController;
   }
 }

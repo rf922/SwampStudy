@@ -26,7 +26,7 @@ export class Account extends BaseEntity {
   @IsString()
   last_name: string;
 
-  @Column()
+  @Column({ default: "" })
   profile_picture: string;
 
   @OneToOne(() => User)
@@ -39,33 +39,15 @@ export class Account extends BaseEntity {
   })
   questions: Question[];
 
-  @Column()
-  monday: boolean;
+  @Column("smallint", { default: 0 })
+  weekavailability: number;
 
-  @Column()
-  tuesday: boolean;
-
-  @Column()
-  wednesday: boolean;
-
-  @Column()
-  thursday: boolean;
-
-  @Column()
-  friday: boolean;
-
-  @Column()
-  saturday: boolean;
-
-  @Column()
-  sunday: boolean;
-
-  @Column()
+  @Column({ default: 0 })
   educator: boolean;
 
-  @Column()
+  @Column({ default: 0 })
   introvert: boolean;
 
-  @Column("varchar", { length: 500 })
-  biography;
+  @Column("varchar", { length: 500, default: "" })
+  biography: string;
 }

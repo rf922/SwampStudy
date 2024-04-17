@@ -91,7 +91,8 @@ export class AccountController {
       return res.status(StatusCodes.UNAUTHORIZED).send("User not logged in.");
     }
 
-    const { firstName, lastName, email, newPassword } = req.body;
+    const { firstName, lastName, email, newPassword, profilePicture } =
+      req.body;
     try {
       await this.accountService.updateAccount(
         userId,
@@ -99,6 +100,7 @@ export class AccountController {
         lastName,
         email,
         newPassword,
+        profilePicture,
       );
       res.status(StatusCodes.OK).send("Account updated successfully.");
     } catch (error) {

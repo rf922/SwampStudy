@@ -1,13 +1,12 @@
+import { resolveFileController } from "../middleware/resolveControllers";
 import express from "express";
-import generateUrl from "../services/FileService";
 
 const fileRouter = express.Router();
 
-fileRouter.get("/", async (req, res) => {
-  const { filename, path } = req.query;
-  const urls = await generateUrl(filename, path);
+fileRouter.use(resolveFileController);
 
-  res.send({ urls });
-});
+fileRouter.get("/", async (req, res) =>
+  req.fileController.getSignedAndPublicUrl(req, res),
+);
 
 export default fileRouter;

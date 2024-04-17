@@ -29,7 +29,8 @@ export class UserController {
    */
   public async register(req: Request, res: Response) {
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
-    const { firstName, lastName, email, password } = req.body;
+    const { firstName, lastName, email, password, profilePicture } = req.body;
+    const pic = !profilePicture ? "NA" : profilePicture;
     if (!firstName || !lastName || !email || !password) {
       return res
         .status(StatusCodes.BAD_REQUEST)
@@ -41,6 +42,7 @@ export class UserController {
         lastName,
         email,
         password,
+        pic,
       );
       return res.status(StatusCodes.CREATED).send(message);
     } catch (error) {

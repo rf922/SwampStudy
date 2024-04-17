@@ -23,11 +23,23 @@ import { MatchController } from "../controllers/matchController";
 import { RatingRepository } from "./../repositories/RatingRepository";
 import { RatingService } from "./../services/RatingService";
 import { RatingController } from "./../controllers/ratingController";
+import { FileService } from "./../services/FileService";
+import { FileController } from "./../controllers/fileController";
+import * as AWS from "aws-sdk";
 /**
  * // this is sets up the dep injection by registering  repositories,
  * services, and controllers—with the DI container.
  */
 export const DIContainerConfig = (diContainer: typeof DIContainer) => {
+  // config for AWS S3 client
+  const s3 = new AWS.S3({
+    signatureVersion: "v4",
+  });
+  const bucketName = process.env.BUCKET_NAME;
+
+  // Register AWS S3 client
+  diContainer.registerInstance("AWSS3Client", s3);
+
   /* register repos here as instances */
   diContainer.registerInstance("UserRepository", UserRepository);
   diContainer.registerInstance("AccountRepository", AccountRepository);
@@ -37,7 +49,6 @@ export const DIContainerConfig = (diContainer: typeof DIContainer) => {
   diContainer.registerInstance("SessionRepository", SessionRepository);
   diContainer.registerInstance("LikeRepository", LikeRepository);
   diContainer.registerInstance("MatchRepository", MatchRepository);
-
   diContainer.registerInstance("RatingRepository", RatingRepository);
   /* add other repositories as needed... */
 
@@ -87,6 +98,11 @@ export const DIContainerConfig = (diContainer: typeof DIContainer) => {
   diContainer.registerFactory(
     "RatingService",
     () => new RatingService(diContainer.resolve("RatingRepository")),
+  );
+
+  diContainer.registerFactory(
+    "FileService",
+    () => new FileService(diContainer.resolve("AWSS3Client"), bucketName),
   );
   /* expand services as needed */
 
@@ -143,5 +159,9 @@ export const DIContainerConfig = (diContainer: typeof DIContainer) => {
     () => new RatingController(diContainer.resolve("RatingService")),
   );
 
+  diContainer.registerFactory(
+    "FileController",
+    () => new FileController(diContainer.resolve("FileService")),
+  );
   /* add as project expands */
 };

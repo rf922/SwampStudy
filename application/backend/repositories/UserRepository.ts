@@ -48,6 +48,7 @@ export const UserRepository = myDataSource.getRepository(User).extend({
    * @param lastName
    * @param email
    * @param password
+   * @param profilePicture
    * @returns
    */
   async createUserWithAccount(
@@ -55,6 +56,7 @@ export const UserRepository = myDataSource.getRepository(User).extend({
     lastName: string,
     email: string,
     password: string,
+    profilePicture?: string,
   ): Promise<User> {
     return await myDataSource.transaction(
       async (transactionalEntityManager) => {
@@ -75,7 +77,7 @@ export const UserRepository = myDataSource.getRepository(User).extend({
           // create the acc and associate it to its user
           first_name: firstName,
           last_name: lastName,
-          profile_picture: "picture that will be put in S3 bucket",
+          profile_picture: profilePicture,
           user_FK: { id: newUser.id },
         });
 

@@ -45,6 +45,7 @@ export class UserService {
     lastName: string,
     email: string,
     password: string,
+    profilePicture?: string,
   ): Promise<string> {
     const existingUser = await this.getUserByEmail(email);
     if (existingUser) {
@@ -59,6 +60,7 @@ export class UserService {
         lastName,
         email,
         hashedPassword,
+        profilePicture,
       );
       return `User and account registered with email: ${email}`;
     } catch (error) {
