@@ -65,7 +65,7 @@ const Home = () => {
         </button>
       </div>
 
-      <div className="flex-grow  overflow-auto bg-purple-100 p-4">
+      <div className="flex-grow min-w-80 overflow-auto bg-purple-100 p-4">
         {view === "forum" ? <Forum /> : <Matching />}
       </div>
     </div>

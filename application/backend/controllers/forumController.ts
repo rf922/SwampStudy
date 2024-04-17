@@ -234,9 +234,47 @@ export class ForumController {
           .json({ message: "Invalid page number" });
       }
       const threads = await this.threadService.getThreadPage(page);
-      res.status(StatusCodes.NOT_IMPLEMENTED).json(threads);
+      res.json(threads);
     } catch (error) {
       res.status(StatusCodes.INTERNAL_SERVER_ERROR).send(error.message);
+    }
+  }
+
+  /**
+   * gets 10 threads starting from the specified page
+   *
+   */
+  public async getThreadPageByClass(req: Request, res: Response) {
+    try {
+      const cls = req.params.class;
+      const page = parseInt(req.params.page);
+
+      if (isNaN(page) || page < 1) {
+        //page needs to be valid,
+        return res
+          .status(StatusCodes.BAD_REQUEST)
+          .json({ message: "Invalid page number" });
+      }
+      const threads = await this.threadService.getThreadPageByClass(cls, page);
+      res.status(StatusCodes.OK).json(threads);
+    } catch (error) {
+      res.status(StatusCodes.INTERNAL_SERVER_ERROR).send(error.message);
+    }
+  }
+
+  /**
+   * retrieves a listing of classes
+   * which have atleast one thread to them
+   * @param req
+   * @param res
+   * @returns
+   */
+  public async getThreadClasses(req: Request, res: Response) {
+    try {
+      const classesMap = await this.threadService.getThreadClasses();
+      return res.status(StatusCodes.OK).json(classesMap);
+    } catch (error) {
+      res.status(StatusCodes.NOT_FOUND).send("error " + error);
     }
   }
 
