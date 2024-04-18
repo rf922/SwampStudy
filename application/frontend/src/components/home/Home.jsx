@@ -48,24 +48,24 @@ const Home = () => {
 
   return (
     <div className="flex flex-col min-h-screen">
-      <div className="flex justify-between items-center bg-purple-200 p-3">
+      <div className="flex divide-x-4 divide-sfsuPurple justify-between items-center bg-purple-200 p-2">
         <button
-          className={`w-1/2 text-left " ${view === "matching" ? "bg-purple-400" : "text-purple-400 font-bold"}`}
+          className={`w-1/2 px-8 text-center text-lg ${view === "matching" ? "text-sfsuPurple bg-purple-400 font-extrabold underline underline-offset-1" : "text-sfsuPurple font-bold "}`}
           onClick={() => setView("matching")}
         >
-          {view === "matching" ? "Currently in Matching!" : "Go To Matching"}
+          {view === "matching" ? "In Matching" : "Matching"}
         </button>
 
         {/* forum*/}
         <button
-          className={`w-1/2 text-right ${view === "forum" ? "bg-purple-400" : "text-purple-400 font-bold"}`}
+          className={`w-1/2 px-8 text-center text-lg ${view === "forum" ? "text-sfsuPurple bg-purple-400  font-extrabold underline underline-offset-1" : "text-sfsuPurple font-bold"}`}
           onClick={() => setView("forum")}
         >
-          {view === "forum" ? "Currently in Forums!" : "Go To Forums"}
+          {view === "forum" ? "In Forums!" : "Forums"}
         </button>
       </div>
 
-      <div className="flex-grow  overflow-auto bg-purple-100 p-4">
+      <div className="flex-grow min-w-80 overflow-auto bg-purple-100 p-4">
         {view === "forum" ? <Forum /> : <Matching />}
       </div>
     </div>
