@@ -1,5 +1,5 @@
 import { UserRepository } from "./../repositories/UserRepository";
-import { hash, compare } from "bcrypt";
+import { hash, compare } from "bcryptjs";
 
 /**
  * user service class responsible for handlig business logic rel.

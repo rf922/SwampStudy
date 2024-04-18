@@ -38,4 +38,34 @@ export class Account extends BaseEntity {
     onDelete: "CASCADE",
   })
   questions: Question[];
+
+  @Column()
+  monday: boolean;
+
+  @Column()
+  tuesday: boolean;
+
+  @Column()
+  wednesday: boolean;
+
+  @Column()
+  thursday: boolean;
+
+  @Column()
+  friday: boolean;
+
+  @Column()
+  saturday: boolean;
+
+  @Column()
+  sunday: boolean;
+
+  @Column()
+  educator: boolean;
+
+  @Column()
+  introvert: boolean;
+
+  @Column("varchar", { length: 500 })
+  biography;
 }

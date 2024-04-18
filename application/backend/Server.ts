@@ -12,6 +12,7 @@ import likeRouter from "./routers/likeRouter";
 import matchRouter from "./routers/matchRouter";
 import forumRouter from "./routers/forumRouter";
 import authenticationRouter from "./routers/authenticationRouter";
+import fileRouter from "./routers/fileRouter";
 import { Session } from "./entities/session.entity";
 import { DIContainer } from "./config/DIContainer";
 import { DIContainerConfig } from "./config/DIContainerConfig";
@@ -42,7 +43,7 @@ export class Server {
     //These are now the correct CORS options
     const corsOptions = {
       //change to url when in production
-      origin: "https://swamp-study.global.ssl.fastly.net",
+      origin: `${process.env.ORIGIN}`,
       credentials: true,
     };
 
@@ -78,6 +79,7 @@ export class Server {
     this.app.use("/api/match", matchRouter);
     this.app.use("/api/forum", forumRouter);
     this.app.use("/api/rating", ratingRouter);
+    this.app.use("/api/file", fileRouter);
     this.app.get("/api", (req: Request, res: Response) =>
       res.send("You have reached the API!"),
     );

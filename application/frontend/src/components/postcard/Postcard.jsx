@@ -6,7 +6,7 @@ const Postcard = ({ thread }) => {
   // small container for quick summary of a post/ question
   return (
     //  hover:shadow-2xl for a lgr shadw onhover && hover:scale-105 to make it 'pop'
-    <div className="flex flex-col max-w-full min-w-[220px] min-h-[220px]  rounded-lg overflow-hidden shadow-lg bg-white my-4 border border-purple-200 transition duration-200 ease-in-out hover:shadow-2xl hover:scale-105">
+    <div className="flex flex-col max-w-full min-w-[220px] min-h-[220px] rounded-lg overflow-hidden shadow-lg bg-white my-4 border border-purple-200 transition duration-200 ease-in-out hover:shadow-2xl hover:ring-4 hover:ring-yellow-300 hover:scale-105 focus:scale-105 focus:outline-none">
       <div className="flex flex-col justify-between px-6 py-4 bg-violet-200 text-gray-800 h-full">
         <p className="font-bold text-lg text-purple-800 whitespace-nowrap overflow-hidden overflow-ellipsis">
           {thread.title}

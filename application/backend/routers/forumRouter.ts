@@ -42,6 +42,14 @@ forumRouter.get("/threads/page/:page", (req, _res) =>
   req.forumController.getThreadPage(req, _res),
 );
 
+forumRouter.get("/threads/:class/page/:page", (req, _res) =>
+  req.forumController.getThreadPageByClass(req, _res),
+);
+
+forumRouter.get("/threads/class/listing", (req, _res) =>
+  req.forumController.getThreadClasses(req, _res),
+);
+
 forumRouter.get("/threads/search/", (req, _res) =>
   req.forumController.threadSearch(req, _res),
 );

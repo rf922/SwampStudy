@@ -1,7 +1,7 @@
 import { AuthenticationController } from "./../../controllers/authenticationController";
 import { AccountController } from "./../../controllers/accountController";
 import { UserController } from "./../../controllers/userController";
-import { ForumController } from "./../../controllers/ForumController";
+import { ForumController } from "./../../controllers/forumController";
 import { LikeController } from "./../../controllers/likeController";
 import { MatchController } from "./../../controllers/matchController";
 import { RatingController } from "./../../controllers/ratingController";

@@ -1,9 +1,12 @@
 export const isValidEmail = (email, errors) => {
-  const emailRegExp = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
-  if (!emailRegExp.test(String(email))) {
-    errors.push("invalid email");
+  const sfsuregex = /@sfsu\.edu$/; // regex for sfsu email
+  const emailRegExp = /^[a-zA-Z0-9._%+-]+$/; // regex for email validity
+  if (!sfsuregex.test(String(email))) {
+    errors.push("Email must be a valid SFSU email"); // test if email is sfsu email
+  } else if (emailRegExp.test(String(email)) && sfsuregex.test(String(email))) {
+    // test if email is valid
+    errors.push("Invalid email");
   }
-  /* expand for sfsu email etc,  */
 };
 
 /**

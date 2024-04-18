@@ -13,7 +13,6 @@ FROM node:${NODE_VERSION}-alpine
 # Use production node environment by default.
 ENV NODE_ENV production
 
-
 WORKDIR /usr/src/app
 
 # Download dependencies as a separate step to take advantage of Docker's caching.
@@ -29,10 +28,14 @@ RUN --mount=type=bind,source=package.json,target=package.json \
 USER node
 
 # Copy the rest of the source files into the image.
-COPY . .
+# COPY . .
+COPY ./build ./build
+COPY ./node_modules ./node_modules
 
 # Expose the port that the application listens on.
 EXPOSE 80
 
+# Won't work locally
 # Run the application.
-CMD npm start
+CMD cd ./build && node ./index.js
+# CMD while true; do echo hello; done;
