@@ -25,6 +25,9 @@ import { RatingService } from "./../services/RatingService";
 import { RatingController } from "./../controllers/ratingController";
 import { FileService } from "./../services/FileService";
 import { FileController } from "./../controllers/fileController";
+import { ClassScheduleRepository } from "./../repositories/ClassScheduleRepository";
+import { ClassScheduleService } from "./../services/ClassScheduleService";
+import { ClassScheduleController } from "./../controllers/classScheduleController";
 import * as AWS from "aws-sdk";
 /**
  * // this is sets up the dep injection by registering  repositories,
@@ -50,6 +53,10 @@ export const DIContainerConfig = (diContainer: typeof DIContainer) => {
   diContainer.registerInstance("LikeRepository", LikeRepository);
   diContainer.registerInstance("MatchRepository", MatchRepository);
   diContainer.registerInstance("RatingRepository", RatingRepository);
+  diContainer.registerInstance(
+    "ClassScheduleRepository",
+    ClassScheduleRepository,
+  );
   /* add other repositories as needed... */
 
   /* register services to factory here, inject dependencies */
@@ -103,6 +110,12 @@ export const DIContainerConfig = (diContainer: typeof DIContainer) => {
   diContainer.registerFactory(
     "FileService",
     () => new FileService(diContainer.resolve("AWSS3Client"), bucketName),
+  );
+
+  diContainer.registerFactory(
+    "ClassScheduleService",
+    () =>
+      new ClassScheduleService(diContainer.resolve("ClassScheduleRepository")),
   );
   /* expand services as needed */
 
@@ -162,6 +175,12 @@ export const DIContainerConfig = (diContainer: typeof DIContainer) => {
   diContainer.registerFactory(
     "FileController",
     () => new FileController(diContainer.resolve("FileService")),
+  );
+
+  diContainer.registerFactory(
+    "ClassScheduleController",
+    () =>
+      new ClassScheduleController(diContainer.resolve("ClassScheduleService")),
   );
   /* add as project expands */
 };
