@@ -86,7 +86,8 @@ export const AccountRepository = myDataSource.getRepository(Account).extend({
       if (lastName !== undefined) account.last_name = lastName;
       if (profilePicture !== undefined)
         account.profile_picture = profilePicture;
-      if (weekavailability !== undefined) account.weekavailability = weekavailability;
+      if (weekavailability !== undefined)
+        account.weekavailability = weekavailability;
       if (introvert !== undefined) account.introvert = introvert;
       if (biography !== undefined) account.biography = biography;
       await accountRepo.save(account);
