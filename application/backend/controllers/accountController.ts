@@ -91,16 +91,29 @@ export class AccountController {
       return res.status(StatusCodes.UNAUTHORIZED).send("User not logged in.");
     }
 
-    const { firstName, lastName, email, newPassword, profilePicture } =
-      req.body;
+    /** account settings front end vars need to be changed to match this and the db */
+    const {
+      first_name,
+      last_name,
+      email,
+      newPassword,
+      profile_picture,
+      weekavailability,
+      introvert,
+      biography,
+    } = req.body;
+
     try {
       await this.accountService.updateAccount(
         userId,
-        firstName,
-        lastName,
+        first_name,
+        last_name,
         email,
         newPassword,
-        profilePicture,
+        profile_picture,
+        weekavailability,
+        introvert,
+        biography,
       );
       res.status(StatusCodes.OK).send("Account updated successfully.");
     } catch (error) {

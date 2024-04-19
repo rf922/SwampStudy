@@ -100,6 +100,9 @@ export class AccountService {
     email?: string,
     newPassword?: string,
     profilePicture?: string,
+    weekavailability?: number,
+    introvert?: boolean,
+    biography?: string,
   ) {
     const existingUser = await this.userRepository.getUserById(userId);
     if (!existingUser) {
@@ -117,6 +120,9 @@ export class AccountService {
         email,
         hashedPassword,
         profilePicture,
+        weekavailability,
+        introvert,
+        biography,
       );
     } catch (error) {
       console.error("Error updating account:", error.message);
