@@ -19,8 +19,6 @@ export const ClassScheduleRepository = myDataSource
       });
     },
 
-    async addUserClass(userId: number, classId: number) {},
-
     /**
      * adds all classes as schedule entries for given userId
      * @param userId
@@ -28,9 +26,10 @@ export const ClassScheduleRepository = myDataSource
      */
     async addAllClassesToSchedule(userId: number, classesToAdd: number[]) {
       const scheduleEnts = classesToAdd.map((classId) => {
-        return this.create({// the schedule entries for userId and each classId
-          account: { id: userId }, 
-          class: { id: classId }, 
+        return this.create({
+          // the schedule entries for userId and each classId
+          account: { id: userId },
+          class: { id: classId },
         });
       });
 

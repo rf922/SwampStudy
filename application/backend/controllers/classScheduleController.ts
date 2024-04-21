@@ -23,7 +23,9 @@ export class ClassScheduleController {
     try {
       const { msg } = req.body;
       res.status(StatusCodes.ACCEPTED).send(`echo ${msg}`);
-    } catch (error) {}
+    } catch (error) {
+      res.status(StatusCodes.INTERNAL_SERVER_ERROR);
+    }
   }
 
   public async getClassSchedule(req: Request, res: Response) {
@@ -32,7 +34,9 @@ export class ClassScheduleController {
       const courseSchedule =
         await this.classScheduleService.getUserClassesById(userId);
       return res.status(StatusCodes.ACCEPTED).send(courseSchedule);
-    } catch (error) {}
+    } catch (error) {
+      res.status(StatusCodes.NOT_FOUND);
+    }
   }
 
   /**

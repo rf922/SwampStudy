@@ -39,7 +39,7 @@ export class ClassScheduleService {
     );
     const removedClasses = await this.getScheduleDifference(
       changedClasses,
-      initClasses
+      initClasses,
     );
 
     if (addedClasses.length !== 0) {
