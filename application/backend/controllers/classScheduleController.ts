@@ -26,15 +26,33 @@ export class ClassScheduleController {
     } catch (error) {}
   }
 
+  public async getClassSchedule(req: Request, res: Response) {
+    try {
+      const userId = req.session.userId;
+      const courseSchedule =
+        await this.classScheduleService.getUserClassesById(userId);
+      return res.status(StatusCodes.ACCEPTED).send(courseSchedule);
+    } catch (error) {}
+  }
+
   /**
    * adds a class to a users scheduel
    * @param req
    * @param res
    */
-  public async addClass(req: Request, res: Response) {}
-
-  /**
-   * going to add more, probably have frontend send
-   * backend an array of class ids ?
-   */
+  public async updateUserClassSchedule(req: Request, res: Response) {
+    try {
+      const userId = req.session.userId;
+      const { classes } = req.body;
+      const result = await this.classScheduleService.updateUserClasses(
+        userId,
+        classes,
+      );
+      return res.status(StatusCodes.ACCEPTED).send(result);
+    } catch (error) {
+      return res
+        .status(StatusCodes.INTERNAL_SERVER_ERROR)
+        .send("Problemupdating class schedule");
+    }
+  }
 }

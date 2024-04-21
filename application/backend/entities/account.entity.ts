@@ -10,7 +10,7 @@ import {
 import { User } from "./user.entity";
 import { Question } from "./question.entity";
 import { IsDefined, IsString } from "class-validator";
-
+import { ClassSchedule } from "./classschedule.entity";
 @Entity()
 export class Account extends BaseEntity {
   @PrimaryGeneratedColumn()
@@ -50,4 +50,7 @@ export class Account extends BaseEntity {
 
   @Column("varchar", { length: 500, default: "" })
   biography: string;
+
+  @OneToMany(() => ClassSchedule, (classSchedule) => classSchedule.account)
+  classSchedules: ClassSchedule[];
 }

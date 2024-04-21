@@ -30,6 +30,7 @@ export const AccountRepository = myDataSource.getRepository(Account).extend({
         weekavailability: true,
         // optionally in the future we may want to grab more fields
       },
+      //  relations: ['classSchedules']
     });
   },
 

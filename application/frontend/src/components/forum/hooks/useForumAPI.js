@@ -159,7 +159,7 @@ export const useForumAPI = (
         setHasMore(false);
         return;
       }
-
+      setIsLoading(true);
       axios
         .get(
           `${process.env.REACT_APP_API_URL}/forum/threads/${selectedClass}/page/${page}`,
@@ -199,6 +199,7 @@ export const useForumAPI = (
         })
         .finally(() => {
           console.log("Fetch threads operation completed.");
+          setIsLoading(false);
         });
     } else {
       console.log(
