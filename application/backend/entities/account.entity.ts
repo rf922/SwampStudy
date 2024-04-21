@@ -48,6 +48,9 @@ export class Account extends BaseEntity {
   @Column({ default: 0 })
   introvert: boolean;
 
+  @Column({ default: 0 })
+  isHidden: boolean;
+
   @Column("varchar", { length: 500, default: "" })
   biography: string;
 

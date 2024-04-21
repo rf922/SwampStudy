@@ -27,6 +27,7 @@ export const AccountRepository = myDataSource.getRepository(Account).extend({
         biography: true,
         educator: true,
         introvert: true,
+        isHidden:true,
         weekavailability: true,
         // optionally in the future we may want to grab more fields
       },
@@ -60,6 +61,7 @@ export const AccountRepository = myDataSource.getRepository(Account).extend({
     profilePicture?: string,
     weekavailability?: number,
     introvert?: boolean,
+    isHidden?: boolean,
     biography?: string,
   ) {
     await myDataSource.transaction(async (transactionalEntityManager) => {
@@ -90,6 +92,7 @@ export const AccountRepository = myDataSource.getRepository(Account).extend({
       if (weekavailability !== undefined)
         account.weekavailability = weekavailability;
       if (introvert !== undefined) account.introvert = introvert;
+      if (isHidden !== undefined) account.isHidden = isHidden;
       if (biography !== undefined) account.biography = biography;
       await accountRepo.save(account);
     });

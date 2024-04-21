@@ -59,26 +59,6 @@ export class AccountController {
     }
   }
 
-  /*
-  export const postAccount = async (req: Request, res: Response) => {
-    const account = await myDataSource.getRepository(Account).create(req.body);
-    const errors = await validate(account);
-  
-    if (errors.length > 0) {
-      res.status(StatusCodes.UNPROCESSABLE_ENTITY).send("Failed Data Validation"); // Use StatusCodes.UNPROCESSABLE_ENTITY for 422
-    } else {
-      try {
-        const results = await myDataSource.getRepository(Account).insert(account);
-        res.status(StatusCodes.CREATED).send(results); // Use StatusCodes.CREATED for successful creation
-      } catch (error) {
-        res
-          .status(StatusCodes.UNPROCESSABLE_ENTITY)
-          .send("Duplicate Request or Invalid Key or DB Error"); // Reuse StatusCodes.UNPROCESSABLE_ENTITY for 422 errors
-      }
-    }
-  };
-  */
-
   /**
    * Handles updating a users account with chanes to either firstName, lastName, email or password
    * @param req
@@ -100,6 +80,7 @@ export class AccountController {
       profile_picture,
       weekavailability,
       introvert,
+      isHidden,
       biography,
     } = req.body;
 
@@ -113,6 +94,7 @@ export class AccountController {
         profile_picture,
         weekavailability,
         introvert,
+        isHidden,
         biography,
       );
       res.status(StatusCodes.OK).send("Account updated successfully.");
