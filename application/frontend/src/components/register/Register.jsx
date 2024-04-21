@@ -4,8 +4,8 @@ import { useUserAPI } from "./hooks/useUserAPI";
 import { useFileAPI } from "./hooks/useFileAPI";
 
 const Register = () => {
-  // refactor to use imgpreview link state pos store file obj
-  const { formData, setFormData, handleChange, errors, validate, setErrors } =
+
+  const { formData, handleChange, errors, validate, setErrors } =
     useFormValidation({
       firstName: "",
       lastName: "",
@@ -17,7 +17,7 @@ const Register = () => {
 
   const [termsAccepted, setTermsAccepted] = useState(false);
   const { handleFileInputChange, uploadImage, imagePreviewUrl } = useFileAPI();
-  const [ file, setFile] = useState(null);
+  const [file, setFile] = useState(null);
   const { handleRegister } = useUserAPI();
 
   const onFileInput = async (e) => {

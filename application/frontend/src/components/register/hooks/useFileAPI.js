@@ -4,8 +4,9 @@ import axios from "axios";
 export const useFileAPI = () => {
   const [imagePreviewUrl, setImagePreviewUrl] = useState("");
 
-  const getFormattedFileName = async (fileName) => {//formats and forms the absolute filename
-    const timestamp = new Date().getTime(); 
+  const getFormattedFileName = async (fileName) => {
+    //formats and forms the absolute filename
+    const timestamp = new Date().getTime();
     const ext = fileName.split(".").pop();
     const formattedFileName =
       fileName
@@ -17,7 +18,8 @@ export const useFileAPI = () => {
     return fileNameWithExt;
   };
 
-  const uploadImage = async (file) => {//handles image upload logic
+  const uploadImage = async (file) => {
+    //handles image upload logic
     const fileName = await getFormattedFileName(file.name);
     const foldersPath = "profiles";
     const options = { headers: { "Content-Type": file.type } };
@@ -41,7 +43,8 @@ export const useFileAPI = () => {
     }
   };
 
-  const handleFileInputChange = (e) => {//on file inpit change updates the prevw url
+  const handleFileInputChange = (e) => {
+    //on file inpit change updates the prevw url
     const file = e.target.files[0];
     if (file) {
       const reader = new FileReader();
