@@ -36,6 +36,7 @@ export const Forum = () => {
     setPage,
 
     isLoading,
+    addThreadToThreadMap,
   } = useForumAPI(
     selectedDepartment,
     setSelectedDepartment,
@@ -76,6 +77,7 @@ export const Forum = () => {
   useEffect(() => {
     if (newPost) {
       // a post was made
+
       setThreadsMap((prevThreadsMap) => {
         const departmentName = newPost.class.department;
         const className = newPost.class.name;
@@ -92,14 +94,7 @@ export const Forum = () => {
         }
         return updatedThreadsMap;
       });
-
-      if (
-        newPost.class.department === selectedDepartment &&
-        newPost.class.name === selectedClass
-      ) {
-        // if usr posted to te current thread listing being viewed
-        setFilteredThreads((prev) => [...prev, newPost]); // update filteredThreads
-      }
+      addThreadToThreadMap(newPost);
       setHasMore(true);
       setNewPost(null); // reset newPost to prevent reprocessing
     }
@@ -250,7 +245,7 @@ export const Forum = () => {
                 {filteredThreads.map((thread) => (
                   <Postcard key={thread.id} thread={thread} />
                 ))}
-                {(!hasMore || filteredThreads.length < 10) && (
+                {!isLoading && (!hasMore || filteredThreads.length < 10) && (
                   <p className="text-center text-xl text-purple-800 font-bold italic mb-9 shadow-md">
                     Have a question you didn&apos;t see? Ask it!
                   </p>

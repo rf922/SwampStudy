@@ -111,6 +111,32 @@ export const useForumAPI = (
     getClassListing();
   }, []); // eslint-disable-line react-hooks/exhaustive-deps
 
+  /**
+   * helper for adding threads to the map
+   * @param {*} newThread
+   */
+  const addThreadToThreadMap = (newThread) => {
+    if (!threadsMap[newThread.class.department]) {
+      //init the dep if its not there
+      threadsMap[newThread.class.department] = {};
+    }
+    if (!threadsMap[newThread.class.department][newThread.class.name]) {
+      //init the empty thread array
+      threadsMap[newThread.class.department][newThread.class.name] = {
+        threads: [],
+      };
+    }
+    if (
+      threadsMap[newThread.class.department]?.[newThread.class.name]?.threads
+        .length !== 0
+    ) {
+      // if theyre posting to non empty dep/cls/ i.e have visited
+      threadsMap[newThread.class.department][newThread.class.name].threads.push(
+        newThread,
+      ); //append the thread to curr view
+    }
+  };
+
   useEffect(() => {
     const getNewUniqueThreads = (newThreads, existingThreads) => {
       //helper to filter out threads already contained in existingThreads
@@ -252,5 +278,6 @@ export const useForumAPI = (
     page,
     setPage,
     isLoading,
+    addThreadToThreadMap,
   };
 };
