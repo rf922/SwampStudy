@@ -59,6 +59,15 @@ const UpdateAccount = () => {
     }, {});
     if (validate(dataToSend)) {
       updateAccount(dataToSend, (errors) => console.log(errors));
+      const localData = localStorage.getItem("userDetails");
+      const userDetails = localData ? JSON.parse(localData) : {};
+
+      // updat local storage
+      localStorage.setItem("userDetails", JSON.stringify({
+        ...userDetails,
+        introvert: options.introvert,
+        isHidden: options.isHidden
+      }));
     } else {
       console.error("Please Try again");
       alert("Please Try Again");
