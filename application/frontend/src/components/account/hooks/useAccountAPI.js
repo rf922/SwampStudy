@@ -15,7 +15,6 @@ export const useAccountAPI = () => {
       );
       if (response.status === 200) {
         alert("Account updated successfully!");
-        navigate("/");
       }
     } catch (error) {
       console.error("Error updating account:", error);

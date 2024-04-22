@@ -4,7 +4,6 @@ import { useUserAPI } from "./hooks/useUserAPI";
 import { useFileAPI } from "./hooks/useFileAPI";
 
 const Register = () => {
-
   const { formData, handleChange, errors, validate, setErrors } =
     useFormValidation({
       firstName: "",
