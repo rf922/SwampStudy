@@ -22,6 +22,7 @@ import { Auth } from "./context/AuthContext";
 import PrivacyPolicy from "./components/privacypolicy/PrivacyPolicy";
 import Contact from "./components/contact/contact";
 import Licensing from "./components/licensing/licensing";
+import SocialIcons from "./components/socialicon/Socialicon";
 function App() {
   return (
     <Auth>
@@ -74,6 +75,7 @@ function App() {
               />
               <Route path="/contact" element={<Contact />} />
               <Route path="/licensing" element={<Licensing />} />
+              <Route path="/socialicon" element={<SocialIcons />} />
             </Routes>
           </div>
           <Footer />
