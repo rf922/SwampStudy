@@ -17,9 +17,12 @@ import Settings from "./components/settings/Settings";
 import UserProfile from "./components/userProfile/UserProfile";
 import TermsAndConditions from "./components/termsAndConditions/termsAndConditions";
 import Image from "./components/image/Image";
-
+import Footer from "./components/footer/footer";
 import { Auth } from "./context/AuthContext";
-
+import PrivacyPolicy from "./components/privacypolicy/PrivacyPolicy";
+import Contact from "./components/contact/contact";
+import Licensing from "./components/licensing/licensing";
+import SocialIcons from "./components/socialicon/Socialicon";
 function App() {
   return (
     <Auth>
@@ -34,6 +37,7 @@ function App() {
               <Route path="/about/:name" element={<Profile />} />
               <Route path="/about/" element={<About />} />
               <Route path="/login" element={<Login />} />
+              <Route path="/footer" element={<Footer />} />
               <Route path="/register" element={<Register />} />
               <Route path="/matching" element={<Matching />} />
               <Route path="/userProfile" element={<UserProfile />} />
@@ -42,6 +46,9 @@ function App() {
                 path="/terms-and-conditions"
                 element={<TermsAndConditions />}
               />
+
+              <Route path="/privacypolicy" element={<PrivacyPolicy />} />
+
               <Route
                 path="/settings"
                 element={
@@ -66,9 +73,14 @@ function App() {
                     <Makepost />
                   </ProtectedRoute>
                 }
+              />
               />*/}
+              <Route path="/contact" element={<Contact />} />
+              <Route path="/licensing" element={<Licensing />} />
+              <Route path="/socialicon" element={<SocialIcons />} />
             </Routes>
           </div>
+          <Footer />
         </div>
       </Router>
     </Auth>
