@@ -1,6 +1,6 @@
 export const MatchProfile = () => {
   return (
-    <div className="col-span-3 text-center">
+    <div className="col-span-3 text-center my-16 border-2 border-gray-500 bg-white">
       <div className="flex justify-center">
         <div className="w-1/2">
           <div className="grid grid-cols-2">
