@@ -75,8 +75,14 @@ export class AccountService {
     id: number,
     firstName: string,
     lastName: string,
+    profilePicture: string,
   ) {
-    this.accountRepository.updateAccountDetails(id, firstName, lastName);
+    this.accountRepository.updateAccountDetails(
+      id,
+      firstName,
+      lastName,
+      profilePicture,
+    );
   }
 
   /**
@@ -93,6 +99,11 @@ export class AccountService {
     lastName?: string,
     email?: string,
     newPassword?: string,
+    profilePicture?: string,
+    weekavailability?: number,
+    introvert?: boolean,
+    isHidden?: boolean,
+    biography?: string,
   ) {
     const existingUser = await this.userRepository.getUserById(userId);
     if (!existingUser) {
@@ -109,6 +120,11 @@ export class AccountService {
         lastName,
         email,
         hashedPassword,
+        profilePicture,
+        weekavailability,
+        introvert,
+        isHidden,
+        biography,
       );
     } catch (error) {
       console.error("Error updating account:", error.message);

@@ -24,8 +24,14 @@ export const AccountRepository = myDataSource.getRepository(Account).extend({
         first_name: true,
         last_name: true,
         profile_picture: true,
+        biography: true,
+        educator: true,
+        introvert: true,
+        isHidden: true,
+        weekavailability: true,
         // optionally in the future we may want to grab more fields
       },
+      //  relations: ['classSchedules']
     });
   },
 
@@ -53,6 +59,10 @@ export const AccountRepository = myDataSource.getRepository(Account).extend({
     email?: string,
     newPassword?: string,
     profilePicture?: string,
+    weekavailability?: number,
+    introvert?: boolean,
+    isHidden?: boolean,
+    biography?: string,
   ) {
     await myDataSource.transaction(async (transactionalEntityManager) => {
       // start a transaction, for safety to ensure all code in the transaction executes correctl
@@ -79,7 +89,11 @@ export const AccountRepository = myDataSource.getRepository(Account).extend({
       if (lastName !== undefined) account.last_name = lastName;
       if (profilePicture !== undefined)
         account.profile_picture = profilePicture;
-
+      if (weekavailability !== undefined)
+        account.weekavailability = weekavailability;
+      if (introvert !== undefined) account.introvert = introvert;
+      if (isHidden !== undefined) account.isHidden = isHidden;
+      if (biography !== undefined) account.biography = biography;
       await accountRepo.save(account);
     });
   },

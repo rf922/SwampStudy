@@ -14,25 +14,21 @@ export const useUserAPI = () => {
         navigate("/");
       }
     } catch (err) {
+      const errorMessages = {};
       if (err.response) {
-        const errorMessage =
-          err.response.data.message || "An error occurred during registration.";
-        setErrors(errorMessage);
-        if (err.response.status === 409) {
-          setErrors((prevErrors) => ({
-            ...prevErrors,
-            email: "An account with this email already exists.",
-          }));
-        } else {
-          setErrors((prevErrors) => ({
-            ...prevErrors,
-            form: errorMessage,
-          }));
+        switch (err.response.status) {
+          case 409:
+            errorMessages.form = "A user already exists with that email";
+            break;
+          default:
+            errorMessages.form = "An error occurred. Please try again later.";
+            break;
         }
       } else {
-        console.error("Error during registration:", err);
-        setErrors("An unknown error occurred.");
+        console.error("Unknown error during login:", { err });
+        errorMessages.form = "An unknown error occurred.";
       }
+      setErrors(errorMessages);
     }
   };
 

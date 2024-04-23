@@ -13,6 +13,7 @@ import matchRouter from "./routers/matchRouter";
 import forumRouter from "./routers/forumRouter";
 import authenticationRouter from "./routers/authenticationRouter";
 import fileRouter from "./routers/fileRouter";
+import classScheduleRouter from "./routers/classScheduleRouter";
 import { Session } from "./entities/session.entity";
 import { DIContainer } from "./config/DIContainer";
 import { DIContainerConfig } from "./config/DIContainerConfig";
@@ -80,6 +81,7 @@ export class Server {
     this.app.use("/api/forum", forumRouter);
     this.app.use("/api/rating", ratingRouter);
     this.app.use("/api/file", fileRouter);
+    this.app.use("/api/schedule", classScheduleRouter);
     this.app.get("/api", (req: Request, res: Response) =>
       res.send("You have reached the API!"),
     );
