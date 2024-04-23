@@ -9,14 +9,14 @@ export const MeetingRating = (props) => {
           <div className="border-2 border-black rounded-xl max-w-48 w-full overflow-hidden">
             <img className="w-full object-scale-down p-2" src="/logo512.png" />
             <div className="border-t-2 border-black py-1">
-              <p>{props.name}</p>
+              <p>{props.match.name}</p>
             </div>
           </div>
         </div>
         <div className="flex justify-center">
-          {[...Array(5)].map(() => (
+          {[...Array(5)].map((_, i) => (
             <svg
-              key="It was me, Dio!"
+              key={i}
               fill="none"
               viewBox="0 0 24 24"
               strokeWidth="0.25"
@@ -34,7 +34,7 @@ export const MeetingRating = (props) => {
         <button
           className="bg-yellow-300 rounded-lg px-5 py-1 text-black hover:bg-yellow-400 transition-colors duration-300"
           onClick={() => {
-            alert("WIP");
+            props.onSubmit();
           }}
         >
           Submit
@@ -45,7 +45,8 @@ export const MeetingRating = (props) => {
 };
 
 MeetingRating.propTypes = {
-  name: PropTypes.string,
+  match: PropTypes.object,
+  onSubmit: PropTypes.function,
 };
 
 export default MeetingRating;

@@ -5,9 +5,19 @@ import MatchProfile from "./MatchProfile";
 import MeetingDetails from "./MeetingDetails";
 
 export const Matching = () => {
-  const [name, setName] = useState("");
+  const [match, setMatch] = useState({ id: -1, name: "" });
   const [rate, setRate] = useState(false);
   const [find, setFind] = useState(true);
+
+  // TODO: Remove dummy data
+  const [matches, setMatches] = useState([
+    { id: 0, name: "Student Zero" },
+    { id: 1, name: "Student One" },
+    { id: 2, name: "Student Two" },
+    { id: 3, name: "Student Three" },
+    { id: 4, name: "Student Four" },
+    { id: 5, name: "Student Five" },
+  ]);
 
   return (
     <div className="flex justify-center">
@@ -16,9 +26,15 @@ export const Matching = () => {
           <div className="col-span-4">
             <div className="text-xl border-2 border-gray-500 border-t-0 py-2">
               {rate ? (
-                <p>Rate your study partner: {name}</p>
+                <p>Rate your study partner: {match.name}</p>
               ) : (
-                <p>You matched with {name}</p>
+                <>
+                  {find ? (
+                    <p>Find A New Study Buddy!</p>
+                  ) : (
+                    <p>{match.name}&apos;s Profile</p>
+                  )}
+                </>
               )}
             </div>
           </div>
@@ -30,7 +46,17 @@ export const Matching = () => {
               <div className="w-5/6">
                 <div className="grid grid-cols-5">
                   {rate ? (
-                    <MatchRating name={name} />
+                    <MatchRating
+                      match={match}
+                      onSubmit={() => {
+                        setMatches(
+                          matches.filter((buddy) => buddy.id !== match.id),
+                        );
+                        setMatch({ id: -1, name: "" });
+                        setRate(false);
+                        setFind(true);
+                      }}
+                    />
                   ) : (
                     <>
                       {find && (
@@ -64,6 +90,7 @@ export const Matching = () => {
                             className="w-20 h-20"
                             onClick={() => {
                               alert("(WIP) Clicked ✔");
+                              // setMatches([...matches, "Dio was here"]);
                             }}
                           >
                             <path
@@ -82,66 +109,31 @@ export const Matching = () => {
               </div>
             </div>
           </div>
-          <div className="border-2 border-gray-500 border-t-0 border-l-0">
+          <div className="border-b-2 border-r-2 border-gray-500">
             <YourMatch
-              name="Find New Study Buddy"
+              name="Find A New Study Buddy"
               active={find}
               onClick={() => {
-                setName("");
+                setMatch({ id: -1, name: "" });
                 setRate(false);
                 setFind(true);
               }}
             />
-            <YourMatch
-              name="[Name]"
-              active={name == "[Name]"}
-              onClick={() => {
-                setName("[Name]");
-                setRate(false);
-                setFind(false);
-              }}
-              matched
-            />
-            <YourMatch
-              name="Student One"
-              active={name == "Student One"}
-              onClick={() => {
-                setName("Student One");
-                setRate(false);
-                setFind(false);
-              }}
-              matched
-            />
-            <YourMatch
-              name="Student Two"
-              active={name == "Student Two"}
-              onClick={() => {
-                setName("Student Two");
-                setRate(false);
-                setFind(false);
-              }}
-              matched
-            />
-            <YourMatch
-              name="Student Three"
-              active={name == "Student Three"}
-              onClick={() => {
-                setName("Student Three");
-                setRate(false);
-                setFind(false);
-              }}
-              matched
-            />
-            <YourMatch
-              name="Student Four"
-              active={name == "Student Four"}
-              onClick={() => {
-                setName("Student Four");
-                setRate(false);
-                setFind(false);
-              }}
-              matched
-            />
+            <div className="max-h-96 overflow-y-auto">
+              {matches.map((buddy) => (
+                <YourMatch
+                  key={buddy.id}
+                  name={buddy.name}
+                  active={match.id == buddy.id}
+                  onClick={() => {
+                    setMatch(buddy);
+                    setRate(false);
+                    setFind(false);
+                  }}
+                  matched
+                />
+              ))}
+            </div>
           </div>
         </div>
       </div>
