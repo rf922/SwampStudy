@@ -1,10 +1,10 @@
 import React, { useState } from "react";
-import { useParams } from "react-router-dom";
+import { useParams, Link } from "react-router-dom";
 import axios from "axios";
 import useForumAPI from "./hooks/useForumAPI";
 import { useAuth } from "./../../context/AuthContext";
 import { useFormValidation } from "./hooks/useFormValidation";
-
+import Loading from "./../loading/Loading";
 const Post = () => {
   let { questionId } = useParams();
   const { question, answers, setAnswers } = useForumAPI(questionId);
@@ -47,11 +47,21 @@ const Post = () => {
   };
 
   if (!question) {
-    return <div>Loading...</div>;
+    return (
+      <div className="flex justify-center items-center">
+        <Loading />
+      </div>
+    );
   }
 
   return (
-    <div className="max-w-md mx-auto rounded-lg overflow-hidden shadow-lg bg-white my-4 border border-purple-200">
+    <div className="max-w-md mx-auto  rounded-lg overflow-hidden shadow-lg bg-white my-4 border border-purple-200">
+      <Link
+        to="/forum"
+        className="absolute top-35 left-4 z-40 bg-yellow-300 hover:bg-yellow-400 text-purple-600 font-bold py-2 px-4 rounded-full transition duration-300 ease-in-out text-xs sm:text-sm shadow hover:shadow-lg transform hover:-translate-y-1"
+      >
+        Return to Forum
+      </Link>
       <div className="w-full bg-purple-100 text-gray-800">
         <div className="px-6 py-4">
           <div className="font-bold text-xl mb-2 text-purple-600 text-center ">

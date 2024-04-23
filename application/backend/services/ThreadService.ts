@@ -100,6 +100,60 @@ export class ThreadService {
   }
 
   /**
+   * retrieves 10 threads starting from the given page number
+   * @param page
+   * @returns
+   */
+  public async getThreadPageByClass(cls: string, page: number) {
+    try {
+      return await this.threadRepository.getThreadPageByClass(page, cls);
+    } catch (error) {
+      console.error("Failed to get thread page:", error);
+    }
+  }
+
+  /**
+   * organizes classes which have at least one thread to them
+   * into a grouping of class objects and their thread counts to their dep
+   * @returns
+   */
+  public async getThreadClasses() {
+    try {
+      const classDetails = await this.threadRepository.getClassThreadCounts();
+      return this.transformClassesToMap(classDetails);
+    } catch (error) {
+      console.error("Failed to get thread classes:", error);
+      return {}; // failure
+    }
+  }
+
+  /**
+   * helper which takes a map of classes and their counts of threads and
+   * process them into a grouping of classes by department
+   * @param classDetails
+   * @returns
+   */
+  private transformClassesToMap(classDetails) {
+    const departmentMap = {};
+
+    classDetails.forEach(({ id, name, number, department, _threadCount }) => {
+      if (!departmentMap[department]) {
+        //if the dep is not initiated, then initialize it
+        departmentMap[department] = [];
+      }
+
+      departmentMap[department].push({
+        //push the class to the corresponding dep in the map
+        id,
+        name,
+        number,
+        department,
+      });
+    });
+
+    return departmentMap;
+  }
+  /**
    * method to search for a thread whose title contains the passed word
    * @param phrase
    * @returns
