@@ -16,7 +16,6 @@ import Matching from "./components/matching/Matching";
 import Settings from "./components/settings/Settings";
 //import UserProfile from "./components/userProfile/UserProfile";
 import TermsAndConditions from "./components/termsAndConditions/termsAndConditions";
-import Image from "./components/image/Image";
 import Footer from "./components/footer/footer";
 import { Auth } from "./context/AuthContext";
 import PrivacyPolicy from "./components/privacypolicy/PrivacyPolicy";
@@ -50,9 +49,7 @@ function App() {
                 path="/terms-and-conditions"
                 element={<TermsAndConditions />}
               />
-
               <Route path="/privacypolicy" element={<PrivacyPolicy />} />
-
               <Route
                 path="/settings"
                 element={
