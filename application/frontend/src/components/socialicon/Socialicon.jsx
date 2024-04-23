@@ -53,7 +53,7 @@ const SocialIcon = ({ href, fillColor, svgPath, viewBox, ariaLabel }) => (
 
 SocialIcon.propTypes = {
   href: PropTypes.string.isRequired,
-  fillColor: PropTypes.string.isRequired,
+  fillColor: PropTypes.string,
   svgPath: PropTypes.string.isRequired,
   viewBox: PropTypes.string.isRequired,
   ariaLabel: PropTypes.string.isRequired,

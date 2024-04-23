@@ -5,10 +5,7 @@ const Footer = () => {
     <footer className="bg-transparent shadow mx-4 my-0">
       <div className="w-full max-w-screen-xl mx-auto py-4 md:py-8 flex flex-col items-center">
         <div className="w-full flex justify-between items-center mb-4">
-          <a
-            href="https://swamp-study.global.ssl.fastly.net/"
-            className="flex items-center space-x-3"
-          >
+          <a href="/" className="flex items-center space-x-3">
             <img
               src="./images/alli.png"
               className="h-8"
@@ -50,10 +47,7 @@ const Footer = () => {
       <div className="flex flex-col items-center justify-end pt-4">
         <span className="text-sm text-gray-500 dark:text-black">
           © 2024{" "}
-          <a
-            href="https://swamp-study.global.ssl.fastly.net/"
-            className="hover:underline"
-          >
+          <a href="/" className="hover:underline">
             SwampStudy
           </a>
           . All Rights Reserved.

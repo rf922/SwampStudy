@@ -78,7 +78,6 @@ function App() {
               />*/}
               <Route path="/contact" element={<Contact />} />
               <Route path="/licensing" element={<Licensing />} />
-              <Route path="/socialicon" element={<SocialIcons />} />
             </Routes>
           </div>
           <Footer />
