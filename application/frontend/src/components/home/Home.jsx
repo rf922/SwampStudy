@@ -12,15 +12,34 @@ const Home = () => {
   const [view, setView] = useState("forum");
 
   useEffect(() => {
-    //effect to set a custom welcome message,
+    // effect for setting userDetails in local storage
     const getUserDetails = async () => {
       try {
-        if (isLoggedIn) {
+        const localData = localStorage.getItem("userDetails");
+        if (localData && isLoggedIn) {
+          // if it exits and usr logged in
+          //ex using it to set fields may remov later
+          const userData = JSON.parse(localData);
+          setUserFirstName(userData.first_name);
+          console.log(localData);
+        } else if (isLoggedIn) {
+          // logged in try to get the acc detials
           const userDetailsResponse = await axios.get(
             `${process.env.REACT_APP_API_URL}/account/details`,
             { withCredentials: true },
           );
           console.log(userDetailsResponse);
+          if (userDetailsResponse.data.profile_picture) {
+            // prof pic set, fix url (maybe fix before sending ?)
+            userDetailsResponse.data.profile_picture =
+              userDetailsResponse.data.profile_picture.replace(/\+{10}$/, "");
+          }
+
+          localStorage.setItem(
+            //set the use detail obj,
+            "userDetails",
+            JSON.stringify(userDetailsResponse.data),
+          );
           setUserFirstName(userDetailsResponse.data.first_name);
         } else {
           setUserFirstName("please log in.");

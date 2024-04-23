@@ -1,6 +1,7 @@
-import React from "react";
+import React, { useState } from "react";
 import { useFormValidation } from "./hooks/useFormValidation";
 import { useUserAPI } from "./hooks/useUserAPI";
+import { useFileAPI } from "./hooks/useFileAPI";
 
 const Register = () => {
   const { formData, handleChange, errors, validate, setErrors } =
@@ -10,20 +11,43 @@ const Register = () => {
       email: "",
       password: "",
       confirmPassword: "",
+      profilePicture: null,
     });
 
-  const [termsAccepted, setTermsAccepted] = React.useState(false);
-
+  const [termsAccepted, setTermsAccepted] = useState(false);
+  const { handleFileInputChange, uploadImage, imagePreviewUrl } = useFileAPI();
+  const [file, setFile] = useState(null);
   const { handleRegister } = useUserAPI();
+
+  const onFileInput = async (e) => {
+    const file = handleFileInputChange(e);
+    setFile(file);
+  };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    if (validate() && termsAccepted) {
-      handleRegister(formData, setErrors);
-    } else if (!termsAccepted) {
+    if (!validate() || !termsAccepted) {
       setErrors((prevErrors) => ({
         ...prevErrors,
         terms: "You must accept the terms and conditions.",
+      }));
+      return;
+    }
+
+    try {
+      if (file) {
+        const imageUrl = await uploadImage(file);
+        const completeFormData = { ...formData, profilePicture: imageUrl };
+        await handleRegister(completeFormData, setErrors);
+      } else {
+        await handleRegister(formData, setErrors);
+      }
+      console.log("Registration successful");
+    } catch (uploadError) {
+      console.error("Upload failed: ", uploadError);
+      setErrors((prevErrors) => ({
+        ...prevErrors,
+        profilePicture: "Failed to upload image.",
       }));
     }
   };
@@ -33,9 +57,9 @@ const Register = () => {
       <div className="flex justify-center">
         <form
           onSubmit={handleSubmit}
-          className="w-full max-w-xs border-2 border-gray-300 rounded-lg p-4 shadow-lg"
+          className="w-full max-w-4xl border-2 border-gray-300 rounded-lg p-4 shadow-lg flex md:flex-row"
         >
-          <div className="register-card">
+          <div className="flex-1">
             <h1>Register</h1>
             {errors.form && (
               <p className="text-red-500 text-xs italic">{errors.form}</p>
@@ -149,6 +173,45 @@ const Register = () => {
               >
                 Have an account? Login
               </a>
+            </div>
+          </div>
+          <div className="flex-1 flex flex-col items-center p-4">
+            <div className="max-w-full min-w-[250px] min-h-[250px] rounded-lg overflow-hidden shadow-lg bg-white my-4 border border-purple-200 transition duration-200 ease-in-out hover:shadow-2xl hover:ring-4 hover:ring-yellow-300 hover:scale-105 focus:scale-105 focus:outline-none">
+              <div className="flex items-center justify-center bg-purple-100 h-full">
+                {imagePreviewUrl ? (
+                  <img
+                    src={imagePreviewUrl}
+                    alt="Profile Preview"
+                    style={{
+                      width: "250px",
+                      height: "250px",
+                      objectFit: "cover",
+                    }}
+                  />
+                ) : (
+                  <div
+                    className="text-center text-gray-500"
+                    style={{ width: "250px", height: "250px" }}
+                  >
+                    No image selected
+                  </div>
+                )}
+              </div>
+            </div>
+            <div className="px-6 py-4 bg-purple-50">
+              {errors.firstName && (
+                <p className="text-red-500 text-xs italic">
+                  {errors.profilePicture}
+                </p>
+              )}
+
+              <input
+                type="file"
+                id="profilePicture"
+                name="profilePicture"
+                onChange={onFileInput}
+                className="block w-full text-sm text-gray-700 file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-purple-200 file:text-purple-700 hover:file:bg-purple-300"
+              />
             </div>
           </div>
         </form>

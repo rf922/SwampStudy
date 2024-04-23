@@ -14,7 +14,7 @@ import Post from "./components/post/Post";
 //import Makepost from "./components/makepost/Makepost";
 import Matching from "./components/matching/Matching";
 import Settings from "./components/settings/Settings";
-import UserProfile from "./components/userProfile/UserProfile";
+//import UserProfile from "./components/userProfile/UserProfile";
 import TermsAndConditions from "./components/termsAndConditions/termsAndConditions";
 import Image from "./components/image/Image";
 import Footer from "./components/footer/footer";
@@ -40,8 +40,12 @@ function App() {
               <Route path="/footer" element={<Footer />} />
               <Route path="/register" element={<Register />} />
               <Route path="/matching" element={<Matching />} />
+              {/** comp dev routes 
               <Route path="/userProfile" element={<UserProfile />} />
               <Route path="/image" element={<Image />} />
+              <Route path="/availability" element={<Availability />} />
+              <Route path="/classschedule" element={<ClassSchedule />} />
+               comp dev routes, will ve remoced later */}
               <Route
                 path="/terms-and-conditions"
                 element={<TermsAndConditions />}

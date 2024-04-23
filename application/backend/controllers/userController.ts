@@ -29,7 +29,8 @@ export class UserController {
    */
   public async register(req: Request, res: Response) {
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
-    const { firstName, lastName, email, password } = req.body;
+    const { firstName, lastName, email, password, profilePicture } = req.body;
+    const pic = !profilePicture ? "NA" : profilePicture;
     if (!firstName || !lastName || !email || !password) {
       return res
         .status(StatusCodes.BAD_REQUEST)
@@ -41,10 +42,23 @@ export class UserController {
         lastName,
         email,
         password,
+        pic,
       );
       return res.status(StatusCodes.CREATED).send(message);
     } catch (error) {
-      return res.status(StatusCodes.UNPROCESSABLE_ENTITY).send(error.message);
+      console.error(error);
+      if (error.message) {
+        switch (error.message) {
+          case "409":
+            return res
+              .status(StatusCodes.CONFLICT)
+              .send("A user with that email already exists.");
+          default:
+            return res
+              .status(StatusCodes.INTERNAL_SERVER_ERROR)
+              .send("Unknown error");
+        }
+      }
     }
   }
 
@@ -70,9 +84,20 @@ export class UserController {
         .send(`Login successful for user ID ${userId}`);
     } catch (error) {
       console.error(error);
-      return res
-        .status(StatusCodes.INTERNAL_SERVER_ERROR)
-        .send("An error occurred during login. :" + error.message);
+      if (error.message) {
+        switch (error.message) {
+          case "401":
+            return res
+              .status(StatusCodes.UNAUTHORIZED)
+              .send("Invalid password");
+          case "404":
+            return res.status(StatusCodes.NOT_FOUND).send("User Not Found");
+          default:
+            return res
+              .status(StatusCodes.INTERNAL_SERVER_ERROR)
+              .send("Unknown error");
+        }
+      }
     }
   }
 

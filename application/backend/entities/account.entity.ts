@@ -10,7 +10,7 @@ import {
 import { User } from "./user.entity";
 import { Question } from "./question.entity";
 import { IsDefined, IsString } from "class-validator";
-
+import { ClassSchedule } from "./classschedule.entity";
 @Entity()
 export class Account extends BaseEntity {
   @PrimaryGeneratedColumn()
@@ -26,7 +26,7 @@ export class Account extends BaseEntity {
   @IsString()
   last_name: string;
 
-  @Column()
+  @Column({ default: "" })
   profile_picture: string;
 
   @OneToOne(() => User)
@@ -39,33 +39,21 @@ export class Account extends BaseEntity {
   })
   questions: Question[];
 
-  @Column()
-  monday: boolean;
+  @Column("smallint", { default: 0 })
+  weekavailability: number;
 
-  @Column()
-  tuesday: boolean;
-
-  @Column()
-  wednesday: boolean;
-
-  @Column()
-  thursday: boolean;
-
-  @Column()
-  friday: boolean;
-
-  @Column()
-  saturday: boolean;
-
-  @Column()
-  sunday: boolean;
-
-  @Column()
+  @Column({ default: 0 })
   educator: boolean;
 
-  @Column()
+  @Column({ default: 0 })
   introvert: boolean;
 
-  @Column("varchar", { length: 500 })
-  biography;
+  @Column({ default: 0 })
+  isHidden: boolean;
+
+  @Column("varchar", { length: 500, default: "" })
+  biography: string;
+
+  @OneToMany(() => ClassSchedule, (classSchedule) => classSchedule.account)
+  classSchedules: ClassSchedule[];
 }

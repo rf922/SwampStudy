@@ -1,5 +1,12 @@
-import { Entity, Column, PrimaryGeneratedColumn, BaseEntity } from "typeorm";
+import {
+  OneToMany,
+  Entity,
+  Column,
+  PrimaryGeneratedColumn,
+  BaseEntity,
+} from "typeorm";
 import { IsDefined, IsInt, IsString } from "class-validator";
+import { ClassSchedule } from "./classschedule.entity";
 
 @Entity()
 export class Class extends BaseEntity {
@@ -20,4 +27,7 @@ export class Class extends BaseEntity {
   @IsDefined()
   @IsString()
   department: string;
+
+  @OneToMany(() => ClassSchedule, (classSchedule) => classSchedule.class)
+  classSchedules: ClassSchedule[];
 }

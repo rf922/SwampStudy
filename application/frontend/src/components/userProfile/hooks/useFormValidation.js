@@ -1,10 +1,8 @@
 import { useState } from "react";
-import { validateUpdateForm } from "../accountsettingsvalidation";
+import { validateUserProfile } from "./../validateUserProfile";
 import {
   isValidName,
-  isValidEmail,
-  isValidPassword,
-  isValidConfirmPassword,
+  isValidTextFieldEntry,
 } from "../../../utils/validationUtils";
 
 export const useFormValidation = (initialValues) => {
@@ -21,6 +19,7 @@ export const useFormValidation = (initialValues) => {
       setErrors((prevErrors) => ({
         ...prevErrors,
         [name]: [],
+        form: prevErrors.form ? null : undefined,
       }));
     }
     validateField(name, value);
@@ -30,20 +29,25 @@ export const useFormValidation = (initialValues) => {
     let fieldErrors = [];
     if (name === "first_name") isValidName(value, fieldErrors);
     if (name === "last_name") isValidName(value, fieldErrors);
-    if (name === "email") isValidEmail(value, fieldErrors);
-    if (name === "password") isValidPassword(value, fieldErrors);
-    if (name === "confirmPassword")
-      isValidConfirmPassword(formData.password, value, fieldErrors);
+    if (name === "biography") isValidTextFieldEntry(value, fieldErrors);
     setErrors((prevErrors) => ({ ...prevErrors, [name]: fieldErrors }));
   };
 
   const validate = () => {
-    const { isValid, errors: validationErrors } = validateUpdateForm(formData);
-    setErrors(validationErrors);
-    return isValid;
+    const { isValid, errors: validationErrors } = validateUserProfile(formData);
+    if (!isValid) {
+      setErrors((prevErrors) => ({
+        //update errors
+        ...prevErrors,
+        ...validationErrors,
+        form: "Please fix the errors before submitting.", // prompt to fix other erros
+      }));
+      return false;
+    }
+    return true;
   };
 
-  return { formData, setFormData, handleChange, errors, validate, setErrors };
+  return { formData, handleChange, setFormData, errors, validate, setErrors };
 };
 
 export default useFormValidation;

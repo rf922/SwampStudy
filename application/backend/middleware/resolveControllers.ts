@@ -89,3 +89,29 @@ export const resolveRatingController = (req, res, next) => {
   req.ratingController = ratingController;
   next();
 };
+
+/**
+ * uses DIContainer to resolve the file controller
+ * @param req //request controller will be attached to
+ * @param res
+ * @param next // call to next to pass on to the next midlware or route hndlr
+ */
+export const resolveFileController = (req, res, next) => {
+  const fileController = DIContainer.resolve("FileController");
+  req.fileController = fileController;
+  next();
+};
+
+/**
+ * uses DIContainer to resolve the class scheduel controller
+ * @param req //request controller will be attached to
+ * @param res
+ * @param next // call to next to pass on to the next midlware or route hndlr
+ */
+export const resolveClassScheduleController = (req, res, next) => {
+  const classScheduleController = DIContainer.resolve(
+    "ClassScheduleController",
+  );
+  req.classScheduleController = classScheduleController;
+  next();
+};
