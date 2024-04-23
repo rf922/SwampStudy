@@ -24,12 +24,11 @@ export const useUserAPI = () => {
             errorMessages.form = "An error occurred. Please try again later.";
             break;
         }
-      }else {
-        console.error("Unknown error during login:", {err});
+      } else {
+        console.error("Unknown error during login:", { err });
         errorMessages.form = "An unknown error occurred.";
-      }setErrors(errorMessages);
-    
-      
+      }
+      setErrors(errorMessages);
     }
   };
 

@@ -50,12 +50,16 @@ export class UserController {
       if (error.message) {
         switch (error.message) {
           case "409":
-            return res.status(StatusCodes.CONFLICT).send("A user with that email already exists.");
+            return res
+              .status(StatusCodes.CONFLICT)
+              .send("A user with that email already exists.");
           default:
-            return res.status(StatusCodes.INTERNAL_SERVER_ERROR).send("Unknown error");
+            return res
+              .status(StatusCodes.INTERNAL_SERVER_ERROR)
+              .send("Unknown error");
         }
-
-    }}
+      }
+    }
   }
 
   /**
@@ -83,16 +87,19 @@ export class UserController {
       if (error.message) {
         switch (error.message) {
           case "401":
-            return res.status(StatusCodes.UNAUTHORIZED).send("Invalid password");
+            return res
+              .status(StatusCodes.UNAUTHORIZED)
+              .send("Invalid password");
           case "404":
             return res.status(StatusCodes.NOT_FOUND).send("User Not Found");
           default:
-            return res.status(StatusCodes.INTERNAL_SERVER_ERROR).send("Unknown error");
+            return res
+              .status(StatusCodes.INTERNAL_SERVER_ERROR)
+              .send("Unknown error");
         }
-
+      }
     }
   }
-}
 
   /**
    * handles the logout of users
