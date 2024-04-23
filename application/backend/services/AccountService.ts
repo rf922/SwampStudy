@@ -102,7 +102,7 @@ export class AccountService {
     profilePicture?: string,
     weekavailability?: number,
     introvert?: boolean,
-    isHidden?:boolean,
+    isHidden?: boolean,
     biography?: string,
   ) {
     const existingUser = await this.userRepository.getUserById(userId);

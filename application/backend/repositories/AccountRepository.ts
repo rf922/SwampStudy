@@ -27,7 +27,7 @@ export const AccountRepository = myDataSource.getRepository(Account).extend({
         biography: true,
         educator: true,
         introvert: true,
-        isHidden:true,
+        isHidden: true,
         weekavailability: true,
         // optionally in the future we may want to grab more fields
       },

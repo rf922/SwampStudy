@@ -50,7 +50,7 @@ export class UserService {
     const existingUser = await this.getUserByEmail(email);
     if (existingUser) {
       //check that the user does not curr exist
-      throw new Error("User already exists.");
+      throw new Error("409");
     }
     //use b cryot with 10 salt rounds to hash the plain text pass, then store the hashed pass in the db
     const hashedPassword = await hash(password, 10);
@@ -99,12 +99,12 @@ export class UserService {
   public async loginUser(email: string, password: string) {
     const user = await this.getUserByEmail(email);
     if (!user) {
-      throw new Error("User not found !");
+      throw new Error("404");
     }
     //bcrypt compare compares the plaintext password against the hashed password in the db
     const isPasswordMatch = await compare(password, user.password);
     if (!isPasswordMatch) {
-      throw new Error("Invalid Password !");
+      throw new Error("401");
     }
     return user.userId;
   }

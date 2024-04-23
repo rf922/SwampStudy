@@ -8,10 +8,13 @@ import { useRef, useState, useCallback, useEffect } from "react";
 export const Forum = () => {
   const [selectedDepartment, setSelectedDepartment] = useState("NA");
   const [selectedClass, setSelectedClass] = useState("NA");
+  const [errors, setErrors] = useState({
+    threadError: "",
+  });
+
   const { isLoggedIn } = useAuth();
   const containerRef = useRef(null);
   const [isMakePostVisible, setIsMakePostVisible] = useState(false);
-  //  const [postCreated, setPostCreated] = useState(0);
   const [newPost, setNewPost] = useState(null);
 
   const toggleMakePost = () => {
@@ -19,6 +22,7 @@ export const Forum = () => {
   };
 
   const {
+    initialLoad,
     threadsMap,
     setThreadsMap,
     classId,
@@ -38,6 +42,7 @@ export const Forum = () => {
     isLoading,
     addThreadToThreadMap,
   } = useForumAPI(
+    setErrors,
     selectedDepartment,
     setSelectedDepartment,
     selectedClass,
@@ -52,24 +57,52 @@ export const Forum = () => {
     ({ target }) => {
       const { scrollTop, scrollHeight, clientHeight } = target;
       if (scrollTop + clientHeight >= scrollHeight - 10) {
-        if (filteredThreads.length % 10 !== 0) {
-          // get threads a page at a time i.e 10, if there are not 10
-          if (filteredThreads.length > 10) {
-            //the initial page was all that there was
+        if (errors.threadError) {
+          setErrors({ threadError: "" });
+        }
+        if (hasMore) {
+          // increment the page
+          if (pageCheck()) {
+            setPage((prevPage) => prevPage + 1);
+          } else {
             setHasMore(false);
+            target.scrollTop = scrollTop - 30; // bounce usr backward
           }
         } else {
-          // there was a complete set of threads
-          if (hasMore) {
-            // increment the page
-            setPage((prevPage) => prevPage + 1);
-          }
+          console.log(hasMore);
+          console.log(page);
+          target.scrollTop = scrollTop - 30; // bounce usr backward
         }
-        target.scrollTop = scrollTop - 30; // bounce usr backward
       }
     },
-    [page, setPage, newPost, filteredThreads.length, newPost], // eslint-disable-line react-hooks/exhaustive-deps
+    [page, setPage], // eslint-disable-line react-hooks/exhaustive-deps
   );
+
+  const pageCheck = () => {
+    if (filteredThreads.length % 10 !== 0) {
+      //incomplete set
+      if (page === 1) {
+        //first page was all that there was
+        return false;
+      } else {
+        if (filteredThreads.length > 10) {
+          // getThreads returned an incomplete set of threads
+          return false;
+        }
+      }
+      console.log("outer here");
+    } else {
+      if (page > 1) {
+        //thread counts %10 === 0 , 20 30 40 ... etc
+        const pageMax = Math.ceil((filteredThreads.length + 1) / 10);
+        if (page > pageMax) {
+          console.log("out" + page);
+          return false;
+        }
+      }
+    }
+    return true;
+  };
 
   /**
    * detects when a user made a new post
@@ -234,9 +267,9 @@ export const Forum = () => {
           <div
             ref={containerRef}
             onScroll={handleScroll}
-            className="overflow-auto  min-w-full scrollbar-hide max-h-[720px] border-none px-6 "
+            className="overflow-auto  min-w-full scrollbar-hide max-h-[720px] border-none px-6"
           >
-            {isLoading ? (
+            {initialLoad ? (
               <div className="flex justify-center items-center">
                 <Loading />
               </div>
@@ -245,7 +278,19 @@ export const Forum = () => {
                 {filteredThreads.map((thread) => (
                   <Postcard key={thread.id} thread={thread} />
                 ))}
-                {!isLoading && (!hasMore || filteredThreads.length < 10) && (
+                {isLoading && (
+                  <div className="flex justify-center items-center pb-32">
+                    <Loading />
+                  </div>
+                )}
+                {errors.threadError && (
+                  <p className="text-center text-xl text-red-500 font-bold italic mb-9 shadow-md">
+                    Sorry, there was a problem getting more threads, please try
+                    again later !
+                  </p>
+                )}
+                {((!isLoading && !hasMore) ||
+                  (!isLoading && filteredThreads.length < 10)) && (
                   <p className="text-center text-xl text-purple-800 font-bold italic mb-9 shadow-md">
                     Have a question you didn&apos;t see? Ask it!
                   </p>

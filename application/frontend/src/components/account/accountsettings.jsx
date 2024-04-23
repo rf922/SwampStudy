@@ -20,11 +20,13 @@ const UpdateAccount = () => {
 
   const handleToggle = (option) => {
     setOptions((prev) => ({
+      //update the ui switch
       ...prev,
       [option]: !prev[option],
     }));
 
     setFormData((prevForm) => ({
+      //update the corresponding value in form
       ...prevForm,
       [option]: !prevForm[option],
     }));
@@ -35,11 +37,12 @@ const UpdateAccount = () => {
     if (localData) {
       const savedDetails = JSON.parse(localData);
       setOptions({
+        //use the users existing settings as init state
         introvert: savedDetails.introvert ?? false,
         isHidden: savedDetails.isHidden ?? false,
       });
-      // Initialize formData with the same values
       setFormData((prevForm) => ({
+        //init formData with the same values
         ...prevForm,
         introvert: savedDetails.introvert ?? false,
         isHidden: savedDetails.isHidden ?? false,
@@ -51,23 +54,20 @@ const UpdateAccount = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    const dataToSend = Object.entries(formData).reduce((acc, [key, value]) => {
-      if (value && key !== "confirmPassword") {
-        acc[key] = value;
-      }
-      return acc;
-    }, {});
-    if (validate(dataToSend)) {
-      updateAccount(dataToSend, (errors) => console.log(errors));
+    if (validate(formData)) {
+      updateAccount(formData, (errors) => console.log(errors));
       const localData = localStorage.getItem("userDetails");
       const userDetails = localData ? JSON.parse(localData) : {};
 
       // updat local storage
-      localStorage.setItem("userDetails", JSON.stringify({
-        ...userDetails,
-        introvert: options.introvert,
-        isHidden: options.isHidden
-      }));
+      localStorage.setItem(
+        "userDetails",
+        JSON.stringify({
+          ...userDetails,
+          introvert: options.introvert,
+          isHidden: options.isHidden,
+        }),
+      );
     } else {
       console.error("Please Try again");
       alert("Please Try Again");
@@ -84,7 +84,7 @@ const UpdateAccount = () => {
           Update Account
         </h1>
 
-        {/* Email */}
+        {/* email */}
         <div className="mb-4">
           <label
             htmlFor="email"
@@ -106,7 +106,7 @@ const UpdateAccount = () => {
           )}
         </div>
 
-        {/* NewPassword */}
+        {/* new passwrd */}
         <div className="mb-4">
           <label
             htmlFor="password"
@@ -128,7 +128,7 @@ const UpdateAccount = () => {
           )}
         </div>
 
-        {/* ConfirmPassword */}
+        {/* confm passwrd*/}
         <div className="mb-4">
           <label
             htmlFor="confirmPassword"
@@ -174,12 +174,12 @@ const UpdateAccount = () => {
           </div>
         </div>
 
-        {/* Form Errors */}
+        {/* form errors */}
         {errors.form && (
           <p className="text-red-500 text-xs italic mb-4">{errors.form}</p>
         )}
 
-        {/* Update Account Button */}
+        {/* update acc & del ac buttn */}
         <div className="flex flex-col w-full space-y-4 mb-6">
           <button
             type="submit"

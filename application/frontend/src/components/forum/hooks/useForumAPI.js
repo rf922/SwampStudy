@@ -2,6 +2,7 @@ import { useState, useEffect } from "react";
 import axios from "axios";
 
 export const useForumAPI = (
+  setErrors,
   selectedDepartment,
   setSelectedDepartment,
   selectedClass,
@@ -10,6 +11,7 @@ export const useForumAPI = (
   const [threadsMap, setThreadsMap] = useState({});
   const [classId, setClassId] = useState(null);
   const [filteredThreads, setFilteredThreads] = useState([]);
+  const [initialLoad, setInitialLoad] = useState(true);
   const [isLoading, setIsLoading] = useState(true);
   const [searchPhrase, setSearchPhrase] = useState("");
   const [page, setPage] = useState(1);
@@ -22,7 +24,7 @@ export const useForumAPI = (
    * @returns
    */
   const search = async (phrase, classId) => {
-    setIsLoading(true);
+    setInitialLoad(true);
     try {
       // to search
       const response = await axios.get(
@@ -34,7 +36,7 @@ export const useForumAPI = (
       console.error("Error searching threads:", error);
       return [];
     } finally {
-      setIsLoading(false);
+      setInitialLoad(false);
     }
   };
 
@@ -109,7 +111,7 @@ export const useForumAPI = (
     };
 
     getClassListing();
-  }, []); // eslint-disable-line react-hooks/exhaustive-deps
+  }, [setErrors]); // eslint-disable-line react-hooks/exhaustive-deps
 
   /**
    * helper for adding threads to the map
@@ -159,9 +161,7 @@ export const useForumAPI = (
         },
       };
     };
-
     if (selectedDepartment !== "NA" && selectedClass !== "NA" && hasMore) {
-      // solong as depp and cls have been set & there are more threads to see
       if (
         page === 1 &&
         threadsMap[selectedDepartment][selectedClass].threads.length !== 0
@@ -169,22 +169,7 @@ export const useForumAPI = (
         // if page one is already pop, return
         return;
       }
-      if (page > 1) {
-        // ensure the page is valid
-        const threadPerPage = 10;
-        const num = filteredThreads.length / threadPerPage; // complet pages from filteredthreads
-        if (page <= num || Math.abs(page - num) > 1) {
-          //if page num deviates by more than 1 from whats pos
-          setHasMore(false);
-          return;
-        }
-      }
 
-      if (threadsMap.length > 10 && threadsMap.length % 10 !== 0) {
-        // if page is not a complete set of threads
-        setHasMore(false);
-        return;
-      }
       setIsLoading(true);
       axios
         .get(
@@ -217,19 +202,25 @@ export const useForumAPI = (
               );
             } else {
               console.log("No new threads to add.");
+              setHasMore(false);
             }
           }
         })
         .catch((error) => {
-          console.error("Failed to fetch threads due to an error:", error);
+          setErrors((prevErrors) => ({
+            ...prevErrors,
+            threadError: "Problem getting threads, try again later",
+          }));
+          console.log(error);
         })
         .finally(() => {
           console.log("Fetch threads operation completed.");
           setIsLoading(false);
+          setInitialLoad(false);
         });
     } else {
       console.log(
-        `Fetch operation not initiated due to invalid parameters: Page=${page}, SelectedClass=${selectedClass}`,
+        `Fetch operation not initiated due to invalid parameters: Page=${page}, SelectedClass=${selectedClass}, SelectedDepartment=${selectedDepartment}, hasMore=${hasMore}`,
       );
     }
   }, [page, selectedClass]); // eslint-disable-line react-hooks/exhaustive-deps
@@ -263,6 +254,7 @@ export const useForumAPI = (
   }, [selectedClass]); // eslint-disable-line react-hooks/exhaustive-deps
 
   return {
+    initialLoad,
     threadsMap,
     setThreadsMap,
     classId,

@@ -21,21 +21,23 @@ export const useUserAPI = () => {
       }
     } catch (err) {
       const errorMessages = {};
-
       if (err.response) {
         switch (err.response.status) {
-          case 401: //
+          case 401:
             errorMessages.form = "Invalid email or password.";
             break;
           case 404:
-            errorMessages.form = "User Was not found .. ";
+            errorMessages.form = "User not found.";
             break;
           default:
             errorMessages.form = "An error occurred. Please try again later.";
             break;
         }
-      } else {
-        console.error("Unknown error during login:", err);
+      } 
+    
+
+       else {
+        console.error("Unknown error during login:", {err});
         errorMessages.form = "An unknown error occurred.";
       }
 
