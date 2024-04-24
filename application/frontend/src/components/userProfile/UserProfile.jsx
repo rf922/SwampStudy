@@ -29,7 +29,7 @@ const UserProfile = () => {
     setIsLoading(true);
     if (localData) {
       const savedDetails = JSON.parse(localData);
-      setFormData(savedDetails); // Set formData to the saved details
+      setFormData(savedDetails); // set formData to the saved details
       setImagePreviewUrl(savedDetails.profile_picture);
     }
     setIsLoading(false);
@@ -56,7 +56,7 @@ const UserProfile = () => {
         }
         await updateProfile(updatedFormData);
         localStorage.setItem("userDetails", JSON.stringify(updatedFormData));
-        setEditMode(false); // Exit edit mode
+        setEditMode(false);
       } catch (error) {
         //setErrors to display optiona error message in comp
         setErrors((prevErrors) => ({
@@ -147,7 +147,27 @@ const UserProfile = () => {
           </>
         ) : (
           <>
-            <h2 className="text-xl font-semibold text-purple-800 text-center">{`${formData.first_name} ${formData.last_name}`}</h2>
+            <>
+              <div className="text-center">
+                <h2 className="text-xl font-semibold text-purple-800">{`${formData.first_name} ${formData.last_name}`}</h2>
+                <div className="flex justify-center">
+                  {[...Array(5)].map((_, index) => (
+                    <svg
+                      key={index}
+                      className="w-6 h-6 text-yellow-500"
+                      fill="currentColor"
+                      viewBox="0 0 24 24"
+                    >
+                      <path d="M12 .587l3.668 7.425 8.332 1.209-6.041 5.884 1.427 8.319L12 18.897l-7.386 3.887 1.427-8.319L.001 9.221l8.331-1.209L12 .587z" />
+                    </svg>
+                  ))}
+                </div>
+              </div>
+              <div className="text-xl font-semibold text-purple-800 pl-4">
+                <h3 className="font-semibold">Bio:</h3>
+                <p>{formData.biography}</p>
+              </div>
+            </>
             <div className="text-xl font-semibold text-purple-800 pl-4">
               <h3 className="font-semibold">Bio:</h3>
               <p>{formData.biography}</p>

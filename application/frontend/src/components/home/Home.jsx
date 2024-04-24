@@ -9,7 +9,7 @@ import Loading from "../loading/Loading";
 const Home = () => {
   const [_userFirstName, setUserFirstName] = useState("");
   const { isLoggedIn, isLoading } = useAuth();
-  const [view, setView] = useState("forum");
+  const [view, setView] = useState("matching");
 
   useEffect(() => {
     // effect for setting userDetails in local storage
