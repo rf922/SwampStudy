@@ -95,7 +95,7 @@ const users = {
       {
         id: 12,
         name: "Advanced Linear Algebra",
-        number: 110,
+        number: 810,
         department: "Math",
       },
     ],
