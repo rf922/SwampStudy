@@ -9,8 +9,7 @@ import Loading from "../loading/Loading";
 const Home = () => {
   const [_userFirstName, setUserFirstName] = useState("");
   const { isLoggedIn, isLoading } = useAuth();
-  const [view, setView] = useState("matching");
-
+  const [view, setView] = useState(localStorage.getItem("view") || "forum");
   useEffect(() => {
     // effect for setting userDetails in local storage
     const getUserDetails = async () => {
@@ -21,14 +20,14 @@ const Home = () => {
           //ex using it to set fields may remov later
           const userData = JSON.parse(localData);
           setUserFirstName(userData.first_name);
-          console.log(localData);
+          //        console.log(localData);
         } else if (isLoggedIn) {
           // logged in try to get the acc detials
           const userDetailsResponse = await axios.get(
             `${process.env.REACT_APP_API_URL}/account/details`,
             { withCredentials: true },
           );
-          console.log(userDetailsResponse);
+          //       console.log(userDetailsResponse);
           if (userDetailsResponse.data.profile_picture) {
             // prof pic set, fix url (maybe fix before sending ?)
             userDetailsResponse.data.profile_picture =
@@ -51,6 +50,11 @@ const Home = () => {
 
     getUserDetails();
   }, [isLoggedIn]);
+
+  useEffect(() => {
+    localStorage.setItem("view", view);
+    //console.log(localStorage.getItem("view"));
+  }, [view]);
 
   //loading place holder, may replace with custom spinner / effect
   if (isLoading) {
