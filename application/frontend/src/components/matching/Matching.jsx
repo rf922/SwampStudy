@@ -2,12 +2,13 @@ import React, { useState } from "react";
 import MatchingCard from "./MatchingCard";
 import DisplayMeetingDetails from "./DisplayMeetingDetails";
 import users from "./users";
-import matches from "./matches";
+//import matches from "./matches";
 
 export const Matching = () => {
   const [selectedMatch, setSelectedMatch] = useState(users.beverly); // track sel match
   const userKeys = Object.keys(users);
   const [user, setUser] = useState(users.kimberly);
+  // eslint-disable-next-line no-unused-vars
   const [userIndex, setUserIndex] = useState(0);
   const [view, setView] = useState("");
   const [usrMatches, setUsrMatches] = useState([]);
