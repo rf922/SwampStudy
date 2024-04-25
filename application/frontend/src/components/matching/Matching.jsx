@@ -12,40 +12,38 @@ export const Matching = () => {
   const [view, setView] = useState("");
   const [usrMatches, setUsrMatches] = useState([]);
   const [usrPastMatches, _setUsrPastMatches] = useState([users.beverly]);
+  const [animationClass, setAnimationClass] = useState("");
 
   const handleLeftClick = () => {
-    console.log("Left button clicked");
-    setUserIndex((prevIndex) => {
-      const newIndex = (prevIndex + 1) % userKeys.length;
-      const currentUser = users[userKeys[newIndex]];
-      setUser(currentUser);
-      return newIndex;
-    });
-    console.log("Left button clicked");
+    setAnimationClass("animate-slide-out-left"); // left slide
+    setTimeout(() => {
+      setUserIndex((prevIndex) => {
+        const newIndex = (prevIndex + 1) % userKeys.length;
+        const currentUser = users[userKeys[newIndex]];
+        setUser(currentUser);
+        setAnimationClass(""); // reset each time
+        return newIndex;
+      });
+    }, 500); // change duration here
   };
 
   const handleRightClick = () => {
-    console.log("Right click detected", { usrMatches });
-    console.log("Right click detected", { user });
-    console.log("Right click detected" + userIndex);
-    console.log(matches[userKeys[userIndex]]);
-
     if (
       ["Helen", "Kimberly", "Klara"].includes(user.first_name) &&
       !usrMatches.some((match) => match.id === user.id)
     ) {
       setUsrMatches((prevMatches) => [...prevMatches, user]);
     }
-
-    setUserIndex((prevIndex) => {
-      const newIndex = (prevIndex + 1) % userKeys.length;
-      const currentUser = users[userKeys[newIndex]];
-      setUser(currentUser);
-      return newIndex;
-    });
-    console.log("After Right click detected", { usrMatches });
-    console.log("After Right click detected", { user });
-    console.log("After Right click detected" + userIndex);
+    setAnimationClass("animate-slide-out-right"); //  right slide-out animation
+    setTimeout(() => {
+      setUserIndex((prevIndex) => {
+        const newIndex = (prevIndex + 1) % userKeys.length;
+        const currentUser = users[userKeys[newIndex]];
+        setUser(currentUser);
+        setAnimationClass(""); // reset
+        return newIndex;
+      });
+    }, 500); 
   };
 
   const handleMatchClick = (user) => {
@@ -60,7 +58,9 @@ export const Matching = () => {
 
   return (
     <div className="flex flex-col md:flex-row justify-center my-4">
-      <div className="w-full md:w-4/5 max-w-4xl overflow-auto rounded-lg shadow-lg bg-gray-100 border border-purple-200">
+      <div
+        className={`w-full md:w-4/5 max-w-4xl rounded-lg shadow-lg bg-gray-100 border border-purple-200 transition-all duration-500 ${animationClass}`}
+      >
         <div className="bg-violet-200 text-gray-800 py-4 px-6">
           <h1 className="font-bold text-lg text-purple-800">
             {view === "matchDetails"
