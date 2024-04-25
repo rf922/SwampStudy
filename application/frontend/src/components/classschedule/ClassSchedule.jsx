@@ -184,7 +184,7 @@ const ClassSchedule = () => {
                 <span
                   id={`tooltip-${cls.id}`}
                   role="tooltip"
-                  className="absolute z-10 invisible inline-block px-3 py-2 text-sm text-nowrap font-medium text-white transition-opacity duration-300 bg-gray-900 rounded-lg shadow-sm opacity-0 group-hover:visible group-hover:opacity-100 dark:bg-gray-700 -translate-y-10 -translate-x-4"
+                  className="absolute z-10 invisible px-3 py-2 text-sm text-nowrap font-medium text-white transition-opacity duration-300 bg-gray-900 rounded-lg shadow-sm opacity-0 group-hover:visible group-hover:opacity-100 dark:bg-gray-700"
                 >
                   {cls.name}
                   <div className="tooltip-arrow" data-popper-arrow></div>
