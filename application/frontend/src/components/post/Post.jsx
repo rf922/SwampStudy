@@ -57,7 +57,7 @@ const Post = () => {
   return (
     <div className="max-w-md mx-auto  rounded-lg overflow-hidden shadow-lg bg-white my-4 border border-purple-200">
       <Link
-        to="/forum"
+        to="/"
         className="absolute top-35 left-4 z-40 bg-yellow-300 hover:bg-yellow-400 text-purple-600 font-bold py-2 px-4 rounded-full transition duration-300 ease-in-out text-xs sm:text-sm shadow hover:shadow-lg transform hover:-translate-y-1"
       >
         Return to Forum
