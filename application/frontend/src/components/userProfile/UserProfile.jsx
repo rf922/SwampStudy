@@ -168,10 +168,6 @@ const UserProfile = () => {
                 <p>{formData.biography}</p>
               </div>
             </>
-            <div className="text-xl font-semibold text-purple-800 pl-4">
-              <h3 className="font-semibold">Bio:</h3>
-              <p>{formData.biography}</p>
-            </div>
           </>
         )}
         {editMode ? ( //buton change appearance on edit/save mode
