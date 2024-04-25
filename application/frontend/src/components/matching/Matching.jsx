@@ -43,7 +43,7 @@ export const Matching = () => {
         setAnimationClass(""); // reset
         return newIndex;
       });
-    }, 500); 
+    }, 500);
   };
 
   const handleMatchClick = (user) => {
