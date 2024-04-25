@@ -10,7 +10,7 @@ const Post = () => {
   const { question, answers, setAnswers } = useForumAPI(questionId);
   const { isLoggedIn } = useAuth();
   const [showLoginPrompt, setShowLoginPrompt] = useState(false);
-  const { validate, errors, handleChange, formData } = useFormValidation({
+  const { validate, errors, handleChange, formData, setFormData } = useFormValidation({
     answer: "",
   });
 
@@ -32,6 +32,7 @@ const Post = () => {
         );
         // append answers to list of existing answers && clear text field
         setAnswers((prevAnswers) => [...prevAnswers, response.data]);
+        setFormData((prevData) => ({ ...prevData, answer: ''}));
       } catch (error) {
         console.error("Error submitting answer:", error);
       }
