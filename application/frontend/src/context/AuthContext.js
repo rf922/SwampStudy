@@ -32,6 +32,8 @@ export const Auth = ({ children }) => {
         {},
         { withCredentials: true },
       );
+      //      localStorage.removeItem("userDetails"); // rm specific item
+      localStorage.clear(); //rm all of it
       setIsLoggedIn(false);
     } catch (error) {
       console.error("Logout failed", error);

@@ -1,29 +1,73 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { useFormValidation } from "./hooks/useFormValidation";
 import { useAccountAPI } from "./hooks/useAccountAPI";
 
 const UpdateAccount = () => {
   //component for accountmanagement / update
-  const { formData, handleChange, validate, errors } = useFormValidation({
-    firstName: "",
-    lastName: "",
-    email: "",
-    password: "",
-    confirmPassword: "",
+  const { formData, setFormData, handleChange, validate, errors } =
+    useFormValidation({
+      email: "",
+      password: "",
+      confirmPassword: "",
+      introvert: false,
+      isHidden: false,
+    });
+  const [options, setOptions] = useState({
+    //figure out where to put those fields
+    introvert: false,
+    isHidden: false,
   });
+
+  const handleToggle = (option) => {
+    setOptions((prev) => ({
+      //update the ui switch
+      ...prev,
+      [option]: !prev[option],
+    }));
+
+    setFormData((prevForm) => ({
+      //update the corresponding value in form
+      ...prevForm,
+      [option]: !prevForm[option],
+    }));
+  };
+
+  useEffect(() => {
+    const localData = localStorage.getItem("userDetails");
+    if (localData) {
+      const savedDetails = JSON.parse(localData);
+      setOptions({
+        //use the users existing settings as init state
+        introvert: savedDetails.introvert ?? false,
+        isHidden: savedDetails.isHidden ?? false,
+      });
+      setFormData((prevForm) => ({
+        //init formData with the same values
+        ...prevForm,
+        introvert: savedDetails.introvert ?? false,
+        isHidden: savedDetails.isHidden ?? false,
+      }));
+    }
+  }, [setFormData]);
 
   const { updateAccount, deleteAccount } = useAccountAPI();
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    const dataToSend = Object.entries(formData).reduce((acc, [key, value]) => {
-      if (value && key !== "confirmPassword") {
-        acc[key] = value;
-      }
-      return acc;
-    }, {});
-    if (validate(dataToSend)) {
-      updateAccount(dataToSend, (errors) => console.log(errors));
+    if (validate(formData)) {
+      updateAccount(formData, (errors) => console.log(errors));
+      const localData = localStorage.getItem("userDetails");
+      const userDetails = localData ? JSON.parse(localData) : {};
+
+      // updat local storage
+      localStorage.setItem(
+        "userDetails",
+        JSON.stringify({
+          ...userDetails,
+          introvert: options.introvert,
+          isHidden: options.isHidden,
+        }),
+      );
     } else {
       console.error("Please Try again");
       alert("Please Try Again");
@@ -31,60 +75,16 @@ const UpdateAccount = () => {
   };
 
   return (
-    <div className="flex justify-center items-center h-screen bg-gray-100">
+    <div className="flex justify-center items-center h-screen bg-violet-200">
       <form
         onSubmit={handleSubmit}
-        className="w-full max-w-lg p-6 bg-white rounded-lg shadow-md"
+        className="w-full max-w-4xl h-full max-h-screen p-6 bg-white rounded-lg shadow-md"
       >
-        <h1 className="text-3xl font-bold text-center text-purple-800 mb-4">
+        <h1 className="text-3xl font-bold text-center text-purple-800 my-6">
           Update Account
         </h1>
 
-        {/* FirstName */}
-        <div className="mb-4">
-          <label
-            htmlFor="firstName"
-            className="block text-purple-700 text-sm font-bold mb-2"
-          >
-            First Name
-          </label>
-          <input
-            name="firstName"
-            id="firstName"
-            type="text"
-            placeholder="First Name"
-            value={formData.firstName}
-            onChange={handleChange}
-            className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-          />
-          {errors.firstName && (
-            <p className="text-red-500 text-xs italic">{errors.firstName}</p>
-          )}
-        </div>
-
-        {/* LastName */}
-        <div className="mb-4">
-          <label
-            htmlFor="lastName"
-            className="block text-purple-700 text-sm font-bold mb-2"
-          >
-            Last Name
-          </label>
-          <input
-            name="lastName"
-            id="lastName"
-            type="text"
-            placeholder="Last Name"
-            value={formData.lastName}
-            onChange={handleChange}
-            className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-          />
-          {errors.lastName && (
-            <p className="text-red-500 text-xs italic">{errors.lastName}</p>
-          )}
-        </div>
-
-        {/* Email */}
+        {/* email */}
         <div className="mb-4">
           <label
             htmlFor="email"
@@ -106,7 +106,7 @@ const UpdateAccount = () => {
           )}
         </div>
 
-        {/* NewPassword */}
+        {/* new passwrd */}
         <div className="mb-4">
           <label
             htmlFor="password"
@@ -128,7 +128,7 @@ const UpdateAccount = () => {
           )}
         </div>
 
-        {/* ConfirmPassword */}
+        {/* confm passwrd*/}
         <div className="mb-4">
           <label
             htmlFor="confirmPassword"
@@ -151,17 +151,39 @@ const UpdateAccount = () => {
             </p>
           )}
         </div>
+        {/* opt toggle switchs */}
+        <div className="w-full flex flex-col my-4 mx-2 p-4 bg-purple-100">
+          <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 px-4 py-2">
+            {Object.entries(options).map(([option, isSet], index) => (
+              <label
+                key={index}
+                className="inline-flex items-center cursor-pointer"
+              >
+                <input
+                  type="checkbox"
+                  className="sr-only peer"
+                  checked={isSet}
+                  onChange={() => handleToggle(option)}
+                />
+                <div className="toggle-bg relative w-11 h-6 bg-gray-200 rounded-full peer-focus:ring-4 peer-focus:ring-purple-300 peer-checked:after:translate-x-full peer-checked:bg-purple-600 after:content-[''] after:absolute after:top-0.5 after:start-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all"></div>
+                <span className="ml-3 overflow-hidden text-sm font-medium text-gray-900">
+                  {option}
+                </span>
+              </label>
+            ))}
+          </div>
+        </div>
 
-        {/* Form Errors */}
+        {/* form errors */}
         {errors.form && (
           <p className="text-red-500 text-xs italic mb-4">{errors.form}</p>
         )}
 
-        {/* Update Account Button */}
-        <div className="flex items-center justify-between">
+        {/* update acc & del ac buttn */}
+        <div className="flex flex-col w-full space-y-4 mb-6">
           <button
             type="submit"
-            className="bg-gold hover:bg-purple-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline transition duration-200 ease-in-out"
+            className="bg-yellow-500 hover:bg-yellow-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline transition duration-200 ease-in-out"
           >
             Update Account
           </button>

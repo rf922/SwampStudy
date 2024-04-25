@@ -28,8 +28,8 @@ export const useFormValidation = (initialValues) => {
 
   const validateField = (name, value) => {
     let fieldErrors = [];
-    if (name === "firstName") isValidName(value, fieldErrors);
-    if (name === "lastName") isValidName(value, fieldErrors);
+    if (name === "first_name") isValidName(value, fieldErrors);
+    if (name === "last_name") isValidName(value, fieldErrors);
     if (name === "email") isValidEmail(value, fieldErrors);
     if (name === "password") isValidPassword(value, fieldErrors);
     if (name === "confirmPassword")
@@ -43,7 +43,7 @@ export const useFormValidation = (initialValues) => {
     return isValid;
   };
 
-  return { formData, handleChange, errors, validate, setErrors };
+  return { formData, setFormData, handleChange, errors, validate, setErrors };
 };
 
 export default useFormValidation;

@@ -6,16 +6,21 @@ export const useAccountAPI = () => {
   const { setIsLoggedIn } = useAuth();
   const navigate = useNavigate();
 
-  const updateAccount = async (dataToSend, setErrors) => {
+  const updateAccount = async (formData, setErrors) => {
+    const trimmedData = Object.entries(formData).reduce((acc, [key, value]) => {
+      if (value && key !== "confirmPassword") {
+        acc[key] = value;
+      }
+      return acc;
+    }, {});
     try {
       const response = await axios.post(
         `${process.env.REACT_APP_API_URL}/account/update`,
-        dataToSend,
+        trimmedData,
         { withCredentials: true },
       );
       if (response.status === 200) {
         alert("Account updated successfully!");
-        navigate("/");
       }
     } catch (error) {
       console.error("Error updating account:", error);
