@@ -104,7 +104,7 @@ export const DIContainerConfig = (diContainer: typeof DIContainer) => {
 
   diContainer.registerFactory(
     "RatingService",
-    () => new RatingService(diContainer.resolve("RatingRepository")),
+    () => new RatingService(diContainer.resolve("RatingRepository"), diContainer.resolve("AccountRepository")),
   );
 
   diContainer.registerFactory(
