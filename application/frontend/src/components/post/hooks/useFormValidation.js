@@ -41,5 +41,5 @@ export const useFormValidation = (initialValues) => {
     return true;
   };
 
-  return { formData, handleChange, errors, validate, setErrors };
+  return { formData, setFormData, handleChange, errors, validate, setErrors };
 };
