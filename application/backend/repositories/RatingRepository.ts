@@ -10,26 +10,25 @@ export const RatingRepository = myDataSource.getRepository(Rating).extend({
   /**
    * submits a rating entry for the given userId
    */
-  async createRating(rating:number, account: typeof Account) {
-    const ratingEntry = await this.create({//create & dave the entry
-      rating:rating, 
-      account: account
+  async createRating(rating: number, userId: number) {
+    const ratingEntry = await this.create({
+      //create & dave the entry
+      rating: rating,
+      account: { id: userId },
     }).save();
     return ratingEntry;
   },
 
-
-
-/**
- * gets the average of the ratings for a user corresponding to userId
- * @param userId 
- * @returns 
- */
-  async getUserRatingById(userId:number){
-    return await this.createQueryBuilder("rating")
-    .where("rating.accountId = :accountId", { accountId: userId }) // by acc
-    .select("AVG(rating.rating)", "average") 
-    .getRawOne();
+  /**
+   * gets the average of the ratings for a user corresponding to userId
+   * @param userId
+   * @returns
+   */
+  async getUserRatingById(userId: number) {
+    const rating = await this.createQueryBuilder("rating")
+      .where("rating.accountId = :accountId", { accountId: userId }) // by acc
+      .select("AVG(rating.rating)", "average")
+      .getRawOne();
+    return rating.average === null ? 5 : parseFloat(rating.average);
   },
-
 });

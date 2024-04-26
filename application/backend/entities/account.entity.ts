@@ -11,6 +11,7 @@ import { User } from "./user.entity";
 import { Question } from "./question.entity";
 import { IsDefined, IsString } from "class-validator";
 import { ClassSchedule } from "./classschedule.entity";
+import { Rating } from "./rating.entity";
 @Entity()
 export class Account extends BaseEntity {
   @PrimaryGeneratedColumn()
@@ -39,6 +40,12 @@ export class Account extends BaseEntity {
   })
   questions: Question[];
 
+  @OneToMany(() => Rating, (rating) => rating.account, {
+    cascade: true,
+    onDelete: "CASCADE",
+  })
+  ratings: Rating[];
+
   @Column("smallint", { default: 0 })
   weekavailability: number;
 
@@ -54,6 +61,9 @@ export class Account extends BaseEntity {
   @Column("varchar", { length: 500, default: "" })
   biography: string;
 
-  @OneToMany(() => ClassSchedule, (classSchedule) => classSchedule.account)
+  @OneToMany(() => ClassSchedule, (classSchedule) => classSchedule.account, {
+    cascade: true,
+    onDelete: "CASCADE",
+  })
   classSchedules: ClassSchedule[];
 }
