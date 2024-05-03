@@ -1,7 +1,4 @@
 import { Request, Response } from "express";
-import { myDataSource } from "../app-data-source";
-import { validate } from "class-validator";
-import { Rating } from "../entities/rating.entity";
 import { StatusCodes } from "http-status-codes";
 import { RatingService } from "./../services/RatingService";
 
@@ -82,6 +79,10 @@ export class RatingController {
       }
       return res.status(StatusCodes.OK).json({ avgRating });
     } catch (error) {
+      if (error.message === "404") {
+        res.status(StatusCodes.NOT_FOUND).send("Account not found.");
+      }
+
       return res
         .status(StatusCodes.INTERNAL_SERVER_ERROR)
         .json({ message: error.message });

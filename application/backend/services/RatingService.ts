@@ -17,21 +17,17 @@ export class RatingService {
   }
 
   async submitRating(rating: number, userId: number) {
-    try {
-      const account = await this.accountRepository.getAccountById(userId);
-      if (!account) {
-        //check if acc was found
-        throw new Error("404");
-      }
-      //for dev rm later pos., returns the created entry
-      const ratingEntry = await this.ratingRepository.createRating(
-        rating,
-        userId,
-      );
-      return ratingEntry;
-    } catch (error) {
-      throw error;
+    const account = await this.accountRepository.getAccountById(userId);
+    if (!account) {
+      //check if acc was found
+      throw new Error("404");
     }
+    //for dev rm later pos., returns the created entry
+    const ratingEntry = await this.ratingRepository.createRating(
+      rating,
+      userId,
+    );
+    return ratingEntry;
   }
 
   /**
@@ -40,15 +36,11 @@ export class RatingService {
    * @returns
    */
   async getRating(userId: number) {
-    try {
-      const account = this.accountRepository.getAccountById(userId);
-      if (!account) {
-        throw new Error("404");
-      }
-      const rating = await this.ratingRepository.getUserRatingById(userId);
-      return rating;
-    } catch (error) {
-      throw error;
+    const account = this.accountRepository.getAccountById(userId);
+    if (!account) {
+      throw new Error("404");
     }
+    const rating = await this.ratingRepository.getUserRatingById(userId);
+    return rating;
   }
 }

@@ -1,4 +1,3 @@
-import { Account } from "./../entities/account.entity";
 import { myDataSource } from "./../app-data-source";
 import { Rating } from "./../entities/rating.entity";
 

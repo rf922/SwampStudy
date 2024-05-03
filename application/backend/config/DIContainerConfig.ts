@@ -17,6 +17,7 @@ import { ClassRepository } from "../repositories/ClassRepository";
 import { SessionRepository } from "../repositories/SessionRepository";
 import { LikeRepository } from "../repositories/LikeRepository";
 import { LikeService } from "../services/LikeService";
+import { LikeController } from "../controllers/likeController";
 import { MatchRepository } from "../repositories/MatchRepository";
 import { MatchService } from "../services/MatchService";
 import { MatchController } from "../controllers/matchController";
@@ -95,7 +96,11 @@ export const DIContainerConfig = (diContainer: typeof DIContainer) => {
   );
   diContainer.registerFactory(
     "LikeService",
-    () => new LikeService(diContainer.resolve("LikeRepository")),
+    () =>
+      new LikeService(
+        diContainer.resolve("LikeRepository"),
+        diContainer.resolve("MatchRepository"),
+      ),
   );
 
   diContainer.registerFactory(
@@ -157,10 +162,11 @@ export const DIContainerConfig = (diContainer: typeof DIContainer) => {
   diContainer.registerFactory(
     "LikeController",
     () =>
-      new ForumController(
+      new LikeController(
         diContainer.resolve("LikeService"),
         diContainer.resolve("AccountService"),
         diContainer.resolve("ClassService"),
+        diContainer.resolve("MatchService"),
       ),
   );
   diContainer.registerFactory(
