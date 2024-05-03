@@ -1,17 +1,17 @@
 import axios from "axios";
-import { useNavigate } from "react-router-dom";
 
-export const useUserAPI = () => {
-  const navigate = useNavigate();
-
+export const useUserAPI = (setView) => {
   const handleRegister = async (formData, setErrors) => {
     try {
       const result = await axios.post(
         `${process.env.REACT_APP_API_URL}/user/register`,
         formData,
+        { withCredentials: true },
       );
+
       if (result.status === 201) {
-        navigate("/");
+        console.log("success");
+        setView(1);
       }
     } catch (err) {
       const errorMessages = {};

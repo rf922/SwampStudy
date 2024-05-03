@@ -2,12 +2,14 @@ import React, { useState, useEffect } from "react";
 import useAccountAPI from "./hooks/useAccountAPI";
 import useFormValidation from "./hooks/useFormValidation";
 import { useFileAPI } from "./hooks/useFileAPI";
+import Stars from "../stars/Stars";
 import Loading from "../loading/Loading";
 
 const UserProfile = () => {
   const [editMode, setEditMode] = useState(false);
   const { updateProfile } = useAccountAPI();
   const [isLoading, setIsLoading] = useState(true);
+  const [rating, setRating] = useState(5);
   const { formData, handleChange, setFormData, errors, setErrors, validate } =
     useFormValidation({
       first_name: "",
@@ -31,9 +33,10 @@ const UserProfile = () => {
       const savedDetails = JSON.parse(localData);
       setFormData(savedDetails); // set formData to the saved details
       setImagePreviewUrl(savedDetails.profile_picture);
+      setRating(savedDetails.rating);
     }
     setIsLoading(false);
-  }, [setFormData, setImagePreviewUrl]);
+  }, [setFormData, setImagePreviewUrl, setRating]);
 
   const handleEditClick = () => {
     //switch btwn edit nd save modes
@@ -46,12 +49,14 @@ const UserProfile = () => {
       return;
     } else {
       try {
+        setIsLoading(true);
         //updating the users data
         let updatedFormData = formData;
         if (file) {
           //profile picture was changed
           const imageUrl = await uploadImage(file);
           updatedFormData = { ...formData, profile_picture: imageUrl };
+          console.log({ formData });
           setFormData(updatedFormData);
         }
         await updateProfile(updatedFormData);
@@ -63,6 +68,8 @@ const UserProfile = () => {
           ...prevErrors,
           form: "Failed to submit changes, please Try again later.",
         }));
+      } finally {
+        setIsLoading(false);
       }
     }
   };
@@ -150,18 +157,7 @@ const UserProfile = () => {
             <>
               <div className="text-center">
                 <h2 className="text-xl font-semibold text-purple-800">{`${formData.first_name} ${formData.last_name}`}</h2>
-                <div className="flex justify-center">
-                  {[...Array(5)].map((_, index) => (
-                    <svg
-                      key={index}
-                      className="w-6 h-6 text-yellow-500"
-                      fill="currentColor"
-                      viewBox="0 0 24 24"
-                    >
-                      <path d="M12 .587l3.668 7.425 8.332 1.209-6.041 5.884 1.427 8.319L12 18.897l-7.386 3.887 1.427-8.319L.001 9.221l8.331-1.209L12 .587z" />
-                    </svg>
-                  ))}
-                </div>
+                {!isLoading && <Stars rating={rating} />}
               </div>
               <div className="text-xl font-semibold text-purple-800 pl-4">
                 <h3 className="font-semibold">Bio:</h3>

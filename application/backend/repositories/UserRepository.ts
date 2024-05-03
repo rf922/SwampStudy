@@ -2,6 +2,7 @@ import { myDataSource } from "./../app-data-source";
 import { User } from "./../entities/user.entity";
 import { Account } from "./../entities/account.entity";
 import { validate } from "class-validator";
+import { Not } from "typeorm";
 
 export const UserRepository = myDataSource.getRepository(User).extend({
   /**
@@ -19,7 +20,39 @@ export const UserRepository = myDataSource.getRepository(User).extend({
    * @returns the user found
    */
   async getUserById(id: number) {
-    return this.findOneBy({ id });
+    return this.findOneBy({
+      where: { id },
+      relations: [
+        "account",
+        "account.classSchedule",
+        "account.classSchedule.class",
+        "account.ratings",
+      ],
+    });
+  },
+
+  /**
+   * function to return a list of users , their schedules and classes
+   * @param page
+   * @returns
+   */
+  async getUserPage(userId: number, page: number) {
+    const pageSize = 10;
+    const offSet = (page - 1) * pageSize;
+
+    return this.find({
+      relations: [
+        "account",
+        "account.classSchedule",
+        "account.classSchedule.class",
+        "account.ratings",
+      ],
+      where: {
+        id: Not(userId),
+      },
+      skip: offSet,
+      take: pageSize,
+    });
   },
 
   /**

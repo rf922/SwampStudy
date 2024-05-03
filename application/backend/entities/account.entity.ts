@@ -44,6 +44,7 @@ export class Account extends BaseEntity {
     cascade: true,
     onDelete: "CASCADE",
   })
+  @OneToMany(() => Rating, (rating) => rating.account)
   ratings: Rating[];
 
   @Column("smallint", { default: 0 })
@@ -65,5 +66,5 @@ export class Account extends BaseEntity {
     cascade: true,
     onDelete: "CASCADE",
   })
-  classSchedules: ClassSchedule[];
+  classSchedule: ClassSchedule[];
 }

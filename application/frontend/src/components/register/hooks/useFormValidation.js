@@ -30,10 +30,10 @@ export const useFormValidation = (initialValues) => {
   const validateField = (name, value) => {
     let errors = [];
     switch (name) {
-      case "firstName":
+      case "first_name":
         isValidName(value, errors);
         break;
-      case "lastName":
+      case "last_name":
         isValidName(value, errors);
         break;
       case "email":
