@@ -1,4 +1,5 @@
 import express from "express";
+import { isAuthenticated } from "./../middleware/isAuthenticated";
 import { resolveClassScheduleController } from "../middleware/resolveControllers";
 
 const classScheduleRouter = express.Router();
@@ -13,7 +14,7 @@ classScheduleRouter.post("/update", (req, _res) =>
   req.classScheduleController.updateUserClassSchedule(req, _res),
 );
 
-classScheduleRouter.get("/", (req, _res) =>
+classScheduleRouter.get("/", isAuthenticated, (req, _res) =>
   req.classScheduleController.getClassSchedule(req, _res),
 );
 

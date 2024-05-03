@@ -1,16 +1,13 @@
-/* eslint-disable @typescript-eslint/no-unused-vars */
 import {
   Entity,
   Column,
   PrimaryGeneratedColumn,
   BaseEntity,
-  ManyToMany,
   ManyToOne,
+  ManyToMany,
   JoinTable,
+  CreateDateColumn,
 } from "typeorm";
-/* eslint-disable @typescript-eslint/no-unused-vars */
-import { IsDefined, IsInt, IsString } from "class-validator";
-/* eslint-enable @typescript-eslint/no-unused-vars */
 import { Account } from "./account.entity";
 import { Class } from "./class.entity";
 
@@ -18,20 +15,23 @@ import { Class } from "./class.entity";
 export class Match extends BaseEntity {
   @PrimaryGeneratedColumn()
   id: number;
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  @ManyToMany(() => Account)
+
+  @ManyToOne(() => Account, { eager: true })
+  userOne: Account;
+
+  @ManyToOne(() => Account, { eager: true })
+  userTwo: Account;
+
+  @ManyToMany(() => Class, { eager: true })
   @JoinTable()
-  @IsDefined()
-  users: Account[];
+  classes: Class[];
 
-  @ManyToOne(() => Class)
-  @IsDefined()
-  class: Class;
+  @Column({ type: "datetime", nullable: true })
+  meetingTime: Date | null;
 
-  @Column({ type: "datetime" })
-  meetingTime;
+  @Column({ nullable: true })
+  meetingLink: string | null;
 
-  @Column()
-  @IsDefined()
-  meetingLink: string;
+  @CreateDateColumn()
+  createdAt: Date;
 }

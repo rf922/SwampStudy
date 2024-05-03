@@ -1,13 +1,12 @@
 import React, { useState } from "react";
 import matches from "./matches";
 import PropTypes from "prop-types";
-import DisplayRating from "./DisplayRating";
+import RateUser from "./RateUser";
 
 /**
  * card shows meeting details for past meetings
  */
-const DisplayMeetingDetails = ({ user }) => {
-  const match = matches[user.first_name.toLowerCase()];
+const MeetingDetailsCard = ({ match }) => {
   const [isRateVisible, setIsRateVisible] = useState(false);
   const [isReported, setIsReported] = useState(false);
 
@@ -17,32 +16,33 @@ const DisplayMeetingDetails = ({ user }) => {
 
   const handleReportClick = () => {
     setIsReported(true);
-    alert(`You have submitted a report for : ${user.first_name}`);
+    alert(`You have submitted a report for : ${match.user.first_name}`);
   };
 
   return (
     <div className="flex flex-col h-screen max-w-full min-w-[220px] rounded-lg overflow-hidden shadow-lg bg-white border border-purple-200">
       {isRateVisible && (
         <div className="absolute z-50 inset-0 bg-black bg-opacity-50 flex justify-center items-center backdrop-blur-md">
-          <DisplayRating close={toggleRateUser} user={user} />
+          <RateUser close={toggleRateUser} user={match.user} />
         </div>
       )}
       {/* usr info */}
       <div className="flex flex-col sm:flex-row px-6 py-4 items-center sm:items-start">
         <div className="flex-grow">
           <h2 className="font-semibold text-purple-800">
-            {user.first_name} {user.last_name}
+            {match.user.first_name} {match.user.last_name}
           </h2>
           <p>
-            Biography: <span className="text-gray-800">{user.biography}</span>
+            Biography:{" "}
+            <span className="text-gray-800">{match.user.biography}</span>
           </p>
           <p>
-            Email: <span className="text-gray-800">{user.email}</span>
+            Email: <span className="text-gray-800">{match.email}</span>
           </p>
         </div>
         <img
-          src={user.profile_picture}
-          alt={`${user.first_name}'s profile`}
+          src={match.user.profile_picture}
+          alt={`${match.user.first_name}'s profile`}
           className="w-40 h-40 rounded-full mt-4 sm:mt-0 sm:ml-4"
         />
       </div>
@@ -50,8 +50,8 @@ const DisplayMeetingDetails = ({ user }) => {
       {/* recent match && meeting details */}
       {match.recent ? (
         <h1 className="font-bold text-lg bg-fuchsia-200 text-purple-800 border-b-2 border-purple-300 inline-block pb-2">
-          You recently matched with {user.first_name}, reach out and send them
-          an email!
+          You recently matched with {match.user.first_name}, reach out and send
+          them an email!
         </h1>
       ) : (
         <div className="flex flex-col max-w-full min-w-[220px] overflow-hidden shadow-lg bg-white my-4 border-purple-200 text-center">
@@ -103,18 +103,22 @@ const DisplayMeetingDetails = ({ user }) => {
   );
 };
 
-DisplayMeetingDetails.propTypes = {
-  user: PropTypes.shape({
-    id: PropTypes.number.isRequired,
-    first_name: PropTypes.string.isRequired,
-    last_name: PropTypes.string.isRequired,
-    email: PropTypes.string.isRequired,
-    profile_picture: PropTypes.string.isRequired,
-    weekavailability: PropTypes.number.isRequired,
-    educator: PropTypes.bool,
-    introvert: PropTypes.bool,
-    isHidden: PropTypes.bool,
-    biography: PropTypes.string,
+MeetingDetailsCard.propTypes = {
+  match: PropTypes.shape({
+    user: PropTypes.shape({
+      id: PropTypes.number.isRequired,
+      first_name: PropTypes.string.isRequired,
+      last_name: PropTypes.string.isRequired,
+      profile_picture: PropTypes.string.isRequired,
+      weekavailability: PropTypes.number.isRequired,
+      educator: PropTypes.bool,
+      introvert: PropTypes.bool,
+      isHidden: PropTypes.bool,
+      biography: PropTypes.string,
+    }).isRequired,
+    recent: PropTypes.bool,
+    date: PropTypes.string,
+    location: PropTypes.string,
     courses: PropTypes.arrayOf(
       PropTypes.shape({
         id: PropTypes.number.isRequired,
@@ -123,7 +127,8 @@ DisplayMeetingDetails.propTypes = {
         department: PropTypes.string.isRequired,
       }),
     ).isRequired,
+    email: PropTypes.string,
   }).isRequired,
 };
 
-export default DisplayMeetingDetails;
+export default MeetingDetailsCard;
