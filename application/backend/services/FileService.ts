@@ -3,7 +3,6 @@ import * as AWS from "aws-sdk";
 export class FileService {
   private s3: AWS.S3;
   private bucketName: string;
-  private urlExtra: string = "++++++++++";
 
   constructor(s3: AWS.S3, bucketName: string) {
     this.s3 = s3;
@@ -36,7 +35,7 @@ export class FileService {
    * @returns
    */
   private async getPublicUrl(filename, bucketPath) {
-    const publicUrl = `https://swampstudy.s3.us-west-1.amazonaws.com/${bucketPath}/${filename.trim()}${this.urlExtra}`;
+    const publicUrl = `https://swampstudy.s3.us-west-1.amazonaws.com/${bucketPath}/${filename.trim()}`;
     return publicUrl;
   }
 }
