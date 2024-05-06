@@ -17,4 +17,8 @@ userRouter.get("/profiles", isAuthenticated, (req, _res) =>
   req.userController.getUserProfiles(req, _res),
 );
 
+userRouter.post("/report/:userId", isAuthenticated, (req, _res) =>
+  req.userController.reportUserProfile(req, _res),
+);
+
 export default userRouter;

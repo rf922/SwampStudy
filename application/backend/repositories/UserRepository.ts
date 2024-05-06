@@ -20,15 +20,17 @@ export const UserRepository = myDataSource.getRepository(User).extend({
    * @returns the user found
    */
   async getUserById(id: number) {
-    return this.findOneBy({
-      where: { id },
-      relations: [
-        "account",
-        "account.classSchedule",
-        "account.classSchedule.class",
-        "account.ratings",
-      ],
-    });
+    return this.findOneBy({ id });
+  },
+
+  /**
+   * report a user by incrementing the report count for the passed userID.
+   * @param reportedUserId The ID of the user to report.
+   */
+  async reportUser(reportedUserId: number) {
+    const user = await this.findOneBy({ id: reportedUserId });
+    user.reports += 1; // Increment the reports count
+    return await this.save(user);
   },
 
   /**
@@ -48,7 +50,38 @@ export const UserRepository = myDataSource.getRepository(User).extend({
         "account.ratings",
       ],
       where: {
-        id: Not(userId),
+        id: Not(userId), //filter the user asking for the page
+        account: {
+          isHidden: false, //filter hidden accounts
+        },
+      },
+      skip: offSet,
+      take: pageSize,
+    });
+  },
+
+  /**
+   * function to return a list of users whose
+   * introvert field is true and their schedules and classes
+   * @param page
+   * @returns
+   */
+  async getIntrovertPage(userId: number, page: number) {
+    const pageSize = 10;
+    const offSet = (page - 1) * pageSize;
+
+    return this.find({
+      relations: [
+        "account",
+        "account.classSchedule",
+        "account.classSchedule.class",
+        "account.ratings",
+      ],
+      where: {
+        id: Not(userId), //filter the user asking for the page
+        account: {
+          introvert: true, //specifically introverts
+        },
       },
       skip: offSet,
       take: pageSize,

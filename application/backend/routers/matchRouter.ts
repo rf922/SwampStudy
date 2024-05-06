@@ -9,4 +9,8 @@ matchRouter.get("/userMatch", (req, _res) =>
   req.matchController.getMatch(req, _res),
 );
 
+matchRouter.post("/meeting", (req, _res) =>
+  req.matchController.updateMatchDate(req, _res),
+);
+
 export default matchRouter;

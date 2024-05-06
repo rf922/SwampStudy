@@ -1,5 +1,6 @@
 import { Match } from "./../entities/match.entity";
 import { MatchRepository } from "./../repositories/MatchRepository";
+import { v4 as uuidv4 } from "uuid";
 
 /**
  * match service to handle match logic
@@ -23,7 +24,12 @@ export class MatchService {
     if (await this.matchExists(userId1, userId2)) {
       throw new Error("Match already exists");
     }
-    const match = await this.matchRepository.createMatch(userId1, userId2);
+    const meetingLink = await this.createMeetingLink();
+    const match = await this.matchRepository.createMatch(
+      userId1,
+      userId2,
+      meetingLink,
+    );
     return match;
   }
 
@@ -49,15 +55,50 @@ export class MatchService {
     return this.formatMatches(userId, matches);
   }
 
+  /**
+   * updates a matches meeting date by matchId
+   * @param matchId 
+   * @param newMeetingDate 
+   * @returns the updated match 
+   */
+  public async updateMatchDate(matchId: number, newMeetingDate: string) {
+    const date = new Date(newMeetingDate);
+    if (isNaN(date.getTime())) {
+      throw new Error("Invalid date format");
+    }
+
+    const updatedMatch = await this.matchRepository.setMatchDate(matchId, date);
+    return updatedMatch;
+  }
+
+  /**
+   * helper function to generate a meeting link for the match
+   *
+   * @returns
+   */
+  private async createMeetingLink() {
+    const uniqueId = this.generateUniqueId();
+    const meetingLink = `https://meet.jit.si/${uniqueId}`;
+    return meetingLink;
+  }
+
   private formatMatch(userId?: number, match?: Match) {
     const now = new Date();
     const recentThreshold = new Date(now.getTime() - 7 * 24 * 60 * 60 * 1000); // recent check 7 days ago
-
+    const requittingUser =
+      match?.userOne?.id !== userId ? match.userOne : match.userTwo;
     return {
-      user: match?.userOne?.id !== userId ? match.userOne : match.userTwo,
-      email: "", //is in the rel user
+      id: match.id,
+      userId: requittingUser.user_FK.id,
+      first_name: requittingUser.first_name,
+      last_name: requittingUser.last_name,
+      biography: requittingUser.biography,
+      profile_picture: requittingUser.profile_picture,
+      weekavailability: requittingUser.weekavailability,
+      email: requittingUser.user_FK.email, //is in the rel user
       recent: new Date(match.createdAt) > recentThreshold, // mark as recent
-      date: match.createdAt,
+      date: match.meetingDateTime,
+      meetingLink: match.meetingLink,
       location: "Not specified", // default to "Not specified"
       courses: [], //fill later
     };
@@ -76,4 +117,14 @@ export class MatchService {
   public async matchExists(userId: number, userId2: number) {
     return await this.matchRepository.matchExists(userId, userId2);
   }
+
+  /**
+   * private helper that uses uuid to generate a unique id for the meeting link
+   * this makes it highly unlikely that meeting links collide and adds sec
+   * @returns
+   */
+  private generateUniqueId(): string {
+    return `match-${uuidv4()}`;
+  }
+  s;
 }

@@ -18,15 +18,52 @@ export class MatchController {
       const matches = await this.matchService.getMatches(id);
       res.status(StatusCodes.OK).send(matches);
     } catch (error) {
-      res.status(StatusCodes.NOT_FOUND).send(error);
+      res.status(StatusCodes.NOT_FOUND).send(error.message);
+    }
+  }
+
+  /**
+   * end point for updating a matches meeting date , pos be expanded later to update
+   * more match related dat
+   * @param req 
+   * @param res 
+   * @returns 
+   */
+  public async updateMatchDate(req: Request, res: Response) {
+    try {
+      const { matchId, meetingDate } = req.body;
+      if (!matchId || !meetingDate) {//param check
+        return res
+          .status(StatusCodes.BAD_REQUEST)
+          .json({ message: "Missing required fields" })
+          .send();
+      }
+
+      const updatedMatch = await this.matchService.updateMatchDate(
+        matchId,
+        meetingDate,
+      );
+      if (updatedMatch) {
+        res.status(StatusCodes.ACCEPTED).json(updatedMatch).send();
+      } else {
+        res
+          .status(StatusCodes.NOT_FOUND)
+          .json({ message: "Match not found" })
+          .send();
+      }
+    } catch (error) {
+      console.error("Failed to update match date:", error);
+      res
+        .status(StatusCodes.INTERNAL_SERVER_ERROR)
+        .send();
     }
   }
 
   /**
    * end point to get a specific match by userId1 and userId2
-   * @param req 
-   * @param res 
-   * @returns 
+   * @param req
+   * @param res
+   * @returns
    */
   public async getMatch(req: Request, res: Response) {
     try {

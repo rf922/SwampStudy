@@ -27,7 +27,7 @@ export class Match extends BaseEntity {
   classes: Class[];
 
   @Column({ type: "datetime", nullable: true })
-  meetingTime: Date | null;
+  meetingDateTime: Date | null;
 
   @Column({ nullable: true })
   meetingLink: string | null;

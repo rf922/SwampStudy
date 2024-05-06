@@ -34,6 +34,11 @@ export class UserService {
     return this.userRepository.getUserById(id);
   }
 
+  public async submitReport(reportingUserId: number, reportedUserId: number) {
+    const reports = await this.userRepository.reportUser(reportedUserId);
+    return reports;
+  }
+
   /**
    * registers a new user
    * @param firstName
@@ -116,8 +121,18 @@ export class UserService {
    * @param page
    * @returns
    */
-  public async getUserProfilesPage(userId: number, page: number) {
-    const userPage = await this.userRepository.getUserPage(userId, page);
+  public async getUserProfilesPage(
+    userId: number,
+    page: number,
+    introvertList?: boolean,
+  ) {
+    let userPage;
+    if (introvertList) {
+      userPage = await this.userRepository.getIntrovertPage(userId, page);
+    } else {
+      userPage = await this.userRepository.getUserPage(userId, page);
+    }
+
     return this.formatUserProfiles(userPage);
   }
 

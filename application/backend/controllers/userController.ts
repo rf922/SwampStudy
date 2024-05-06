@@ -104,19 +104,52 @@ export class UserController {
   }
 
   /**
+   * endpoint for submitting reports against user profiles 
+   * @param req 
+   * @param res 
+   */
+  public async reportUserProfile(req: Request, res: Response) {
+    try {
+      const userId = req.session.userId;
+      const reportedUserId = req.params.userId;
+      const parsedReportedUserId = parseInt(reportedUserId);
+      if (isNaN(parsedReportedUserId)) {
+        res.status(StatusCodes.BAD_REQUEST).send("bad request params");
+      }
+      const reportsAgainstUser = await this.userService.submitReport(
+        userId,
+        parsedReportedUserId,
+      );
+      res
+        .status(StatusCodes.ACCEPTED)
+        .send("report submit successful : " + reportsAgainstUser);
+    } catch (error) {
+      res
+        .status(StatusCodes.INTERNAL_SERVER_ERROR)
+        .send("Error submitting report : " + error);
+    }
+  }
+
+  /**
    * handles getting user profiles by page
    */
   public async getUserProfiles(req: Request, res: Response) {
     try {
       const userId = req.session.userId;
       const page = req.query.page as string;
+      const introvert = req.query.isIntrovert as string;
       const parsedPage = parseInt(page);
       if (isNaN(parsedPage) || parsedPage < 1) {
         res.status(StatusCodes.BAD_REQUEST).send("Bad page number");
       }
+      const introvertList = introvert
+        ? introvert.toLowerCase() === "true"
+        : undefined;
+
       const userProfiles = await this.userService.getUserProfilesPage(
         userId,
         parsedPage,
+        introvertList,
       );
       res.status(StatusCodes.OK).send(userProfiles);
     } catch (error) {
