@@ -1,3 +1,4 @@
+import { Rating } from "./../entities/rating.entity";
 import { Match } from "./../entities/match.entity";
 import { MatchRepository } from "./../repositories/MatchRepository";
 import { v4 as uuidv4 } from "uuid";
@@ -57,9 +58,9 @@ export class MatchService {
 
   /**
    * updates a matches meeting date by matchId
-   * @param matchId 
-   * @param newMeetingDate 
-   * @returns the updated match 
+   * @param matchId
+   * @param newMeetingDate
+   * @returns the updated match
    */
   public async updateMatchDate(matchId: number, newMeetingDate: string) {
     const date = new Date(newMeetingDate);
@@ -95,6 +96,7 @@ export class MatchService {
       biography: requittingUser.biography,
       profile_picture: requittingUser.profile_picture,
       weekavailability: requittingUser.weekavailability,
+      rating: this.getAverageRating(requittingUser.ratings),
       email: requittingUser.user_FK.email, //is in the rel user
       recent: new Date(match.createdAt) > recentThreshold, // mark as recent
       date: match.meetingDateTime,
@@ -126,5 +128,18 @@ export class MatchService {
   private generateUniqueId(): string {
     return `match-${uuidv4()}`;
   }
-  s;
+
+  /**
+   * private helper getcs the users average rating
+   * @param ratings
+   * @returns
+   */
+  private getAverageRating(ratings: Rating[]) {
+    if (!Array.isArray(ratings) || ratings.length === 0) {
+      return 0; //defaul 0
+    }
+    const total = ratings.reduce((acc, { rating }) => acc + rating, 0);
+    const average = total / ratings.length;
+    return average;
+  }
 }

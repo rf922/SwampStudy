@@ -25,9 +25,9 @@ export const MatchRepository = myDataSource.getRepository(Match).extend({
 
   /**
    * updates the associated meeting date for a match by matchId
-   * @param matchId 
-   * @param newDateTime 
-   * @returns 
+   * @param matchId
+   * @param newDateTime
+   * @returns
    */
   async setMatchDate(matchId: number, meetingDate: Date | string) {
     const match = await this.findOneBy({ id: matchId });
@@ -70,8 +70,10 @@ export const MatchRepository = myDataSource.getRepository(Match).extend({
       },
       relations: [
         "userOne",
+        "userOne.ratings",
         "userOne.user_FK",
         "userTwo",
+        "userTwo.ratings",
         "userTwo.user_FK",
         "classes",
       ],
@@ -91,8 +93,10 @@ export const MatchRepository = myDataSource.getRepository(Match).extend({
       where: [{ userOne: { id: userId1 }, userTwo: { id: userId2 } }],
       relations: [
         "userOne",
+        "userOne.ratings",
         "userOne.user_FK",
         "userTwo",
+        "userTwo.ratings",
         "userTwo.user_FK",
         "classes",
       ],
@@ -111,8 +115,10 @@ export const MatchRepository = myDataSource.getRepository(Match).extend({
       where: [{ userOne: { id: userId } }, { userTwo: { id: userId } }],
       relations: [
         "userOne",
+        "userOne.ratings",
         "userOne.user_FK",
         "userTwo",
+        "userTwo.ratings",
         "userTwo.user_FK",
         "classes",
       ],

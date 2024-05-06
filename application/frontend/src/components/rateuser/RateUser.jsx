@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import PropTypes from "prop-types";
-import Stars from "../stars/Stars";
-import useRatingAPI from "./useRatingAPI";
+import Stars from "./../stars/Stars";
+import useRatingAPI from "./hooks/useRatingAPI";
 
 const RateUser = ({ user, close }) => {
   const [rating, setRating] = useState(0); // curr rating set by click
@@ -9,7 +9,7 @@ const RateUser = ({ user, close }) => {
 
   const handleSubmit = () => {
     try {
-      submitRating(rating, user.id);
+      submitRating(rating, user.userId);
       close();
     } catch (error) {
       console.log("Something went wrong submitting a rating");
@@ -60,6 +60,7 @@ const RateUser = ({ user, close }) => {
 RateUser.propTypes = {
   user: PropTypes.shape({
     id: PropTypes.number.isRequired,
+    userId: PropTypes.number.isRequired,
     first_name: PropTypes.string.isRequired,
     last_name: PropTypes.string.isRequired,
     email: PropTypes.string.isRequired,

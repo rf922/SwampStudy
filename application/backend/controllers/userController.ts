@@ -104,9 +104,9 @@ export class UserController {
   }
 
   /**
-   * endpoint for submitting reports against user profiles 
-   * @param req 
-   * @param res 
+   * endpoint for submitting reports against user profiles
+   * @param req
+   * @param res
    */
   public async reportUserProfile(req: Request, res: Response) {
     try {

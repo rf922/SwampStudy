@@ -25,14 +25,15 @@ export class MatchController {
   /**
    * end point for updating a matches meeting date , pos be expanded later to update
    * more match related dat
-   * @param req 
-   * @param res 
-   * @returns 
+   * @param req
+   * @param res
+   * @returns
    */
   public async updateMatchDate(req: Request, res: Response) {
     try {
       const { matchId, meetingDate } = req.body;
-      if (!matchId || !meetingDate) {//param check
+      if (!matchId || !meetingDate) {
+        //param check
         return res
           .status(StatusCodes.BAD_REQUEST)
           .json({ message: "Missing required fields" })
@@ -53,9 +54,7 @@ export class MatchController {
       }
     } catch (error) {
       console.error("Failed to update match date:", error);
-      res
-        .status(StatusCodes.INTERNAL_SERVER_ERROR)
-        .send();
+      res.status(StatusCodes.INTERNAL_SERVER_ERROR).send();
     }
   }
 

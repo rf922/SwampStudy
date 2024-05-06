@@ -8,12 +8,13 @@ export const useAccountAPI = () => {
 
   const updateAccount = async (formData, setErrors) => {
     const trimmedData = Object.entries(formData).reduce((acc, [key, value]) => {
-      if (value && key !== "confirmPassword") {
+      if (key !== "confirmPassword") {
         acc[key] = value;
       }
       return acc;
     }, {});
     try {
+      //console.log(JSON.stringify(trimmedData));
       const response = await axios.post(
         `${process.env.REACT_APP_API_URL}/account/update`,
         trimmedData,

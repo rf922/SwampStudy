@@ -48,14 +48,14 @@ const UpdateAccount = () => {
         isHidden: savedDetails.isHidden ?? false,
       }));
     }
-  }, [setFormData]);
+  }, [setOptions]);
 
   const { updateAccount, deleteAccount } = useAccountAPI();
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     if (validate(formData)) {
-      updateAccount(formData, (errors) => console.log(errors));
+      await updateAccount(formData, (errors) => console.log(errors));
       const localData = localStorage.getItem("userDetails");
       const userDetails = localData ? JSON.parse(localData) : {};
 
@@ -153,7 +153,7 @@ const UpdateAccount = () => {
         </div>
         {/* opt toggle switchs */}
         <div className="w-full flex flex-col my-4 mx-2 p-4 bg-purple-100">
-          <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 px-4 py-2">
+          <div className="grid grid-cols-2 sm:grid-cols-1 gap-4 px-4 py-2">
             {Object.entries(options).map(([option, isSet], index) => (
               <label
                 key={index}
