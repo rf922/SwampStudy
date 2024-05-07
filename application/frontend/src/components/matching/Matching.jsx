@@ -20,22 +20,27 @@ export const Matching = ({ isIntrovert, isHidden }) => {
   const { matchList, pastMatches, selectedMatch, setSelectedMatch } =
     useMatchAPI(matchFound, pageNum);
 
-  useEffect(() => {// notify the current state of isHidden
+  useEffect(() => {
+    // notify the current state of isHidden
     if (isHidden) {
-      toast.warning("Your profile is hidden and will not be visible to other users ", {
-        position: "top-right",
-        autoClose: 5000,
-        hideProgressBar: false,
-        closeOnClick: true,
-        pauseOnHover: true,
-        draggable: true,
-        className: "bg-red-500",
-        progressClassName: "progress-bar-red",
-      });
+      toast.warning(
+        "Your profile is hidden and will not be visible to other users ",
+        {
+          position: "top-right",
+          autoClose: 5000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          className: "bg-red-500",
+          progressClassName: "progress-bar-red",
+        },
+      );
     }
   }, [isHidden]);
 
-  useEffect(() => {// notifythe current state of isHidden
+  useEffect(() => {
+    // notifythe current state of isHidden
 
     if (isIntrovert) {
       toast.info("introvert mode On, viewing other introverts.", {
@@ -52,7 +57,7 @@ export const Matching = ({ isIntrovert, isHidden }) => {
 
   useEffect(() => {
     const getUserProfiles = async () => {
-      if (!pageNum) return; 
+      if (!pageNum) return;
       const url = `${process.env.REACT_APP_API_URL}/user/profiles/?page=${pageNum}&isIntrovert=${isIntrovert ? isIntrovert : false}`;
       try {
         const response = await axios.get(url, { withCredentials: true });

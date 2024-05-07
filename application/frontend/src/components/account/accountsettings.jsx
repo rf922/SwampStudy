@@ -48,7 +48,7 @@ const UpdateAccount = () => {
         isHidden: savedDetails.isHidden ?? false,
       }));
     }
-  }, [setOptions]);
+  }, [setOptions, setFormData]);
 
   const { updateAccount, deleteAccount } = useAccountAPI();
 

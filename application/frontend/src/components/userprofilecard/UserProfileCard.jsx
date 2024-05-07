@@ -28,7 +28,10 @@ const UserProfileCard = ({ user }) => {
           <Stars rating={user.rating} />
         </div>
       </div>
-      <div className="w-full">      <WeekAvailabilityCard availability={user.weekavailability} /></div>
+      <div className="w-full">
+        {" "}
+        <WeekAvailabilityCard availability={user.weekavailability} />
+      </div>
     </div>
   );
 };
