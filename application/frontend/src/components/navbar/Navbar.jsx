@@ -24,13 +24,13 @@ const Navbar = () => {
       </Link>
 
       <Link to="/" className="flex items-center">
-      <div className="flex items-center">
-        <img
-          src="/images/swampstudy.png"
-          alt="Swamp Study"
-          className="mx-1 w-17 h-9"
-        />
-      </div>
+        <div className="flex items-center">
+          <img
+            src="/images/swampstudy.png"
+            alt="Swamp Study"
+            className="mx-1 w-17 h-9"
+          />
+        </div>
       </Link>
 
       <Link to="/" className="flex items-center">
