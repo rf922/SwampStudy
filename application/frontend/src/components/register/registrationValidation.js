@@ -6,15 +6,15 @@ import {
 } from "../../utils/validationUtils";
 
 export const validateRegistrationForm = ({
-  firstName,
-  lastName,
+  first_name,
+  last_name,
   email,
   password,
   confirmPassword,
 }) => {
   const errors = [];
-  isValidName(firstName, errors);
-  isValidName(lastName, errors);
+  isValidName(first_name, errors);
+  isValidName(last_name, errors);
   isValidEmail(email, errors);
   isValidPassword(password, errors);
   isValidConfirmPassword(password, confirmPassword);

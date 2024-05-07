@@ -8,7 +8,7 @@ export class ClassSchedule {
   @PrimaryGeneratedColumn()
   id: number;
 
-  @ManyToOne(() => Account)
+  @ManyToOne(() => Account, { onDelete: "CASCADE" })
   @IsDefined()
   account: Account;
 

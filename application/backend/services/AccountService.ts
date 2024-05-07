@@ -1,6 +1,7 @@
 import { AccountRepository } from "./../repositories/AccountRepository";
 import { hash } from "bcryptjs";
 import { UserRepository } from "./../repositories/UserRepository";
+import { RatingRepository } from "repositories/RatingRepository";
 
 /**
  * this class encapsulates acc related business logic,
@@ -9,12 +10,14 @@ import { UserRepository } from "./../repositories/UserRepository";
 export class AccountService {
   /**
    * instantiate account service with its repository dependencies,
-   * @param accountRepository //acc repo
-   * @param userRepository  // usr repo
+   * @param accountRepository
+   * @param userRepository
+   * @param ratingRepository
    */
   constructor(
     private accountRepository: typeof AccountRepository,
     private userRepository: typeof UserRepository,
+    private ratingRepository: typeof RatingRepository,
   ) {
     this.accountRepository = accountRepository;
     this.userRepository = userRepository;
@@ -62,7 +65,8 @@ export class AccountService {
     if (!account) {
       throw new Error("Account not found");
     }
-    return account;
+    const rating = await this.ratingRepository.getUserRatingById(id);
+    return { ...account, rating };
   }
 
   /**

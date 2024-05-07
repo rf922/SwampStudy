@@ -6,6 +6,6 @@ const likeRouter = express.Router();
 likeRouter.use(resolveLikeController);
 
 /* note the arrow syntax */
-likeRouter.post("/", (req, _res) => req.likeController.postLike(req, _res));
+likeRouter.post("/", (req, _res) => req.likeController.createLike(req, _res));
 
 export default likeRouter;

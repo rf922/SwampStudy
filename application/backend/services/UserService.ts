@@ -1,5 +1,7 @@
+import { User } from "./../entities/user.entity";
 import { UserRepository } from "./../repositories/UserRepository";
 import { hash, compare } from "bcryptjs";
+import { Rating } from "./../entities/rating.entity";
 
 /**
  * user service class responsible for handlig business logic rel.
@@ -20,7 +22,7 @@ export class UserService {
    * @returns the user corr to email
    */
   public async getUserByEmail(email: string) {
-    return this.userRepository.getUserByEmail(email);
+    return await this.userRepository.getUserByEmail(email);
   }
 
   /**
@@ -29,7 +31,12 @@ export class UserService {
    * @returns user
    */
   public async getUserById(id: number) {
-    return this.userRepository.getUserById(id);
+    return await this.userRepository.getUserById(id);
+  }
+
+  public async submitReport(reportingUserId: number, reportedUserId: number) {
+    const reports = await this.userRepository.reportUser(reportedUserId);
+    return reports;
   }
 
   /**
@@ -97,7 +104,7 @@ export class UserService {
    * @returns the userId of the logged in user
    */
   public async loginUser(email: string, password: string) {
-    const user = await this.getUserByEmail(email);
+    const user = await this.userRepository.getUserByEmail(email);
     if (!user) {
       throw new Error("404");
     }
@@ -106,6 +113,67 @@ export class UserService {
     if (!isPasswordMatch) {
       throw new Error("401");
     }
-    return user.userId;
+    return user.id;
+  }
+
+  /**
+   * function to get a page of user profiles
+   * @param page
+   * @returns
+   */
+  public async getUserProfilesPage(
+    userId: number,
+    page: number,
+    introvertList?: boolean,
+  ) {
+    let userPage;
+    if (introvertList) {
+      userPage = await this.userRepository.getIntrovertPage(userId, page);
+    } else {
+      userPage = await this.userRepository.getUserPage(userId, page);
+    }
+
+    return this.formatUserProfiles(userPage);
+  }
+
+  /**
+   * private helper to format userprofile objects
+   * @param users
+   * @returns
+   */
+  private formatUserProfiles(users: User[]) {
+    return users.map((user) => ({
+      id: user.account.id,
+      first_name: user.account.first_name,
+      last_name: user.account.last_name,
+      email: user.email,
+      profile_picture: user.account.profile_picture,
+      weekavailability: user.account.weekavailability,
+      educator: user.account.educator,
+      introvert: user.account.introvert,
+      isHidden: user.account.isHidden,
+      biography: user.account.biography,
+      rating: this.getAverageRating(user.account.ratings),
+      courses: user.account.classSchedule.map((schedule) => ({
+        id: schedule.class.id,
+        name: schedule.class.name,
+        number: schedule.class.number,
+        department: schedule.class.department,
+      })),
+    }));
+  }
+
+  /**
+   * private helper getcs the users average rating
+   * @param ratings
+   * @returns
+   */
+  private getAverageRating(ratings: Rating[]) {
+    if (!Array.isArray(ratings) || ratings.length === 0) {
+      return 0; //defaul 0
+    }
+    const total = ratings.reduce((acc, { rating }) => acc + rating, 0);
+    const average = total / ratings.length;
+    return average;
   }
 }

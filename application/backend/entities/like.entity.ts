@@ -26,6 +26,6 @@ export class Like extends BaseEntity {
   @IsDefined()
   liked: Account;
 
-  @CreateDateColumn({ type: "datetime" })
-  timestamp;
+  @CreateDateColumn()
+  public timestamp: Date;
 }
