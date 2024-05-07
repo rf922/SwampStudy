@@ -17,7 +17,7 @@ import classScheduleRouter from "./routers/classScheduleRouter";
 import { Session } from "./entities/session.entity";
 import { DIContainer } from "./config/DIContainer";
 import { DIContainerConfig } from "./config/DIContainerConfig";
-
+import requestIp from "request-ip";
 import ratingRouter from "./routers/ratingRouter";
 
 export class Server {
@@ -53,7 +53,8 @@ export class Server {
     this.app.use(bodyParser.urlencoded({ extended: false }));
     this.app.use(bodyParser.json());
     this.app.use(express.static(path.resolve("./") + "/dist"));
-
+    this.app.set("trust proxy", true);
+    this.app.use(requestIp.mw()); // Middleware to capture IP address
     // Configure session with TypeORM store
     const sessionRepository = myDataSource.getRepository(Session);
     this.app.use(

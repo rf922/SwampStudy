@@ -6,5 +6,6 @@ declare module "express-session" {
   interface SessionData {
     // fields for cookie go here note '?' to mark them as optional
     userId?: number;
+    ip?: string;
   }
 }

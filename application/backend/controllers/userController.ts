@@ -2,7 +2,6 @@ import { Request, Response } from "express";
 import { StatusCodes } from "http-status-codes";
 import { SessionService } from "./../services/SessionService";
 import { UserService } from "./../services/UserService";
-
 /**
  * user controller responsible for handing http request and sending respnse data
  */
@@ -79,11 +78,18 @@ export class UserController {
         .send("Email and password are required.");
     }
     try {
-      const userId = await this.userService.loginUser(email, password);
-      await this.sessionService.createSession(req.session, email);
+      const ip = req.ip || req.clientIp;
+      await this.userService.loginUser(email, password);
+      const sessions = await this.sessionService.createSession(
+        req.session,
+        email,
+        ip,
+      );
       return res
         .status(StatusCodes.OK)
-        .send(`Login successful for user ID ${userId}`);
+        .send(
+          `Login successful for user ID  ${JSON.stringify(sessions)} &  ${req.session.id} : ${ip}`,
+        );
     } catch (error) {
       console.error(error);
       if (error.message) {
@@ -97,7 +103,7 @@ export class UserController {
           default:
             return res
               .status(StatusCodes.INTERNAL_SERVER_ERROR)
-              .send("Unknown error");
+              .send("Unknown error" + error);
         }
       }
     }
