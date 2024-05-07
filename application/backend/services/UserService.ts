@@ -22,7 +22,7 @@ export class UserService {
    * @returns the user corr to email
    */
   public async getUserByEmail(email: string) {
-    return this.userRepository.getUserByEmail(email);
+    return await this.userRepository.getUserByEmail(email);
   }
 
   /**
@@ -31,7 +31,7 @@ export class UserService {
    * @returns user
    */
   public async getUserById(id: number) {
-    return this.userRepository.getUserById(id);
+    return await this.userRepository.getUserById(id);
   }
 
   public async submitReport(reportingUserId: number, reportedUserId: number) {
@@ -104,7 +104,7 @@ export class UserService {
    * @returns the userId of the logged in user
    */
   public async loginUser(email: string, password: string) {
-    const user = await this.getUserByEmail(email);
+    const user = await this.userRepository.getUserByEmail(email);
     if (!user) {
       throw new Error("404");
     }
@@ -113,7 +113,7 @@ export class UserService {
     if (!isPasswordMatch) {
       throw new Error("401");
     }
-    return user.userId;
+    return user.id;
   }
 
   /**

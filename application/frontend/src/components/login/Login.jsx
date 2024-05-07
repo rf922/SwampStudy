@@ -12,7 +12,7 @@ export const Login = () => {
   const handleLogin = async (e) => {
     e.preventDefault();
     //if (!validate()) return; // qt if val fails
-    login(values.email, values.password, setErrors);
+    await login(values.email, values.password, setErrors);
   };
   return (
     <div className="h-full flex flex-col justify-center">
