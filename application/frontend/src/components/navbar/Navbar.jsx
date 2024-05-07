@@ -36,6 +36,7 @@ const Navbar = () => {
         </Link>
       </div>
 
+
       {isLoggedIn && (
         <div className="flex">
           <Link
