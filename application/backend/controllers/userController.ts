@@ -2,6 +2,7 @@ import { Request, Response } from "express";
 import { StatusCodes } from "http-status-codes";
 import { SessionService } from "./../services/SessionService";
 import { UserService } from "./../services/UserService";
+import { MailService } from "./../services/MailService";
 /**
  * user controller responsible for handing http request and sending respnse data
  */
@@ -15,9 +16,11 @@ export class UserController {
   constructor(
     private userService: UserService,
     private sessionService: SessionService,
+    private mailService: MailService,
   ) {
     this.userService = userService;
     this.sessionService = sessionService;
+    this.mailService = mailService;
   }
 
   /**

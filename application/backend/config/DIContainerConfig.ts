@@ -29,6 +29,8 @@ import { FileController } from "./../controllers/fileController";
 import { ClassScheduleRepository } from "./../repositories/ClassScheduleRepository";
 import { ClassScheduleService } from "./../services/ClassScheduleService";
 import { ClassScheduleController } from "./../controllers/classScheduleController";
+import { mailTransporter } from "./../config/mailTransporter";
+import { MailService } from "../services/MailService";
 import * as AWS from "aws-sdk";
 /**
  * // this is sets up the dep injection by registering  repositories,
@@ -58,6 +60,7 @@ export const DIContainerConfig = (diContainer: typeof DIContainer) => {
     "ClassScheduleRepository",
     ClassScheduleRepository,
   );
+  diContainer.registerInstance("MailTransporter", mailTransporter);
   /* add other repositories as needed... */
 
   /* register services to factory here, inject dependencies */
@@ -127,6 +130,10 @@ export const DIContainerConfig = (diContainer: typeof DIContainer) => {
     () =>
       new ClassScheduleService(diContainer.resolve("ClassScheduleRepository")),
   );
+  diContainer.registerFactory(
+    "MailService",
+    () => new MailService(diContainer.resolve("MailTransporter")),
+  );
   /* expand services as needed */
 
   /* register controllers here passing factory methods to get instances */
@@ -136,6 +143,7 @@ export const DIContainerConfig = (diContainer: typeof DIContainer) => {
       new UserController(
         diContainer.resolve("UserService"),
         diContainer.resolve("SessionService"),
+        diContainer.resolve("MailService"),
       ),
   );
   diContainer.registerFactory(

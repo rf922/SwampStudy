@@ -50,7 +50,7 @@ export class SessionService {
    * @param session
    * @param email
    */
-  public async createSession(session: SessionData, email: string) {
+  public async createSession(session: SessionData, email: string, ip?: string) {
     const user = await this.userRepository.getUserByEmail(email);
 
     /**
@@ -58,6 +58,7 @@ export class SessionService {
      * may expand later to handle, device, ip, createdAt etc..
      */
     session.userId = user.id;
+    session.ip = ip;
   }
 
   /**

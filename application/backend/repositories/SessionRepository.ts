@@ -12,7 +12,7 @@ export const SessionRepository = myDataSource.getRepository(Session).extend({
 
   /**
    * gets active sessions i.e those sessions whose destroyedat value is not null
-   * @returns 
+   * @returns
    */
   async getActiveSessions() {
     const groupedSessions = await this.createQueryBuilder("session")
