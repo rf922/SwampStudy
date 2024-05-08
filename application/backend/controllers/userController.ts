@@ -47,7 +47,8 @@ export class UserController {
         pic,
       );
       await this.userService.loginUser(email, password);
-      await this.sessionService.createSession(req.session, email);
+      const ip = req.ip || req.clientIp;
+      await this.sessionService.createSession(req.session, email, ip);
       return res.status(StatusCodes.CREATED).send(message);
     } catch (error) {
       console.error(error);
