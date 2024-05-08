@@ -1,5 +1,5 @@
 import React from "react";
-import UserProfile from "../userProfile/UserProfile";
+import UserProfile from "../userprofile/UserProfile";
 import Availability from "../availability/Availability";
 import ClassSchedule from "../classschedule/ClassSchedule";
 import UpdateAccount from "../account/accountsettings";

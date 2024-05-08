@@ -15,7 +15,7 @@ import Post from "./components/post/Post";
 import Matching from "./components/matching/Matching";
 import Settings from "./components/settings/Settings";
 //import UserProfile from "./components/userProfile/UserProfile";
-import TermsAndConditions from "./components/termsAndConditions/termsAndConditions";
+import TermsAndConditions from "./components/termsandconditions/TermsAndConditions";
 import Footer from "./components/footer/footer";
 import { Auth } from "./context/AuthContext";
 import PrivacyPolicy from "./components/privacypolicy/PrivacyPolicy";

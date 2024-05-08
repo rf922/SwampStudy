@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { validateUserProfile } from "./../validateUserProfile";
+import { validateUserProfile } from "../validateUserProfile";
 import {
   isValidName,
   isValidTextFieldEntry,
