@@ -2,7 +2,7 @@
 
 | Host Name | User Name | Private Key |
 | --- | --- | --- |
-| ec2-13-57-247-71.us-west-1.compute.amazonaws.com | ubuntu | In this folder as "CSC648KeyPair.pem" |
+| ec2-54-183-23-211.us-west-1.compute.amazonaws.com | ubuntu | In this folder as "CSC648KeyPair.pem" |
 
 ## These Instructions are for Windows Machines
 Running Powershell Version 7
