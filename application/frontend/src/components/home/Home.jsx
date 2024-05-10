@@ -9,7 +9,10 @@ import Loading from "../loading/Loading";
 const Home = () => {
   const [_userFirstName, setUserFirstName] = useState("");
   const { isLoggedIn, isLoading } = useAuth();
-  const [view, setView] = useState(localStorage.getItem("view") || "forum");
+  const [view, setView] = useState(localStorage.getItem("view") || "matching");
+  const [isIntrovert, setIsIntrovert] = useState(false);
+  const [isHidden, setIsHidden] = useState(false);
+
   useEffect(() => {
     // effect for setting userDetails in local storage
     const getUserDetails = async () => {
@@ -20,14 +23,16 @@ const Home = () => {
           //ex using it to set fields may remov later
           const userData = JSON.parse(localData);
           setUserFirstName(userData.first_name);
-          //        console.log(localData);
+          setIsIntrovert(userData.introvert);
+          setIsHidden(userData.isHidden);
+          console.log(localData);
         } else if (isLoggedIn) {
           // logged in try to get the acc detials
           const userDetailsResponse = await axios.get(
             `${process.env.REACT_APP_API_URL}/account/details`,
             { withCredentials: true },
           );
-          //       console.log(userDetailsResponse);
+          console.log(userDetailsResponse);
           if (userDetailsResponse.data.profile_picture) {
             // prof pic set, fix url (maybe fix before sending ?)
             userDetailsResponse.data.profile_picture =
@@ -40,6 +45,8 @@ const Home = () => {
             JSON.stringify(userDetailsResponse.data),
           );
           setUserFirstName(userDetailsResponse.data.first_name);
+          setIsIntrovert(userDetailsResponse.data.introvert);
+          setIsHidden(userDetailsResponse.isHidden);
         } else {
           setUserFirstName("please log in.");
         }
@@ -89,7 +96,11 @@ const Home = () => {
       </div>
 
       <div className="flex-grow min-w-80 overflow-auto bg-purple-100 p-4">
-        {view === "forum" ? <Forum /> : <Matching />}
+        {view === "forum" ? (
+          <Forum />
+        ) : (
+          <Matching isIntrovert={isIntrovert} isHidden={isHidden} />
+        )}
       </div>
     </div>
   );

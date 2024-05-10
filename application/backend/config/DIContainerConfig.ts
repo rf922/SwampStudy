@@ -17,6 +17,7 @@ import { ClassRepository } from "../repositories/ClassRepository";
 import { SessionRepository } from "../repositories/SessionRepository";
 import { LikeRepository } from "../repositories/LikeRepository";
 import { LikeService } from "../services/LikeService";
+import { LikeController } from "../controllers/likeController";
 import { MatchRepository } from "../repositories/MatchRepository";
 import { MatchService } from "../services/MatchService";
 import { MatchController } from "../controllers/matchController";
@@ -28,6 +29,8 @@ import { FileController } from "./../controllers/fileController";
 import { ClassScheduleRepository } from "./../repositories/ClassScheduleRepository";
 import { ClassScheduleService } from "./../services/ClassScheduleService";
 import { ClassScheduleController } from "./../controllers/classScheduleController";
+import { mailTransporter } from "./../config/mailTransporter";
+import { MailService } from "../services/MailService";
 import * as AWS from "aws-sdk";
 /**
  * // this is sets up the dep injection by registering  repositories,
@@ -57,6 +60,7 @@ export const DIContainerConfig = (diContainer: typeof DIContainer) => {
     "ClassScheduleRepository",
     ClassScheduleRepository,
   );
+  diContainer.registerInstance("MailTransporter", mailTransporter);
   /* add other repositories as needed... */
 
   /* register services to factory here, inject dependencies */
@@ -78,6 +82,7 @@ export const DIContainerConfig = (diContainer: typeof DIContainer) => {
       new AccountService(
         diContainer.resolve("AccountRepository"),
         diContainer.resolve("UserRepository"),
+        diContainer.resolve("RatingRepository"),
       ),
   );
   diContainer.registerFactory(
@@ -94,7 +99,11 @@ export const DIContainerConfig = (diContainer: typeof DIContainer) => {
   );
   diContainer.registerFactory(
     "LikeService",
-    () => new LikeService(diContainer.resolve("LikeRepository")),
+    () =>
+      new LikeService(
+        diContainer.resolve("LikeRepository"),
+        diContainer.resolve("MatchRepository"),
+      ),
   );
 
   diContainer.registerFactory(
@@ -104,7 +113,11 @@ export const DIContainerConfig = (diContainer: typeof DIContainer) => {
 
   diContainer.registerFactory(
     "RatingService",
-    () => new RatingService(diContainer.resolve("RatingRepository")),
+    () =>
+      new RatingService(
+        diContainer.resolve("RatingRepository"),
+        diContainer.resolve("AccountRepository"),
+      ),
   );
 
   diContainer.registerFactory(
@@ -117,6 +130,10 @@ export const DIContainerConfig = (diContainer: typeof DIContainer) => {
     () =>
       new ClassScheduleService(diContainer.resolve("ClassScheduleRepository")),
   );
+  diContainer.registerFactory(
+    "MailService",
+    () => new MailService(diContainer.resolve("MailTransporter")),
+  );
   /* expand services as needed */
 
   /* register controllers here passing factory methods to get instances */
@@ -126,6 +143,7 @@ export const DIContainerConfig = (diContainer: typeof DIContainer) => {
       new UserController(
         diContainer.resolve("UserService"),
         diContainer.resolve("SessionService"),
+        diContainer.resolve("MailService"),
       ),
   );
   diContainer.registerFactory(
@@ -152,10 +170,11 @@ export const DIContainerConfig = (diContainer: typeof DIContainer) => {
   diContainer.registerFactory(
     "LikeController",
     () =>
-      new ForumController(
+      new LikeController(
         diContainer.resolve("LikeService"),
         diContainer.resolve("AccountService"),
         diContainer.resolve("ClassService"),
+        diContainer.resolve("MatchService"),
       ),
   );
   diContainer.registerFactory(

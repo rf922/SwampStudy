@@ -1,4 +1,4 @@
-import { ISession } from "connect-typeorm/out";
+import { ISession } from "connect-typeorm";
 import {
   Column,
   Entity,
@@ -25,6 +25,6 @@ export class Session implements ISession {
   @Column("text")
   public json: string = "";
 
-  @DeleteDateColumn({ name: "deletedAt", nullable: true })
-  public deletedAt?: Date;
+  @DeleteDateColumn({ name: "destroyedAt", nullable: true })
+  public destroyedAt?: Date;
 }

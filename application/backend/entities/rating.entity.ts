@@ -3,6 +3,7 @@ import {
   PrimaryGeneratedColumn,
   Column,
   ManyToOne,
+  JoinColumn,
   BaseEntity,
 } from "typeorm";
 import { Account } from "./account.entity";
@@ -17,7 +18,9 @@ export class Rating extends BaseEntity {
   @IsInt()
   rating: number;
 
-  @IsDefined()
-  @ManyToOne(() => Account)
+  @ManyToOne(() => Account, (account) => account.ratings, {
+    onDelete: "CASCADE",
+  })
+  @JoinColumn({ name: "accountId" }) // Specifies the custom column name if different from the default
   account: Account;
 }

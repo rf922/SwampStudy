@@ -51,13 +51,15 @@ const team = {
   },
   edmund: {
     name: "Edmund Huang",
-    paragraph: `Hello! I am Edmund. 
-        And this page is to introduce you to a little bit about me.
+    paragraph: `Hello! I am Edmund.
         I am a senior in the San Francisco State University's Undergraduate Computer Science program.
         I am excited to work with others in this class and learn how to design and create software.
-        I enjoy watching movies, gaming, and hanging out with my friends.
-        
-        Interesting fact about me: In the Fall of 2016, I fell into a coma.`,
+        I fell in love with computer hardware. I developed an interest when I was in middle school 
+        figuring out how to maximize performance for playing games. I've since built multiple computers
+        for my friends and siblings. I feel joy and pride when I successfully troubleshoot why computer hardware
+        is not functioning correctly. I think I've built a good knowledge base for troubleshooting. I love all
+        sorts of computer hardware. From how fast CPUs, GPUs, and storage can be, to how innovative new products can be.
+        (VR, bluetooth, mesh-wifi, fiber internet) `,
     imgUrl: "/images/edmund2.jpg",
   },
   conrad: {

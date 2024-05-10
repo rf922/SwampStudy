@@ -2,7 +2,7 @@ import { Request, Response } from "express";
 import { StatusCodes } from "http-status-codes";
 import { SessionService } from "./../services/SessionService";
 import { UserService } from "./../services/UserService";
-
+import { MailService } from "./../services/MailService";
 /**
  * user controller responsible for handing http request and sending respnse data
  */
@@ -16,9 +16,11 @@ export class UserController {
   constructor(
     private userService: UserService,
     private sessionService: SessionService,
+    private mailService: MailService,
   ) {
     this.userService = userService;
     this.sessionService = sessionService;
+    this.mailService = mailService;
   }
 
   /**
@@ -29,21 +31,24 @@ export class UserController {
    */
   public async register(req: Request, res: Response) {
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
-    const { firstName, lastName, email, password, profilePicture } = req.body;
+    const { first_name, last_name, email, password, profilePicture } = req.body;
     const pic = !profilePicture ? "NA" : profilePicture;
-    if (!firstName || !lastName || !email || !password) {
+    if (!first_name || !last_name || !email || !password) {
       return res
         .status(StatusCodes.BAD_REQUEST)
         .send("Missing required fields.");
     }
     try {
       const message = await this.userService.registerUser(
-        firstName,
-        lastName,
+        first_name,
+        last_name,
         email,
         password,
         pic,
       );
+      await this.userService.loginUser(email, password);
+      const ip = req.ip || req.clientIp;
+      await this.sessionService.createSession(req.session, email, ip);
       return res.status(StatusCodes.CREATED).send(message);
     } catch (error) {
       console.error(error);
@@ -77,11 +82,18 @@ export class UserController {
         .send("Email and password are required.");
     }
     try {
-      const userId = await this.userService.loginUser(email, password);
-      await this.sessionService.createSession(req.session, email);
+      const ip = req.ip || req.clientIp;
+      await this.userService.loginUser(email, password);
+      const sessions = await this.sessionService.createSession(
+        req.session,
+        email,
+        ip,
+      );
       return res
         .status(StatusCodes.OK)
-        .send(`Login successful for user ID ${userId}`);
+        .send(
+          `Login successful for user ID  ${JSON.stringify(sessions)} &  ${req.session.id} : ${ip}`,
+        );
     } catch (error) {
       console.error(error);
       if (error.message) {
@@ -95,9 +107,63 @@ export class UserController {
           default:
             return res
               .status(StatusCodes.INTERNAL_SERVER_ERROR)
-              .send("Unknown error");
+              .send("Unknown error" + error);
         }
       }
+    }
+  }
+
+  /**
+   * endpoint for submitting reports against user profiles
+   * @param req
+   * @param res
+   */
+  public async reportUserProfile(req: Request, res: Response) {
+    try {
+      const userId = req.session.userId;
+      const reportedUserId = req.params.userId;
+      const parsedReportedUserId = parseInt(reportedUserId);
+      if (isNaN(parsedReportedUserId)) {
+        res.status(StatusCodes.BAD_REQUEST).send("bad request params");
+      }
+      const reportsAgainstUser = await this.userService.submitReport(
+        userId,
+        parsedReportedUserId,
+      );
+      res
+        .status(StatusCodes.ACCEPTED)
+        .send("report submit successful : " + reportsAgainstUser);
+    } catch (error) {
+      res
+        .status(StatusCodes.INTERNAL_SERVER_ERROR)
+        .send("Error submitting report : " + error);
+    }
+  }
+
+  /**
+   * handles getting user profiles by page
+   */
+  public async getUserProfiles(req: Request, res: Response) {
+    try {
+      const userId = req.session.userId;
+      const page = req.query.page as string;
+      const introvert = req.query.isIntrovert as string;
+      const parsedPage = parseInt(page);
+      if (isNaN(parsedPage) || parsedPage < 1) {
+        res.status(StatusCodes.BAD_REQUEST).send("Bad page number");
+      }
+      const introvertList = introvert
+        ? introvert.toLowerCase() === "true"
+        : undefined;
+
+      const userProfiles = await this.userService.getUserProfilesPage(
+        userId,
+        parsedPage,
+        introvertList,
+      );
+      res.status(StatusCodes.OK).send(userProfiles);
+    } catch (error) {
+      res.status(StatusCodes.INTERNAL_SERVER_ERROR).send(error);
     }
   }
 

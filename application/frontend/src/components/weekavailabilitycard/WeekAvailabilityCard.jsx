@@ -5,7 +5,7 @@ import PropTypes from "prop-types";
  * displays weekavailability in a card like container
  * uses bit mask to set when available / nt avail
  */
-const DisplayAvailability = ({ availability }) => {
+const WeekAvailabilityCard = ({ availability }) => {
   const days = [
     { name: "Monday", bitmask: 0b0000001 },
     { name: "Tuesday", bitmask: 0b0000010 },
@@ -19,7 +19,7 @@ const DisplayAvailability = ({ availability }) => {
   const isDaySet = (bitmask) => (availability & bitmask) !== 0;
 
   return (
-    <div className="flex flex-col max-w-full min-w-[220px] rounded-lg overflow-hidden shadow-lg bg-white my-4  border-purple-200 ">
+    <div className="flex flex-col max-w-full min-h-[400px] min-w-[220px] max-h-[400px] rounded-lg overflow-auto scrollbar-hide shadow-lg bg-white my-4  border-purple-200 ">
       <div className="flex flex-col justify-between px-6 py-4 bg-violet-200 text-gray-800">
         <h1 className="font-bold text-lg text-purple-800">
           Weekday Availability
@@ -43,8 +43,8 @@ const DisplayAvailability = ({ availability }) => {
   );
 };
 
-DisplayAvailability.propTypes = {
+WeekAvailabilityCard.propTypes = {
   availability: PropTypes.number.isRequired,
 };
 
-export default DisplayAvailability;
+export default WeekAvailabilityCard;

@@ -1,9 +1,20 @@
 import React, { useState } from "react";
 import PropTypes from "prop-types";
+import Stars from "./../stars/Stars";
+import useRatingAPI from "./hooks/useRatingAPI";
 
-const DisplayRating = ({ user, close }) => {
-  const [hover, setHover] = useState(0); // curr hover position
+const RateUser = ({ user, close }) => {
   const [rating, setRating] = useState(0); // curr rating set by click
+  const { submitRating } = useRatingAPI();
+
+  const handleSubmit = () => {
+    try {
+      submitRating(rating, user.userId);
+      close();
+    } catch (error) {
+      console.log("Something went wrong submitting a rating");
+    }
+  };
 
   return (
     <div className="flex flex-col h-auto max-w-full min-w-[220px] rounded-lg overflow-hidden shadow-lg bg-white border border-purple-200 items-center py-6">
@@ -31,34 +42,12 @@ const DisplayRating = ({ user, close }) => {
         </p>
       </div>
       {/**stars */}
-      <div className="flex">
-        {[...Array(5)].map((star, index) => {
-          index += 1;
-          return (
-            <button
-              key={index}
-              className={`w-8 h-8 ${index <= (hover || rating) ? "text-yellow-500" : "text-gray-300"}`}
-              onClick={() => setRating(index)}
-              onMouseEnter={() => setHover(index)}
-              onMouseLeave={() => setHover(rating)}
-            >
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                fill="currentColor"
-                viewBox="0 0 24 24"
-                aria-hidden="true"
-              >
-                <path d="M12 .587l3.668 7.425 8.332 1.209-6.041 5.884 1.427 8.319L12 18.897l-7.386 3.887 1.427-8.319L.001 9.221l8.331-1.209L12 .587z" />
-              </svg>
-            </button>
-          );
-        })}
-      </div>
+      <Stars rating={rating} setRating={setRating} />
       {/* rate buttn  */}
       <div className="w-full mt-4">
         <button
           type="button"
-          onClick={close}
+          onClick={handleSubmit}
           className="bg-yellow-500 hover:bg-yellow-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline transition duration-200 ease-in-out w-full"
         >
           Rate
@@ -68,9 +57,10 @@ const DisplayRating = ({ user, close }) => {
   );
 };
 
-DisplayRating.propTypes = {
+RateUser.propTypes = {
   user: PropTypes.shape({
     id: PropTypes.number.isRequired,
+    userId: PropTypes.number.isRequired,
     first_name: PropTypes.string.isRequired,
     last_name: PropTypes.string.isRequired,
     email: PropTypes.string.isRequired,
@@ -92,4 +82,4 @@ DisplayRating.propTypes = {
   close: PropTypes.func.isRequired,
 };
 
-export default DisplayRating;
+export default RateUser;

@@ -1,7 +1,4 @@
 import { Request, Response } from "express";
-import { myDataSource } from "../app-data-source";
-import { validate } from "class-validator";
-import { Rating } from "../entities/rating.entity";
 import { StatusCodes } from "http-status-codes";
 import { RatingService } from "./../services/RatingService";
 
@@ -28,44 +25,67 @@ export class RatingController {
     }
   }
 
+  /**
+   * end point for posting a rating to an user corresponding
+   * to the passed userId
+   * @param req
+   * @param res
+   * @returns the created rating entry
+   */
   public async postRating(req: Request, res: Response) {
-    const rating = await myDataSource.getRepository(Rating).create(req.body);
-    const errors = await validate(rating);
-    if (errors.length > 0) {
-      res.status(422);
-      res.send("Failed Data Validation");
-    } else {
-      try {
-        const results = await myDataSource.getRepository(Rating).insert(rating);
-        res.send(results);
-      } catch (error) {
-        res.status(422);
-        console.log(error);
-        res.send("Duplicate request or DB Error");
+    try {
+      const { rating, userId } = req.body;
+      const parsedRating = parseInt(rating);
+      const parsedUserId = parseInt(userId);
+
+      if (isNaN(parsedUserId) || isNaN(parsedRating)) {
+        //param check bad type
+        return res.status(StatusCodes.BAD_REQUEST).send("bad req");
+      } else if (parsedUserId < 1 || parsedRating < 0) {
+        return res.status(StatusCodes.BAD_REQUEST).send("Invalid range");
       }
+      const results = await this.ratingService.submitRating(
+        parsedRating,
+        parsedUserId,
+      );
+      res.status(StatusCodes.ACCEPTED).send(results);
+    } catch (error) {
+      res.status(StatusCodes.INTERNAL_SERVER_ERROR).send("err");
     }
   }
 
+  /**
+   * function for returning user rating by userId
+   * @param req
+   * @param res
+   * @returns
+   */
   public async getRating(req: Request, res: Response) {
     try {
-      const id = req.body.userID;
-      console.log(typeof id);
-      //if (isNaN(id)) {
-      //  return res
-      //    .status(StatusCodes.BAD_REQUEST)
-      //    .json({ message: "Invalid Account ID" });
-      //}
-      const avgRating = await myDataSource
-        .getRepository(Rating)
-        .createQueryBuilder("rating")
-        .where("rating.account = :account", { account: id })
-        .select("AVG(rating)", "avg")
-        .getRawOne();
-      return res.status(StatusCodes.OK).json({ rating: avgRating });
+      const userId = req.query.userId as string;
+      const parsedUserId = parseInt(userId);
+
+      if (isNaN(parsedUserId) && !(parsedUserId < 1)) {
+        // param chaeck
+        return res
+          .status(StatusCodes.BAD_REQUEST)
+          .json({ message: "Invalid Account ID" });
+      }
+      const avgRating = await this.ratingService.getRating(parsedUserId);
+      if (avgRating === undefined) {
+        return res
+          .status(StatusCodes.NOT_FOUND)
+          .send({ message: "No rating found" });
+      }
+      return res.status(StatusCodes.OK).json({ avgRating });
     } catch (error) {
+      if (error.message === "404") {
+        res.status(StatusCodes.NOT_FOUND).send("Account not found.");
+      }
+
       return res
-        .status(StatusCodes.BAD_REQUEST)
-        .json({ message: "Error Getting AVG Rating" });
+        .status(StatusCodes.INTERNAL_SERVER_ERROR)
+        .json({ message: error.message });
     }
   }
 }

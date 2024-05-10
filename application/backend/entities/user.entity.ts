@@ -24,6 +24,9 @@ export class User extends BaseEntity {
   @IsString()
   password: string;
 
+  @Column({ default: 0 })
+  reports: number;
+
   @CreateDateColumn()
   created: Date;
 

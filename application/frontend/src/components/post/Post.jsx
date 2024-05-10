@@ -10,9 +10,10 @@ const Post = () => {
   const { question, answers, setAnswers } = useForumAPI(questionId);
   const { isLoggedIn } = useAuth();
   const [showLoginPrompt, setShowLoginPrompt] = useState(false);
-  const { validate, errors, handleChange, formData } = useFormValidation({
-    answer: "",
-  });
+  const { validate, errors, handleChange, formData, setFormData } =
+    useFormValidation({
+      answer: "",
+    });
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -32,6 +33,7 @@ const Post = () => {
         );
         // append answers to list of existing answers && clear text field
         setAnswers((prevAnswers) => [...prevAnswers, response.data]);
+        setFormData({ ...formData, answer: "" });
       } catch (error) {
         console.error("Error submitting answer:", error);
       }
@@ -55,7 +57,7 @@ const Post = () => {
   }
 
   return (
-    <div className="max-w-md mx-auto  rounded-lg overflow-hidden shadow-lg bg-white my-4 border border-purple-200">
+    <div className="max-w-md mx-auto rounded-lg overflow-hidden shadow-lg bg-white my-4 border border-purple-200">
       <Link
         to="/"
         className="absolute top-35 left-4 z-40 bg-yellow-300 hover:bg-yellow-400 text-purple-600 font-bold py-2 px-4 rounded-full transition duration-300 ease-in-out text-xs sm:text-sm shadow hover:shadow-lg transform hover:-translate-y-1"
@@ -64,7 +66,7 @@ const Post = () => {
       </Link>
       <div className="w-full bg-purple-100 text-gray-800">
         <div className="px-6 py-4">
-          <div className="font-bold text-xl mb-2 text-purple-600 text-center ">
+          <div className="font-bold text-xl mb-2 text-purple-600 text-center">
             {question.thread.title}
           </div>
         </div>
@@ -94,13 +96,12 @@ const Post = () => {
           <p className="text-red-500 text-md italic">{errors.answer}</p>
         )}
         <textarea
-          className="w-full p-3 border border-gray-300 rounded-lg mb-2"
+          className="w-full p-3 border border-gray-300 rounded-lg mb-2 overflow-hidden"
           name="answer"
           value={formData.answer}
           onChange={handleChange}
           onInput={adjustTextAreaHeight}
           placeholder="Add your answer"
-          style={{ overflow: "hidden" }}
         ></textarea>
         <button
           type="submit"
