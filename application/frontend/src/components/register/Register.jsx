@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import { useFormValidation } from "./hooks/useFormValidation";
 import axios from "axios";
 import { useUserAPI } from "./hooks/useUserAPI";
-import UserProfile from "../userProfile/UserProfile";
+import UserProfile from "../userprofile/UserProfile";
 import Availability from "../availability/Availability";
 import ClassSchedule from "../classschedule/ClassSchedule";
 import { useAuth } from "../../context/AuthContext";
