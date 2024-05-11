@@ -54,7 +54,7 @@ export class Server {
     this.app.use(bodyParser.json());
     this.app.use(express.static(path.resolve("./") + "/dist"));
     this.app.set("trust proxy", true);
-    this.app.use(requestIp.mw()); 
+    this.app.use(requestIp.mw());
     // Configure session with TypeORM store
     const sessionRepository = myDataSource.getRepository(Session);
     this.app.use(
