@@ -81,6 +81,7 @@ export const UserRepository = myDataSource.getRepository(User).extend({
         id: Not(userId), //filter the user asking for the page
         account: {
           introvert: true, //specifically introverts
+          isHidden: false, //filter hidden accounts
         },
       },
       skip: offSet,
