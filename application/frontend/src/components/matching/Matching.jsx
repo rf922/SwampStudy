@@ -9,7 +9,7 @@ import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 
 export const Matching = ({ isIntrovert, isHidden }) => {
-  const [view, setView] = useState("");
+  const [view, setView] = useState("matching");
   const [userProfiles, setUserProfiles] = useState([]);
   const [pageNum, setPageNum] = useState(1);
   const [currentUser, setCurrentUser] = useState(null);
@@ -17,14 +17,18 @@ export const Matching = ({ isIntrovert, isHidden }) => {
   const [matchFound, setMatchFound] = useState(null);
   const [animationClass, setAnimationClass] = useState("");
   const { createLike } = useLikeAPI();
-  const { matchList, pastMatches, selectedMatch, setSelectedMatch } =
-    useMatchAPI(matchFound, pageNum);
+  const {
+    matchList,
+    setMatchList,
+    pastMatches,
+    selectedMatch,
+    setSelectedMatch,
+  } = useMatchAPI(matchFound, pageNum);
 
   useEffect(() => {
-    // notify the current state of isHidden
     if (isHidden) {
       toast.warning(
-        "Your profile is hidden and will not be visible to other users ",
+        "Your profile is hidden and will not be visible to other users",
         {
           position: "top-right",
           autoClose: 5000,
@@ -40,10 +44,8 @@ export const Matching = ({ isIntrovert, isHidden }) => {
   }, [isHidden]);
 
   useEffect(() => {
-    // notifythe current state of isHidden
-
     if (isIntrovert) {
-      toast.info("introvert mode On, viewing other introverts.", {
+      toast.info("Introvert mode On, viewing other introverts.", {
         position: "top-right",
         autoClose: 5000,
         hideProgressBar: false,
@@ -60,6 +62,7 @@ export const Matching = ({ isIntrovert, isHidden }) => {
       if (!pageNum) return;
       const url = `${process.env.REACT_APP_API_URL}/user/profiles/?page=${pageNum}&isIntrovert=${isIntrovert ? isIntrovert : false}`;
       try {
+        console.log(`Fetching profiles for page ${pageNum}`);
         const response = await axios.get(url, { withCredentials: true });
         const profiles = response.data;
         console.log(`Fetched ${profiles.length} profiles for page ${pageNum}`);
@@ -77,63 +80,45 @@ export const Matching = ({ isIntrovert, isHidden }) => {
       }
     };
     getUserProfiles();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [pageNum]);
+  }, [pageNum, isIntrovert]);
 
   useEffect(() => {
     setCurrentUser(userProfiles[profileIndex]);
   }, [userProfiles, profileIndex]);
 
   useEffect(() => {
-    console.log(
-      `Current profile index: ${profileIndex}, Total profiles: ${userProfiles.length}`,
-    );
-    if (userProfiles.length < 10) {
-      if (profileIndex >= userProfiles.length) {
-        setProfileIndex(0); //cycle from start
-      }
+    if (userProfiles.length < 10 && profileIndex >= userProfiles.length) {
+      console.log("Cycling back to start of profiles.");
+      setProfileIndex(0);
       return;
     }
     if (profileIndex >= userProfiles.length) {
-      console.log("Reached the last profile. Advancing to the next page.");
+      console.log("Reached end of profiles. Advancing to the next page.");
       setPageNum((prevPageNum) => {
-        console.log(
-          `Current page: ${prevPageNum}, Moving to page: ${prevPageNum + 1}`,
-        );
-        setProfileIndex(0);
-        return prevPageNum + 1;
+        const nextPage = prevPageNum + 1;
+        console.log(`Advancing from page ${prevPageNum} to page ${nextPage}`);
+        return nextPage;
       });
+      setProfileIndex(0);
     }
   }, [profileIndex, userProfiles]);
 
   const handleLeftClick = () => {
-    console.log("Left button clicked. Sliding out left.");
     setAnimationClass("animate-slide-out-left");
     setTimeout(() => {
-      setProfileIndex((prevIndex) => {
-        const newIndex = prevIndex + 1;
-        console.log(`Current index: ${prevIndex}, New index: ${newIndex}`);
-        return newIndex;
-      });
+      setProfileIndex((prevIndex) => prevIndex + 1);
       setAnimationClass("");
     }, 500);
   };
 
   const handleRightClick = async () => {
-    console.log("Right button clicked. Sliding out right.");
     setAnimationClass("animate-slide-out-right");
     const createdLike = await createLike(currentUser);
-
     setTimeout(() => {
-      setProfileIndex((prevIndex) => {
-        const newIndex = prevIndex + 1;
-        console.log(`Current index: ${prevIndex}, New index: ${newIndex}`);
-        return newIndex;
-      });
+      setProfileIndex((prevIndex) => prevIndex + 1);
       setAnimationClass("");
     }, 500);
     if (createdLike?.created) {
-      console.log("Match was created: ", createdLike.match);
       toast.success("You just found a match!", {
         position: "top-right",
         autoClose: 5000,
@@ -155,12 +140,16 @@ export const Matching = ({ isIntrovert, isHidden }) => {
   const handleBackToMatchingClick = () => {
     setView("matching");
   };
+  const handleUpdateMatch = (updatedMatch) => {
+    const updatedMatches = matchList.map((match) =>
+      match.id === updatedMatch.id ? updatedMatch : match,
+    );
+    setMatchList(updatedMatches);
+  };
 
   return (
     <div className="flex flex-col md:flex-row justify-center my-2">
-      <div
-        className={`w-full md:w-4/5 max-w-4xl overflow-auto  rounded-lg shadow-lg bg-gray-100 border border-purple-200`}
-      >
+      <div className="w-full md:w-4/5 max-w-4xl overflow-auto rounded-lg shadow-lg bg-gray-100 border border-purple-200">
         <div className="bg-violet-200 text-gray-800 py-4 px-6">
           <h1 className="font-bold text-lg text-purple-800">
             {view === "matchDetails"
@@ -170,7 +159,10 @@ export const Matching = ({ isIntrovert, isHidden }) => {
         </div>
 
         {selectedMatch && view === "matchDetails" ? (
-          <MeetingDetailsCard match={selectedMatch} />
+          <MeetingDetailsCard
+            match={selectedMatch}
+            onUpdateMatch={handleUpdateMatch}
+          />
         ) : (
           <div className="flex flex-row">
             <div
@@ -200,7 +192,6 @@ export const Matching = ({ isIntrovert, isHidden }) => {
                 <MatchingCard user={currentUser} />
               </div>
             )}
-
             <div
               className="flex flex-col justify-center items-center w-fit hover:bg-green-100 hover:text-white cursor-pointer"
               onClick={handleRightClick}
@@ -248,7 +239,7 @@ export const Matching = ({ isIntrovert, isHidden }) => {
           </button>
         )}
         <div className="overflow-auto scrollbar-hide min-h-52 max-h-[220px] border border-violet-200 text-gray-800">
-          <h1 className="font-bold text-lg text-purple-800">Latest matches</h1>
+          <h1 className="font-bold text-lg text-purple-800">Latest Matches</h1>
           {matchList.length > 0 &&
             matchList
               .sort(
@@ -259,7 +250,7 @@ export const Matching = ({ isIntrovert, isHidden }) => {
                 <button
                   key={match.id}
                   className={`w-full text-left py-2 px-4 border border-fuchsia-200 ${
-                    match.id === selectedMatch.id
+                    match.id === selectedMatch?.id
                       ? "bg-purple-100 border-purple-700 border-l-4"
                       : ""
                   } hover:bg-purple-100 text-gray-800`}
@@ -270,16 +261,16 @@ export const Matching = ({ isIntrovert, isHidden }) => {
                 </button>
               ))}
         </div>
-        <div className="border border-violet-200 overflow-auto text-gray-800 ">
+        <div className="border border-violet-200 overflow-auto text-gray-800">
           <h1 className="font-bold text-lg text-purple-800">
-            Your previous matches
+            Your Previous Matches
           </h1>
           {pastMatches.length > 0 &&
             pastMatches.map((match) => (
               <button
                 key={match.id}
                 className={`w-full text-left py-2 px-4 border border-fuchsia-200 ${
-                  match.id === selectedMatch.id
+                  match.id === selectedMatch?.id
                     ? "bg-purple-100 border-purple-700 border-l-4"
                     : ""
                 } hover:bg-purple-100 text-gray-800`}

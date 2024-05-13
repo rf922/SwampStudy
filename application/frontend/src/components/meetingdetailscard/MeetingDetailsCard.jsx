@@ -6,7 +6,7 @@ import "react-datepicker/dist/react-datepicker.css";
 import MeetingScheduler from "../meetingscheduler/MeetingScheduler";
 import UserProfileCard from "../userprofilecard/UserProfileCard";
 
-const MeetingDetailsCard = ({ match }) => {
+const MeetingDetailsCard = ({ match, onUpdateMatch }) => {
   const [isRateVisible, setIsRateVisible] = useState(false);
   const [isReported, setIsReported] = useState(false);
   const { reportUser } = useUserAPI();
@@ -31,7 +31,11 @@ const MeetingDetailsCard = ({ match }) => {
       <UserProfileCard user={match} />
 
       {match.recent ? (
-        <MeetingScheduler match={match} />
+        <MeetingScheduler
+          key={match.id}
+          match={match}
+          onUpdateMatch={onUpdateMatch}
+        />
       ) : (
         <div className="flex flex-col max-w-full min-w-[220px] overflow-hidden shadow-lg bg-white my-4 border-purple-200 text-center">
           <h1 className="font-bold text-lg bg-fuchsia-200 text-purple-800 border-b-2 border-purple-300 inline-block pb-2">
@@ -102,6 +106,7 @@ MeetingDetailsCard.propTypes = {
     ).isRequired,
     email: PropTypes.string,
   }).isRequired,
+  onUpdateMatch: PropTypes.func.isRequired,
 };
 
 export default MeetingDetailsCard;

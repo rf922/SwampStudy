@@ -81,7 +81,13 @@ const useMatchAPI = (matchFound, pageNum) => {
     getFoundMatch();
   }, [matchFound]);
 
-  return { pastMatches, matchList, selectedMatch, setSelectedMatch };
+  return {
+    pastMatches,
+    matchList,
+    setMatchList,
+    selectedMatch,
+    setSelectedMatch,
+  };
 };
 
 export default useMatchAPI;
