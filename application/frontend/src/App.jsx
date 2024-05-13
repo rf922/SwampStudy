@@ -12,7 +12,7 @@ import Home from "./components/home/Home";
 import ProtectedRoute from "./components/protectedroute/protectedroute";
 import Post from "./components/post/Post";
 //import Makepost from "./components/makepost/Makepost";
-import Matching from "./components/matching/Matching";
+//import Matching from "./components/matching/Matching";
 import Settings from "./components/settings/Settings";
 //import UserProfile from "./components/userProfile/UserProfile";
 import TermsAndConditions from "./components/termsandconditions/TermsAndConditions";
@@ -35,17 +35,7 @@ function App() {
               <Route path="/about/:name" element={<Profile />} />
               <Route path="/about/" element={<About />} />
               <Route path="/register" element={<Register />} />
-              <Route path="/matching" element={<Matching />} />
               <Route path="/login" element={<Login />} />
-              {/** comp dev routes 
-               *               <Route path="/footer" element={<Footer />} />
-               *               
-               *<Route path="/forum" element={<Forum />} />
-              <Route path="/userProfile" element={<UserProfile />} />
-              <Route path="/image" element={<Image />} />
-              <Route path="/availability" element={<Availability />} />
-              <Route path="/classschedule" element={<ClassSchedule />} />
-               comp dev routes, will ve remoced later */}
               <Route
                 path="/terms-and-conditions"
                 element={<TermsAndConditions />}
@@ -59,16 +49,6 @@ function App() {
                   </ProtectedRoute>
                 }
               />
-              {/*  since makepost is embedded no longer need the route*/}
-              {/*               <Route
-                path="/makepost"
-                element={
-                  <ProtectedRoute>
-                    <Makepost />
-                  </ProtectedRoute>
-                }
-              />
-              />*/}
               <Route path="/contact" element={<Contact />} />
               <Route path="/licensing" element={<Licensing />} />
             </Routes>
