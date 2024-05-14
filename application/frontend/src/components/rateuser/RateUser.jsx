@@ -81,7 +81,7 @@ RateUser.propTypes = {
     ).isRequired,
   }).isRequired,
   close: PropTypes.func.isRequired,
-  ratingSubmitted: PropTypes.func,
+  setRatingSubmitted: PropTypes.func,
 };
 
 export default RateUser;

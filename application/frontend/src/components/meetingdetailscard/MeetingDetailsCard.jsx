@@ -14,8 +14,8 @@ const MeetingDetailsCard = ({ match, onUpdateMatch }) => {
   const [isReported, setIsReported] = useState(false);
   const { reportUser } = useUserAPI();
 
-  useEffect(()=> {
-    if(ratingSubmitted){
+  useEffect(() => {
+    if (ratingSubmitted) {
       toast.success("Rating submitted successfully!", {
         position: "top-right",
         autoClose: 5000,
@@ -26,7 +26,7 @@ const MeetingDetailsCard = ({ match, onUpdateMatch }) => {
       });
     }
     setRatingSubmitted(false);
-  },[ratingSubmitted, setRatingSubmitted])
+  }, [ratingSubmitted, setRatingSubmitted]);
 
   const toggleRateUser = () => {
     setIsRateVisible(!isRateVisible);
@@ -49,7 +49,11 @@ const MeetingDetailsCard = ({ match, onUpdateMatch }) => {
     <div className="flex flex-col h-screen max-w-full min-w-[220px] rounded-lg overflow-hidden shadow-lg bg-white border border-purple-200">
       {isRateVisible && (
         <div className="absolute z-50 inset-0 bg-black bg-opacity-50 flex justify-center items-center backdrop-blur-md">
-          <RateUser close={toggleRateUser} user={match} setRatingSubmitted={setRatingSubmitted} />
+          <RateUser
+            close={toggleRateUser}
+            user={match}
+            setRatingSubmitted={setRatingSubmitted}
+          />
         </div>
       )}
       <UserProfileCard user={match} />

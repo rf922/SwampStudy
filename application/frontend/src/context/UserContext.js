@@ -7,7 +7,7 @@ const UserContext = createContext();
 
 export const UserProvider = ({ children }) => {
   const [userDetails, setUserDetails] = useState(null);
-  const { isLoggedIn } = useAuth(); 
+  const { isLoggedIn } = useAuth();
 
   useEffect(() => {
     if (isLoggedIn) {

@@ -20,7 +20,7 @@ const MeetingScheduler = ({ match, onUpdateMatch }) => {
   }, [match.weekavailability]);
 
   const [meetingDateTime, setMeetingDateTime] = useState(
-    match.date ? new Date(match.date) : getNearestAvailableDate()
+    match.date ? new Date(match.date) : getNearestAvailableDate(),
   );
   const [dateSubmitted, setDateSubmitted] = useState(!!match.date);
   const [hasChanged, setHasChanged] = useState(false);
@@ -190,7 +190,7 @@ MeetingScheduler.propTypes = {
         name: PropTypes.string.isRequired,
         number: PropTypes.number.isRequired,
         department: PropTypes.string.isRequired,
-      })
+      }),
     ).isRequired,
     email: PropTypes.string,
   }).isRequired,

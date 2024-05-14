@@ -38,7 +38,7 @@ export const Matching = ({ isIntrovert, isHidden }) => {
           draggable: true,
           className: "bg-red-500",
           progressClassName: "progress-bar-red",
-        }
+        },
       );
     } else if (isIntrovert) {
       toast.info("Introvert mode On, viewing other introverts.", {

@@ -164,7 +164,8 @@ export const Forum = () => {
         closeOnClick: true,
         pauseOnHover: true,
         draggable: true,
-      });      return;
+      });
+      return;
     }
     try {
       const searchRes = await search(searchPhrase, classId);
@@ -192,7 +193,8 @@ export const Forum = () => {
         closeOnClick: true,
         pauseOnHover: true,
         draggable: true,
-      });    }
+      });
+    }
   };
 
   const handleDepartmentChange = (e) => {

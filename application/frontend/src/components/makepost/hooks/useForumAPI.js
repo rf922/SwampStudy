@@ -33,7 +33,6 @@ export const useForumAPI = () => {
         { withCredentials: true },
       );
       return response.data;
-
     } catch (error) {
       console.error("Error creating post:");
     }
