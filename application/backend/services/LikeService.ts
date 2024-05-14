@@ -1,4 +1,3 @@
-import { MatchRepository } from "./../repositories/MatchRepository";
 import { LikeRepository } from "./../repositories/LikeRepository";
 
 /**
@@ -11,12 +10,8 @@ export class LikeService {
    * set up in DIContainer and server.ts
    * @param likeRepository
    */
-  constructor(
-    private likeRepository: typeof LikeRepository,
-    private matchRepository: typeof MatchRepository,
-  ) {
+  constructor(private likeRepository: typeof LikeRepository) {
     this.likeRepository = likeRepository;
-    this.matchRepository = MatchRepository;
   }
   /**
    * like related methods go here, db ops go in the repository it self

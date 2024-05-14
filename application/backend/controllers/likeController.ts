@@ -28,13 +28,11 @@ export class LikeController {
   public async createLike(req: Request, res: Response) {
     try {
       const userId1 = req.session.userId;
-      //      const userId1 = 1;
       const { userId2 } = req.body;
       if (isNaN(userId2)) {
         res.status(StatusCodes.BAD_REQUEST).send("invalid params");
       }
       const results = await this.likeService.createLike(userId1, userId2);
-
       const requited = await this.likeService.getLike(userId2, userId1);
       if (requited) {
         const match = await this.matchService.createMatch(userId1, userId2);
