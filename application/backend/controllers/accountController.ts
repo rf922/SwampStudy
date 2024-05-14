@@ -3,6 +3,7 @@ import { StatusCodes } from "http-status-codes";
 import { AccountService } from "./../services/AccountService";
 import { SessionService } from "./../services/SessionService";
 import { RatingService } from "./../services/RatingService";
+import { MailService } from "./../services/MailService";
 /**
  * account controller responsible for handling incoming requests,
  * encapsulates the request handling for account-rel actions
@@ -19,10 +20,12 @@ export class AccountController {
     private accountService: AccountService,
     private sessionService: SessionService,
     private ratingService: RatingService,
+    private mailService: MailService,
   ) {
     this.accountService = accountService;
     this.sessionService = sessionService;
     this.ratingService = ratingService;
+    this.mailService = mailService;
   }
 
   /**
@@ -96,10 +99,17 @@ export class AccountController {
       weekavailability,
       introvert,
       isHidden,
+      educator,
       biography,
     } = req.body;
 
     try {
+      if (educator) {
+        const user = await this.accountService.getAccount(userId);
+        if (!user.educator) {
+          this.mailService.sendPermissionsChangeEmail(user.user_FK.email);
+        }
+      }
       await this.accountService.updateAccount(
         userId,
         first_name,
@@ -111,6 +121,7 @@ export class AccountController {
         introvert,
         isHidden,
         biography,
+        educator,
       );
       res.status(StatusCodes.OK).send("Account updated successfully.");
     } catch (error) {

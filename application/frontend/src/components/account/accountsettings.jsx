@@ -11,11 +11,12 @@ const UpdateAccount = () => {
       confirmPassword: "",
       introvert: false,
       isHidden: false,
+      educator: false,
     });
   const [options, setOptions] = useState({
-    //figure out where to put those fields
     introvert: false,
     isHidden: false,
+    educator: false,
   });
 
   const handleToggle = (option) => {
@@ -40,12 +41,14 @@ const UpdateAccount = () => {
         //use the users existing settings as init state
         introvert: savedDetails.introvert ?? false,
         isHidden: savedDetails.isHidden ?? false,
+        educator: savedDetails.educator ?? false,
       });
       setFormData((prevForm) => ({
         //init formData with the same values
         ...prevForm,
         introvert: savedDetails.introvert ?? false,
         isHidden: savedDetails.isHidden ?? false,
+        educator: savedDetails.educator ?? false,
       }));
     }
   }, [setOptions, setFormData]);
@@ -66,6 +69,7 @@ const UpdateAccount = () => {
           ...userDetails,
           introvert: options.introvert,
           isHidden: options.isHidden,
+          educator: options.educator,
         }),
       );
     } else {

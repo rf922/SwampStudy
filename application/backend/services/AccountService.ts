@@ -103,6 +103,7 @@ export class AccountService {
     introvert?: boolean,
     isHidden?: boolean,
     biography?: string,
+    isEducator?: boolean,
   ) {
     if (
       !validateFields({
@@ -132,6 +133,7 @@ export class AccountService {
       introvert,
       isHidden,
       biography,
+      isEducator,
     );
   }
 }

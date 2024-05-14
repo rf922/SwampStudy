@@ -136,6 +136,7 @@ export const DIContainerConfig = (diContainer: typeof DIContainer) => {
         diContainer.resolve("AccountService"),
         diContainer.resolve("SessionService"),
         diContainer.resolve("RatingService"),
+        diContainer.resolve("MailService"),
       ),
   );
   diContainer.registerFactory(
