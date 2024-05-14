@@ -33,21 +33,28 @@ export class LikeController {
         res.status(StatusCodes.BAD_REQUEST).send("invalid params");
       }
       const user2 = await this.accountService.getAccount(userId2);
-      if(!user2){
+      if (!user2) {
         res.status(StatusCodes.NOT_FOUND).send("Account not found");
       }
       const results = await this.likeService.createLike(userId1, userId2);
       const requited = await this.likeService.getLike(userId2, userId1);
-      const coursesInCommon = await this.classScheduleService.getClassesInCommon(userId1, userId2);
+      const coursesInCommon =
+        await this.classScheduleService.getClassesInCommon(userId1, userId2);
       if (requited) {
-        const match = await this.matchService.createMatch(userId1, userId2, coursesInCommon);
+        const match = await this.matchService.createMatch(
+          userId1,
+          userId2,
+          coursesInCommon,
+        );
         const data = { match: match, created: true };
         return res.status(StatusCodes.OK).send(data);
       }
 
       return res.status(StatusCodes.CREATED).send(results);
     } catch (error) {
-      res.status(StatusCodes.INTERNAL_SERVER_ERROR).send("problem creating like ");
+      res
+        .status(StatusCodes.INTERNAL_SERVER_ERROR)
+        .send("problem creating like ");
     }
   }
 }
