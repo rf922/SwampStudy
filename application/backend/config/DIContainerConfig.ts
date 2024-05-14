@@ -70,11 +70,7 @@ export const DIContainerConfig = (diContainer: typeof DIContainer) => {
   );
   diContainer.registerFactory(
     "SessionService",
-    () =>
-      new SessionService(
-        diContainer.resolve("UserRepository"),
-        diContainer.resolve("SessionRepository"),
-      ),
+    () => new SessionService(diContainer.resolve("SessionRepository")),
   );
   diContainer.registerFactory(
     "AccountService",

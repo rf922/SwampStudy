@@ -46,9 +46,9 @@ export class UserController {
         password,
         pic,
       );
-      await this.userService.loginUser(email, password);
+      const userId = await this.userService.loginUser(email, password);
       const ip = req.ip || req.clientIp;
-      await this.sessionService.createSession(req.session, email, ip);
+      await this.sessionService.createSession(req.session, userId, ip);
       return res.status(StatusCodes.CREATED).send(message);
     } catch (error) {
       console.error(error);
@@ -83,17 +83,9 @@ export class UserController {
     }
     try {
       const ip = req.ip || req.clientIp;
-      await this.userService.loginUser(email, password);
-      const sessions = await this.sessionService.createSession(
-        req.session,
-        email,
-        ip,
-      );
-      return res
-        .status(StatusCodes.OK)
-        .send(
-          `Login successful for user ID  ${JSON.stringify(sessions)} &  ${req.session.id} : ${ip}`,
-        );
+      const userId = await this.userService.loginUser(email, password);
+      await this.sessionService.createSession(req.session, userId, ip);
+      return res.status(StatusCodes.OK).send(`Login successful `);
     } catch (error) {
       console.error(error);
       if (error.message) {

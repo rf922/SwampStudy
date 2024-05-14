@@ -1,7 +1,5 @@
 import { AccountRepository } from "./../repositories/AccountRepository";
 import { hash } from "bcryptjs";
-import { UserRepository } from "./../repositories/UserRepository";
-import { RatingRepository } from "./../repositories/RatingRepository";
 import { validateFields } from "./../utils/validationUtils";
 /**
  * this class encapsulates acc related business logic,
