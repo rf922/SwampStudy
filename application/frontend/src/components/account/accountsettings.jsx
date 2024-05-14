@@ -1,9 +1,9 @@
 import React, { useEffect, useState } from "react";
 import { useFormValidation } from "./hooks/useFormValidation";
 import { useAccountAPI } from "./hooks/useAccountAPI";
+import { useUserDetails } from "../../context/UserContext";
 
 const UpdateAccount = () => {
-  //component for accountmanagement / update
   const { formData, setFormData, handleChange, validate, errors } =
     useFormValidation({
       email: "",
@@ -13,6 +13,7 @@ const UpdateAccount = () => {
       isHidden: false,
       educator: false,
     });
+  const { userDetails, setUserDetails } = useUserDetails();
   const [options, setOptions] = useState({
     introvert: false,
     isHidden: false,
@@ -21,37 +22,32 @@ const UpdateAccount = () => {
 
   const handleToggle = (option) => {
     setOptions((prev) => ({
-      //update the ui switch
       ...prev,
       [option]: !prev[option],
     }));
 
     setFormData((prevForm) => ({
-      //update the corresponding value in form
       ...prevForm,
       [option]: !prevForm[option],
     }));
   };
 
   useEffect(() => {
-    const localData = localStorage.getItem("userDetails");
-    if (localData) {
-      const savedDetails = JSON.parse(localData);
+    if (userDetails) {
       setOptions({
-        //use the users existing settings as init state
-        introvert: savedDetails.introvert ?? false,
-        isHidden: savedDetails.isHidden ?? false,
-        educator: savedDetails.educator ?? false,
+        introvert: userDetails.introvert ?? false,
+        isHidden: userDetails.isHidden ?? false,
+        educator: userDetails.educator ?? false,
       });
       setFormData((prevForm) => ({
-        //init formData with the same values
         ...prevForm,
-        introvert: savedDetails.introvert ?? false,
-        isHidden: savedDetails.isHidden ?? false,
-        educator: savedDetails.educator ?? false,
+        introvert: userDetails.introvert ?? false,
+        isHidden: userDetails.isHidden ?? false,
+        educator: userDetails.educator ?? false,
+        email: userDetails.email ?? "",
       }));
     }
-  }, [setOptions, setFormData]);
+  }, [userDetails, setFormData]);
 
   const { updateAccount, deleteAccount } = useAccountAPI();
 
@@ -59,19 +55,17 @@ const UpdateAccount = () => {
     e.preventDefault();
     if (validate(formData)) {
       await updateAccount(formData, (errors) => console.log(errors));
-      const localData = localStorage.getItem("userDetails");
-      const userDetails = localData ? JSON.parse(localData) : {};
 
-      // updat local storage
-      localStorage.setItem(
-        "userDetails",
-        JSON.stringify({
-          ...userDetails,
-          introvert: options.introvert,
-          isHidden: options.isHidden,
-          educator: options.educator,
-        }),
-      );
+      const updatedDetails = {
+        ...userDetails,
+        introvert: options.introvert,
+        isHidden: options.isHidden,
+        educator: options.educator,
+        email: formData.email,
+      };
+
+      setUserDetails(updatedDetails);
+      localStorage.setItem("userDetails", JSON.stringify(updatedDetails));
     } else {
       console.error("Please Try again");
       alert("Please Try Again");
@@ -110,7 +104,7 @@ const UpdateAccount = () => {
           )}
         </div>
 
-        {/* new passwrd */}
+        {/* new password */}
         <div className="mb-4">
           <label
             htmlFor="password"
@@ -132,7 +126,7 @@ const UpdateAccount = () => {
           )}
         </div>
 
-        {/* confm passwrd*/}
+        {/* confirm password */}
         <div className="mb-4">
           <label
             htmlFor="confirmPassword"
@@ -155,7 +149,8 @@ const UpdateAccount = () => {
             </p>
           )}
         </div>
-        {/* opt toggle switchs */}
+
+        {/* option toggle switches */}
         <div className="w-full flex flex-col my-4 mx-2 p-4 bg-purple-100">
           <div className="grid grid-cols-2 sm:grid-cols-1 gap-4 px-4 py-2">
             {Object.entries(options).map(([option, isSet], index) => (
@@ -183,7 +178,7 @@ const UpdateAccount = () => {
           <p className="text-red-500 text-xs italic mb-4">{errors.form}</p>
         )}
 
-        {/* update acc & del ac buttn */}
+        {/* update account & delete account buttons */}
         <div className="flex flex-col w-full space-y-4 mb-6">
           <button
             type="submit"
