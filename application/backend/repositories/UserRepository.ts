@@ -20,8 +20,10 @@ export const UserRepository = myDataSource.getRepository(User).extend({
    * @returns the user found
    */
   async getUserById(id: number) {
-    return this.findOneBy({ id });
-  },
+    return await this.findOne({
+      where: { id },
+      relations: ["account"],
+    });  },
 
   /**
    * report a user by incrementing the report count for the passed userID.

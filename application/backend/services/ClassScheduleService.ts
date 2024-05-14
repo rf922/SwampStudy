@@ -1,3 +1,4 @@
+import { Class } from "./../entities/class.entity";
 import { ClassScheduleRepository } from "../repositories/ClassScheduleRepository";
 
 /**
@@ -60,6 +61,27 @@ export class ClassScheduleService {
   }
 
   /**
+   * get the classes in common between two users by userId1 and UserId2
+   * @returns an array of common classes
+   */
+  public async getClassesInCommon(userId1: number, userId2: number) {
+    const userOneClassSchedule = await this.classScheduleRepository.getUserClasses(userId1);
+    const userTwoClassSchedule = await this.classScheduleRepository.getUserClasses(userId2);
+
+    const userOneClasses: Set<number> = new Set(userOneClassSchedule.map((schedule) => schedule.class.id));
+    const userTwoClasses: Set<number> = new Set(userTwoClassSchedule.map((schedule) => schedule.class.id));
+    const commonClassIds = await this.getScheduleOverlap(userOneClasses, userTwoClasses);
+
+    const allClasses = [...userOneClassSchedule, ...userTwoClassSchedule].map((schedule) => schedule.class);
+
+    const commonClasses : Class[] = allClasses.filter((classItem) => commonClassIds.includes(classItem.id));
+
+    return commonClasses;
+  }
+  
+
+
+  /**
    * heper to get an array of classes that are in scheduleA but not schedule B
    * @param scheduleA
    * @param scheduleB
@@ -85,9 +107,6 @@ export class ClassScheduleService {
     return intersection;
   }
 
-  public async deleteUserClasses() {
-    // del all of them on user delet
-  }
 
   /**
    * should be able to  del and update the classes etc

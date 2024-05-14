@@ -1,5 +1,4 @@
 import { RatingRepository } from "./../repositories/RatingRepository";
-import { AccountRepository } from "./../repositories/AccountRepository";
 /**
  * services layer for rating , here perform cals, and use
  * the repo to call for the db ops needed

@@ -1,3 +1,4 @@
+import { Class } from "./../entities/class.entity";
 import { myDataSource } from "../app-data-source";
 import { ClassSchedule } from "../entities/classschedule.entity";
 

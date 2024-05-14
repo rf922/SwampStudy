@@ -52,6 +52,9 @@ export const validateFields = (options: {
   newPassword?: string;
   biography?: string;
   weekavailability?: number;
+  threadTitle?: string;
+  questionText?: string;
+  answerText?: string;
 }): boolean => {
   if (options.firstName && !isValidName(options.firstName)) return false;
   if (options.lastName && !isValidName(options.lastName)) return false;
@@ -61,6 +64,12 @@ export const validateFields = (options: {
   if (options.biography && !isValidTextFieldEntry(options.biography))
     return false;
   if (options.weekavailability && options.weekavailability > 127) return false;
+  if (options.threadTitle && !isValidThreadTitle(options.threadTitle))
+    return false;
+  if (options.questionText && !isValidTextFieldEntry(options.questionText))
+    return false;
+  if (options.answerText && !isValidTextFieldEntry(options.answerText))
+    return false;
 
   return true;
 };

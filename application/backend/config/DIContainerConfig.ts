@@ -157,7 +157,7 @@ export const DIContainerConfig = (diContainer: typeof DIContainer) => {
       new LikeController(
         diContainer.resolve("LikeService"),
         diContainer.resolve("AccountService"),
-        diContainer.resolve("ClassService"),
+        diContainer.resolve("ClassScheduleService"),
         diContainer.resolve("MatchService"),
       ),
   );
