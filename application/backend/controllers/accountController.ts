@@ -2,7 +2,7 @@ import { Request, Response } from "express";
 import { StatusCodes } from "http-status-codes";
 import { AccountService } from "./../services/AccountService";
 import { SessionService } from "./../services/SessionService";
-
+import { RatingService } from "./../services/RatingService";
 /**
  * account controller responsible for handling incoming requests,
  * encapsulates the request handling for account-rel actions
@@ -13,13 +13,16 @@ export class AccountController {
    * to be used throughout the classes methods
    * @param accountService
    * @param sessionService
+   * @param ratingService
    */
   constructor(
     private accountService: AccountService,
     private sessionService: SessionService,
+    private ratingService: RatingService,
   ) {
     this.accountService = accountService;
     this.sessionService = sessionService;
+    this.ratingService = ratingService;
   }
 
   /**
@@ -60,8 +63,9 @@ export class AccountController {
   public async getAccountDetails(req: Request, res: Response) {
     const userId = req.session.userId;
     try {
-      const result = await this.accountService.getAccountDetails(userId);
-      return res.status(StatusCodes.CREATED).send(result);
+      const account = await this.accountService.getAccountDetails(userId);
+      const rating = await this.ratingService.getRating(userId);
+      return res.status(StatusCodes.CREATED).send({ ...account, rating });
     } catch (error) {
       switch (error?.message) {
         case "404":

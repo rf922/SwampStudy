@@ -11,17 +11,9 @@ export class AccountService {
   /**
    * instantiate account service with its repository dependencies,
    * @param accountRepository
-   * @param userRepository
-   * @param ratingRepository
    */
-  constructor(
-    private accountRepository: typeof AccountRepository,
-    private userRepository: typeof UserRepository,
-    private ratingRepository: typeof RatingRepository,
-  ) {
+  constructor(private accountRepository: typeof AccountRepository) {
     this.accountRepository = accountRepository;
-    this.userRepository = userRepository;
-    this.ratingRepository = ratingRepository;
   }
 
   /**
@@ -64,8 +56,7 @@ export class AccountService {
     if (!account) {
       throw new Error("404");
     }
-    const rating = await this.ratingRepository.getUserRatingById(id);
-    return { ...account, rating };
+    return account;
   }
 
   /**
@@ -115,11 +106,6 @@ export class AccountService {
     isHidden?: boolean,
     biography?: string,
   ) {
-    const existingUser = await this.userRepository.getUserById(userId);
-    if (!existingUser) {
-      throw new Error("404");
-    }
-
     if (
       !validateFields({
         firstName,

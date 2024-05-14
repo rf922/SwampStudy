@@ -78,12 +78,7 @@ export const DIContainerConfig = (diContainer: typeof DIContainer) => {
   );
   diContainer.registerFactory(
     "AccountService",
-    () =>
-      new AccountService(
-        diContainer.resolve("AccountRepository"),
-        diContainer.resolve("UserRepository"),
-        diContainer.resolve("RatingRepository"),
-      ),
+    () => new AccountService(diContainer.resolve("AccountRepository")),
   );
   diContainer.registerFactory(
     "ClassService",
@@ -152,6 +147,7 @@ export const DIContainerConfig = (diContainer: typeof DIContainer) => {
       new AccountController(
         diContainer.resolve("AccountService"),
         diContainer.resolve("SessionService"),
+        diContainer.resolve("RatingService"),
       ),
   );
   diContainer.registerFactory(
