@@ -38,13 +38,9 @@ export const Matching = ({ isIntrovert, isHidden }) => {
           draggable: true,
           className: "bg-red-500",
           progressClassName: "progress-bar-red",
-        },
+        }
       );
-    }
-  }, [isHidden]);
-
-  useEffect(() => {
-    if (isIntrovert) {
+    } else if (isIntrovert) {
       toast.info("Introvert mode On, viewing other introverts.", {
         position: "top-right",
         autoClose: 5000,
@@ -55,7 +51,7 @@ export const Matching = ({ isIntrovert, isHidden }) => {
         progress: undefined,
       });
     }
-  }, [isIntrovert]);
+  }, [isHidden, isIntrovert]);
 
   useEffect(() => {
     const getUserProfiles = async () => {

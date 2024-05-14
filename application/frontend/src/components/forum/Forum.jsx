@@ -1,9 +1,11 @@
+import React, { useState, useEffect, useRef, useCallback } from "react";
 import Postcard from "../postcard/Postcard";
 import { useAuth } from "../../context/AuthContext";
 import Makepost from "../makepost/Makepost";
 import { useForumAPI } from "./hooks/useForumAPI";
 import Loading from "../loading/Loading";
-import { useRef, useState, useCallback, useEffect } from "react";
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 export const Forum = () => {
   const [selectedDepartment, setSelectedDepartment] = useState("NA");
@@ -35,10 +37,8 @@ export const Forum = () => {
     search,
     searchPhrase,
     setSearchPhrase,
-
     page,
     setPage,
-
     isLoading,
     addThreadToThreadMap,
   } = useForumAPI(
@@ -90,13 +90,11 @@ export const Forum = () => {
           return false;
         }
       }
-      console.log("outer here");
     } else {
       if (page > 1) {
         //thread counts %10 === 0 , 20 30 40 ... etc
         const pageMax = Math.ceil((filteredThreads.length + 1) / 10);
         if (page > pageMax) {
-          console.log("out" + page);
           return false;
         }
       }
@@ -129,6 +127,14 @@ export const Forum = () => {
       });
       addThreadToThreadMap(newPost);
       setHasMore(true);
+      toast.success("New post created successfully!", {
+        position: "top-right",
+        autoClose: 5000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+      });
       setNewPost(null); // reset newPost to prevent reprocessing
     }
   }, [newPost]); // eslint-disable-line react-hooks/exhaustive-deps
@@ -151,24 +157,42 @@ export const Forum = () => {
   const handleSearchSubmit = async () => {
     if (!searchPhrase.trim()) {
       //prevent empty search
-      console.log("Search bar was empty !");
-      return;
+      toast.warning("Search bar was empty!", {
+        position: "top-right",
+        autoClose: 5000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+      });      return;
     }
     try {
       const searchRes = await search(searchPhrase, classId);
-      console.log(`Searching with ${searchPhrase}, ${classId}`);
       setSearchPhrase("");
       if (searchRes.length === 0) {
         //empty results reset the thread display
-        alert("search yielded no results !! ");
+        toast.info("Search yielded no results!", {
+          position: "top-right",
+          autoClose: 5000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+        });
         resetFilteredThreads();
       } else {
         // update the display with the results found
         setFilteredThreads(searchRes);
       }
     } catch (error) {
-      console.log("error getting search results " + error);
-    }
+      toast.error("Error getting search results", {
+        position: "top-right",
+        autoClose: 5000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+      });    }
   };
 
   const handleDepartmentChange = (e) => {
@@ -300,6 +324,17 @@ export const Forum = () => {
           </div>
         </div>
       </div>
+      <ToastContainer
+        position="top-right"
+        autoClose={5000}
+        hideProgressBar={false}
+        newestOnTop={false}
+        closeOnClick
+        rtl={false}
+        pauseOnFocusLoss
+        draggable
+        pauseOnHover
+      />
     </div>
   );
 };

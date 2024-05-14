@@ -1,15 +1,32 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import PropTypes from "prop-types";
 import RateUser from "./../rateuser/RateUser";
 import useUserAPI from "./hooks/useUserAPI";
 import "react-datepicker/dist/react-datepicker.css";
 import MeetingScheduler from "../meetingscheduler/MeetingScheduler";
 import UserProfileCard from "../userprofilecard/UserProfileCard";
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 const MeetingDetailsCard = ({ match, onUpdateMatch }) => {
+  const [ratingSubmitted, setRatingSubmitted] = useState(false);
   const [isRateVisible, setIsRateVisible] = useState(false);
   const [isReported, setIsReported] = useState(false);
   const { reportUser } = useUserAPI();
+
+  useEffect(()=> {
+    if(ratingSubmitted){
+      toast.success("Rating submitted successfully!", {
+        position: "top-right",
+        autoClose: 5000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+      });
+    }
+    setRatingSubmitted(false);
+  },[ratingSubmitted, setRatingSubmitted])
 
   const toggleRateUser = () => {
     setIsRateVisible(!isRateVisible);
@@ -18,14 +35,21 @@ const MeetingDetailsCard = ({ match, onUpdateMatch }) => {
   const handleReportClick = () => {
     reportUser(match);
     setIsReported(true);
-    alert(`You have submitted a report for: ${match.first_name}`);
+    toast.info(`You have submitted a report for: ${match.first_name}`, {
+      position: "top-center",
+      autoClose: 5000,
+      hideProgressBar: false,
+      closeOnClick: true,
+      pauseOnHover: true,
+      draggable: true,
+    });
   };
 
   return (
     <div className="flex flex-col h-screen max-w-full min-w-[220px] rounded-lg overflow-hidden shadow-lg bg-white border border-purple-200">
       {isRateVisible && (
         <div className="absolute z-50 inset-0 bg-black bg-opacity-50 flex justify-center items-center backdrop-blur-md">
-          <RateUser close={toggleRateUser} user={match} />
+          <RateUser close={toggleRateUser} user={match} setRatingSubmitted={setRatingSubmitted} />
         </div>
       )}
       <UserProfileCard user={match} />
@@ -78,6 +102,17 @@ const MeetingDetailsCard = ({ match, onUpdateMatch }) => {
           </button>
         </div>
       )}
+      <ToastContainer
+        position="top-right"
+        autoClose={5000}
+        hideProgressBar={false}
+        newestOnTop={false}
+        closeOnClick
+        rtl={false}
+        pauseOnFocusLoss
+        draggable
+        pauseOnHover
+      />
     </div>
   );
 };

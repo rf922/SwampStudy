@@ -2,6 +2,8 @@ import React, { useState, useEffect, useCallback } from "react";
 import PropTypes from "prop-types";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
+import { toast, ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 import useMatchAPI from "./hooks/useMatchAPI";
 
 const MeetingScheduler = ({ match, onUpdateMatch }) => {
@@ -18,7 +20,7 @@ const MeetingScheduler = ({ match, onUpdateMatch }) => {
   }, [match.weekavailability]);
 
   const [meetingDateTime, setMeetingDateTime] = useState(
-    match.date ? new Date(match.date) : getNearestAvailableDate(),
+    match.date ? new Date(match.date) : getNearestAvailableDate()
   );
   const [dateSubmitted, setDateSubmitted] = useState(!!match.date);
   const [hasChanged, setHasChanged] = useState(false);
@@ -31,22 +33,46 @@ const MeetingScheduler = ({ match, onUpdateMatch }) => {
   const handleSuggestDifferentTime = () => {
     setDateSubmitted(false);
     setMeetingDateTime(getNearestAvailableDate());
-    setHasChanged(false); // reset change track wen suggesting a new time
+    setHasChanged(false); // reset change track when suggesting a new time
   };
 
   const handleSubmit = () => {
     const currentTime = new Date();
     if (meetingDateTime > currentTime) {
-      alert(`Meeting time set for: ${meetingDateTime}`);
+      toast.success(`Meeting time set for: ${meetingDateTime}`, {
+        position: "top-right",
+        autoClose: 5000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+      });
       setDateSubmitted(true);
       setHasChanged(true); // new submit, hasChanged to true
     } else {
-      alert("Please choose a future time.");
+      toast.error("Please choose a future time.", {
+        position: "top-right",
+        autoClose: 5000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+      });
     }
   };
 
   const handleAccept = () => {
-    alert("Meeting accepted!");
+    toast.info("Meeting accepted!", {
+      position: "top-right",
+      autoClose: 5000,
+      hideProgressBar: false,
+      closeOnClick: true,
+      pauseOnHover: true,
+      draggable: true,
+      progress: undefined,
+    });
     setMatchDetails(match.id, meetingDateTime.toISOString());
     onUpdateMatch({
       ...match,
@@ -61,7 +87,7 @@ const MeetingScheduler = ({ match, onUpdateMatch }) => {
       0b1000000, 0b0000001, 0b0000010, 0b0000100, 0b0001000, 0b0010000,
       0b0100000,
     ];
-    return match.weekavailability & bitmask[date.getDay()];
+    return !(match.weekavailability & bitmask[date.getDay()]);
   };
 
   return (
@@ -139,6 +165,7 @@ const MeetingScheduler = ({ match, onUpdateMatch }) => {
           </li>
         </ul>
       </div>
+      <ToastContainer />
     </div>
   );
 };
@@ -163,7 +190,7 @@ MeetingScheduler.propTypes = {
         name: PropTypes.string.isRequired,
         number: PropTypes.number.isRequired,
         department: PropTypes.string.isRequired,
-      }),
+      })
     ).isRequired,
     email: PropTypes.string,
   }).isRequired,
