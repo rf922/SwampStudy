@@ -12,8 +12,8 @@ import { myDataSource } from "./../app-data-source";
 export const AccountRepository = myDataSource.getRepository(Account).extend({
   async getAccountById(id: number) {
     return await this.findOne({
-      where : { id },
-      relations : ['user_FK']
+      where: { id },
+      relations: ["user_FK"],
     });
   },
 

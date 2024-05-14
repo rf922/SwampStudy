@@ -3,6 +3,7 @@ import { permissionsChange } from "./../utils/emailTemplates";
  * mail service handles sending automated emails to main swampstudy mail address
  */
 export class MailService {
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   constructor(private mailTransporter: any) {
     this.mailTransporter = mailTransporter;
   }
