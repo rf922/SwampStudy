@@ -56,21 +56,47 @@ const UpdateAccount = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     if (validate(formData)) {
-      await updateAccount(formData, (errors) => console.log(errors));
+      try {
+        await updateAccount(formData);
 
-      const updatedDetails = {
-        ...userDetails,
-        introvert: options.introvert,
-        isHidden: options.isHidden,
-        educator: options.educator,
-        email: formData.email,
-      };
-      if (
-        !userDetails.educator &&
-        userDetails.educator !== updatedDetails.educator
-      ) {
-        toast.info(
-          "You requested to update your account type to educator, please check your email for verification",
+        const updatedDetails = {
+          ...userDetails,
+          introvert: options.introvert,
+          isHidden: options.isHidden,
+          educator: options.educator,
+          email: formData.email,
+        };
+        if (
+          !userDetails.educator &&
+          userDetails.educator !== updatedDetails.educator
+        ) {
+          toast.info(
+            "You requested to update your account type to educator, please check your email for verification",
+            {
+              position: "top-right",
+              autoClose: 5000,
+              hideProgressBar: false,
+              closeOnClick: true,
+              pauseOnHover: true,
+              draggable: true,
+              progress: undefined,
+            },
+          );
+        }
+        setUserDetails(updatedDetails);
+        localStorage.setItem("userDetails", JSON.stringify(updatedDetails));
+        toast.success("Account Updated !", {
+          position: "top-right",
+          autoClose: 5000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+        });
+      } catch (error) {
+        toast.error(
+          "Problem updating account information, please try again later",
           {
             position: "top-right",
             autoClose: 5000,
@@ -82,17 +108,6 @@ const UpdateAccount = () => {
           },
         );
       }
-      setUserDetails(updatedDetails);
-      localStorage.setItem("userDetails", JSON.stringify(updatedDetails));
-      toast.success("Account Updated !", {
-        position: "top-right",
-        autoClose: 5000,
-        hideProgressBar: false,
-        closeOnClick: true,
-        pauseOnHover: true,
-        draggable: true,
-        progress: undefined,
-      });
     } else {
       toast.error("Please correct any form errors before submitting", {
         position: "top-right",

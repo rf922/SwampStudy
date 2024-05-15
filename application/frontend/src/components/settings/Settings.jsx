@@ -23,7 +23,7 @@ const Settings = () => {
       <div className="flex flex-col md:flex-row m-0">
         {/* usr prof, avail, cls schedule */}
         <div className="flex-2 md:flex-[3]">
-          <div className="overflow-auto my-6 bg-violet-200 scrollbar-hide max-h-[820px]">
+          <div className="overflow-auto my-6 bg-violet-200 scrollbar-hide max-h-[920px]">
             <div className="bg-violet-200 text-gray-800">
               <UserProfile />
             </div>

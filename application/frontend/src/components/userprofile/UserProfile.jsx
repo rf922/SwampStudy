@@ -107,11 +107,11 @@ const UserProfile = () => {
             <Loading />
           </div>
         ) : (
-          <div>
+          <div className="max-w-[400px] max-h-[400px] ">
             <img
               src={imagePreviewUrl}
               alt={`${formData.first_name} ${formData.last_name}`}
-              className="object-cover object-center w-full max-h-auto"
+              className="object-cover object-center w-full max-h-full"
             />
             {editMode && (
               <input

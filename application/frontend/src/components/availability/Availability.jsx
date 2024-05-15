@@ -117,10 +117,24 @@ const Availability = () => {
           progress: undefined,
         });
       } else {
-        console.log(`No updated data to send !`);
+        toast.warning("No changes to save !", {
+          position: "top-right",
+          autoClose: 5000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+        });
       }
     } catch (error) {
-      console.error("Error updating :", error);
+      toast.error("Error updating availability, please try again later", {
+        position: "top-right",
+        autoClose: 5000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+      });
     }
   };
 

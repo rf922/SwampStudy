@@ -16,10 +16,10 @@ export class Match extends BaseEntity {
   @PrimaryGeneratedColumn()
   id: number;
 
-  @ManyToOne(() => Account, { eager: true })
+  @ManyToOne(() => Account, { eager: true, onDelete: "CASCADE" })
   userOne: Account;
 
-  @ManyToOne(() => Account, { eager: true })
+  @ManyToOne(() => Account, { eager: true, onDelete: "CASCADE" })
   userTwo: Account;
 
   @ManyToMany(() => Class, { eager: true })
