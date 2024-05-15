@@ -2,6 +2,8 @@ import React, { useEffect, useState } from "react";
 import { useFormValidation } from "./hooks/useFormValidation";
 import { useAccountAPI } from "./hooks/useAccountAPI";
 import { useUserDetails } from "../../context/UserContext";
+import { toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 const UpdateAccount = () => {
   const { formData, setFormData, handleChange, validate, errors } =
@@ -63,12 +65,44 @@ const UpdateAccount = () => {
         educator: options.educator,
         email: formData.email,
       };
-
+      if (
+        !userDetails.educator &&
+        userDetails.educator !== updatedDetails.educator
+      ) {
+        toast.info(
+          "You requested to update your account type to educator, please check your email for verification",
+          {
+            position: "top-right",
+            autoClose: 5000,
+            hideProgressBar: false,
+            closeOnClick: true,
+            pauseOnHover: true,
+            draggable: true,
+            progress: undefined,
+          },
+        );
+      }
       setUserDetails(updatedDetails);
       localStorage.setItem("userDetails", JSON.stringify(updatedDetails));
+      toast.success("Account Updated !", {
+        position: "top-right",
+        autoClose: 5000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+      });
     } else {
-      console.error("Please Try again");
-      alert("Please Try Again");
+      toast.error("Please correct any form errors before submitting", {
+        position: "top-right",
+        autoClose: 5000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+      });
     }
   };
 

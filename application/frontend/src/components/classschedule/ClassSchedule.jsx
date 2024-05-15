@@ -1,6 +1,8 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
 import { useClassScheduleAPI } from "./hooks/useClassScheduleAPI";
+import { toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 const ClassSchedule = () => {
   //clss schedule comp lets usr set schedule
@@ -93,11 +95,30 @@ const ClassSchedule = () => {
   };
 
   const handleSaveChange = async () => {
-    console.log({ selectedClasses });
-    updateClassSchedule(selectedClasses);
-
-    setClassesChanged(false);
-    setInitSchedule(selectedClasses);
+    try {
+      await updateClassSchedule(selectedClasses);
+      toast.success("Class schedule updated successfully!", {
+        position: "top-right",
+        autoClose: 5000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+      });
+      setClassesChanged(false);
+      setInitSchedule(selectedClasses);
+    } catch (error) {
+      toast.error("Error saving changes. Please try again.", {
+        position: "top-right",
+        autoClose: 5000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+      });
+    }
   };
 
   return (

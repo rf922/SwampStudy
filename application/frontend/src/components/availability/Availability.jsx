@@ -1,5 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { useAccountAPI } from "./hooks/useAccountAPI";
+import { toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 const Availability = () => {
   //avail comp to update availability
@@ -105,6 +107,15 @@ const Availability = () => {
         await updateAvailability(formData);
         setHasChanged(false);
         setInitialAvailability(availability);
+        toast.success("Availability updated!", {
+          position: "top-right",
+          autoClose: 5000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+        });
       } else {
         console.log(`No updated data to send !`);
       }

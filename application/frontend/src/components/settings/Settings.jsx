@@ -3,10 +3,23 @@ import UserProfile from "../userprofile/UserProfile";
 import Availability from "../availability/Availability";
 import ClassSchedule from "../classschedule/ClassSchedule";
 import UpdateAccount from "../account/accountsettings";
+import { ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 const Settings = () => {
   return (
     <div className="bg-violet-200 w-full h-screen overflow-auto">
+      <ToastContainer
+        position="top-right"
+        autoClose={5000}
+        hideProgressBar={false}
+        newestOnTop={false}
+        closeOnClick
+        rtl={false}
+        pauseOnFocusLoss
+        draggable
+        pauseOnHover
+      />
       <div className="flex flex-col md:flex-row m-0">
         {/* usr prof, avail, cls schedule */}
         <div className="flex-2 md:flex-[3]">

@@ -2,7 +2,7 @@ import React, { useState, useEffect, useCallback } from "react";
 import PropTypes from "prop-types";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
-import { toast, ToastContainer } from "react-toastify";
+import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import useMatchAPI from "./hooks/useMatchAPI";
 
@@ -165,7 +165,6 @@ const MeetingScheduler = ({ match, onUpdateMatch }) => {
           </li>
         </ul>
       </div>
-      <ToastContainer />
     </div>
   );
 };

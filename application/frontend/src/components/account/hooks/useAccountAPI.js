@@ -15,14 +15,11 @@ export const useAccountAPI = () => {
     }, {});
     try {
       //console.log(JSON.stringify(trimmedData));
-      const response = await axios.post(
+      await axios.post(
         `${process.env.REACT_APP_API_URL}/account/update`,
         trimmedData,
         { withCredentials: true },
       );
-      if (response.status === 200) {
-        alert("Account updated successfully!");
-      }
     } catch (error) {
       console.error("Error updating account:", error);
       setErrors({

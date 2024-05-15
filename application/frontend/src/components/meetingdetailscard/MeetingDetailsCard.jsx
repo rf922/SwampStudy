@@ -5,7 +5,7 @@ import useUserAPI from "./hooks/useUserAPI";
 import "react-datepicker/dist/react-datepicker.css";
 import MeetingScheduler from "../meetingscheduler/MeetingScheduler";
 import UserProfileCard from "../userprofilecard/UserProfileCard";
-import { ToastContainer, toast } from "react-toastify";
+import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 
 const MeetingDetailsCard = ({ match, onUpdateMatch }) => {
@@ -106,17 +106,6 @@ const MeetingDetailsCard = ({ match, onUpdateMatch }) => {
           </button>
         </div>
       )}
-      <ToastContainer
-        position="top-right"
-        autoClose={5000}
-        hideProgressBar={false}
-        newestOnTop={false}
-        closeOnClick
-        rtl={false}
-        pauseOnFocusLoss
-        draggable
-        pauseOnHover
-      />
     </div>
   );
 };

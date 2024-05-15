@@ -7,6 +7,8 @@ import Availability from "../availability/Availability";
 import ClassSchedule from "../classschedule/ClassSchedule";
 import { useAuth } from "../../context/AuthContext";
 import { useNavigate } from "react-router-dom";
+import { ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 const Register = () => {
   const [view, setView] = useState(0);
@@ -93,6 +95,17 @@ const Register = () => {
 
   return (
     <div className="h-full flex flex-col justify-center">
+      <ToastContainer
+        position="top-right"
+        autoClose={5000}
+        hideProgressBar={false}
+        newestOnTop={false}
+        closeOnClick
+        rtl={false}
+        pauseOnFocusLoss
+        draggable
+        pauseOnHover
+      />
       {view === 0 ? (
         <div className="flex justify-center">
           <form
@@ -225,7 +238,7 @@ const Register = () => {
         </div>
       ) : (
         <div className="flex-2 md:flex-[3] ">
-          <div className="overflow-auto  bg-violet-200 scrollbar-hide max-h-[620px]">
+          <div className="overflow-auto  bg-violet-200 scrollbar-hide max-h-[820px]">
             <div className="bg-violet-200 mx-4 text-gray-800">
               <UserProfile />
             </div>
