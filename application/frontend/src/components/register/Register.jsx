@@ -35,11 +35,11 @@ const Register = () => {
         } else if (isLoggedIn) {
           const userDetailsResponse = await axios.get(
             `${process.env.REACT_APP_API_URL}/account/details`,
-            { withCredentials: true }
+            { withCredentials: true },
           );
           localStorage.setItem(
             "userDetails",
-            JSON.stringify(userDetailsResponse.data)
+            JSON.stringify(userDetailsResponse.data),
           );
           setView(1);
         }
@@ -77,7 +77,7 @@ const Register = () => {
           first_name: formData.first_name,
           last_name: formData.last_name,
           rating: 5,
-        })
+        }),
       );
       setIsLoggedIn(true);
 
@@ -89,7 +89,17 @@ const Register = () => {
 
   return (
     <div className="h-full flex-1 flex-col justify-center">
-      <div className="flex-1 justify-center text-2xl px-10"></div>
+      <ToastContainer
+        position="top-right"
+        autoClose={5000}
+        hideProgressBar={false}
+        newestOnTop={false}
+        closeOnClick
+        rtl={false}
+        pauseOnFocusLoss
+        draggable
+        pauseOnHover
+      />
       <div className="flex justify-center pt-8">
         {view === 0 ? (
           <form
@@ -100,8 +110,8 @@ const Register = () => {
             {errors.form && (
               <p className="text-red-500 text-xs italic">{errors.form}</p>
             )}
-            <div className="mb-4 flex space-x-4">
-              <div className="w-1/2">
+            <div className="mb-4 flex flex-col sm:flex-row sm:space-x-4 space-y-4 sm:space-y-0">
+              <div className="w-full sm:w-1/2">
                 <input
                   required
                   name="first_name"
@@ -117,7 +127,7 @@ const Register = () => {
                   </p>
                 )}
               </div>
-              <div className="w-1/2">
+              <div className="w-full sm:w-1/2">
                 <input
                   required
                   name="last_name"
@@ -134,6 +144,7 @@ const Register = () => {
                 )}
               </div>
             </div>
+
             <div className="mb-4">
               <input
                 required
