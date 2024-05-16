@@ -47,9 +47,11 @@ const Register = () => {
         console.error("Error fetching user details", error);
       }
     };
-
+    if (!isLoggedIn && view !== 0) {
+      navigate("/");
+    }
     getUserDetails();
-  }, [isLoggedIn, view]);
+  }, [isLoggedIn, view, navigate]);
 
   const handleClick = async (e) => {
     e.preventDefault();
