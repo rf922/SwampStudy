@@ -11,8 +11,9 @@ import { myDataSource } from "./../app-data-source";
  */
 export const AccountRepository = myDataSource.getRepository(Account).extend({
   async getAccountById(id: number) {
-    return await this.findOneBy({
-      id,
+    return await this.findOne({
+      where: { id },
+      relations: ["user_FK"],
     });
   },
 
@@ -63,6 +64,7 @@ export const AccountRepository = myDataSource.getRepository(Account).extend({
     introvert?: boolean,
     isHidden?: boolean,
     biography?: string,
+    isEducator?: boolean,
   ) {
     await myDataSource.transaction(async (transactionalEntityManager) => {
       // start a transaction, for safety to ensure all code in the transaction executes correctl
@@ -94,6 +96,7 @@ export const AccountRepository = myDataSource.getRepository(Account).extend({
       if (introvert !== undefined) account.introvert = introvert;
       if (isHidden !== undefined) account.isHidden = isHidden;
       if (biography !== undefined) account.biography = biography;
+      if (isEducator !== undefined) account.educator = isEducator;
       await accountRepo.save(account);
     });
   },

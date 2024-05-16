@@ -3,13 +3,14 @@ import PropTypes from "prop-types";
 import Stars from "./../stars/Stars";
 import useRatingAPI from "./hooks/useRatingAPI";
 
-const RateUser = ({ user, close }) => {
+const RateUser = ({ user, close, setRatingSubmitted }) => {
   const [rating, setRating] = useState(0); // curr rating set by click
   const { submitRating } = useRatingAPI();
 
   const handleSubmit = () => {
     try {
       submitRating(rating, user.userId);
+      setRatingSubmitted(true);
       close();
     } catch (error) {
       console.log("Something went wrong submitting a rating");
@@ -80,6 +81,7 @@ RateUser.propTypes = {
     ).isRequired,
   }).isRequired,
   close: PropTypes.func.isRequired,
+  setRatingSubmitted: PropTypes.func,
 };
 
 export default RateUser;

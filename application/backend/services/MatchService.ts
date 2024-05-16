@@ -2,6 +2,7 @@ import { Rating } from "./../entities/rating.entity";
 import { Match } from "./../entities/match.entity";
 import { MatchRepository } from "./../repositories/MatchRepository";
 import { v4 as uuidv4 } from "uuid";
+import { Class } from "./../entities/class.entity";
 
 /**
  * match service to handle match logic
@@ -21,7 +22,7 @@ export class MatchService {
    * @param userId2
    * @returns
    */
-  public async createMatch(userId1: number, userId2: number) {
+  public async createMatch(userId1: number, userId2: number, courses: Class[]) {
     if (await this.matchExists(userId1, userId2)) {
       throw new Error("Match already exists");
     }
@@ -30,6 +31,7 @@ export class MatchService {
       userId1,
       userId2,
       meetingLink,
+      courses,
     );
     return match;
   }

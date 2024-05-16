@@ -1,3 +1,4 @@
+import { validateFields } from "./../utils/validationUtils";
 import { Thread } from "./../entities/thread.entity";
 import { ThreadRepository } from "./../repositories/ThreadRepository";
 
@@ -62,6 +63,9 @@ export class ThreadService {
     questionId: number,
     answerText: string,
   ) {
+    if (!validateFields({ answerText })) {
+      throw new Error("400");
+    }
     return await this.threadRepository.createThreadAnswer(
       userId,
       questionId,

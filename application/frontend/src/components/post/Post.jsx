@@ -4,6 +4,7 @@ import axios from "axios";
 import useForumAPI from "./hooks/useForumAPI";
 import { useAuth } from "./../../context/AuthContext";
 import { useFormValidation } from "./hooks/useFormValidation";
+import { toast } from "react-toastify";
 import Loading from "./../loading/Loading";
 const Post = () => {
   let { questionId } = useParams();
@@ -38,7 +39,14 @@ const Post = () => {
         console.error("Error submitting answer:", error);
       }
     } else {
-      alert("Please correct the errors before submitting.");
+      toast.error("please fix any errors before posting a response", {
+        position: "top-right",
+        autoClose: 5000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+      });
     }
   };
 

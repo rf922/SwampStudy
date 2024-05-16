@@ -33,6 +33,10 @@ export class ClassService {
     return classesByDep;
   }
 
+  public async getClassById(classId: number) {
+    return await this.classRepository.getClassById(classId);
+  }
+
   /**
    * private helper method used to group classes by department
    * @param classes

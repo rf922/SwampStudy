@@ -1,5 +1,4 @@
 import { Request } from "express";
-import { UserRepository } from "./../repositories/UserRepository";
 import { SessionRepository } from "./../repositories/SessionRepository";
 import { SessionData } from "express-session";
 
@@ -16,11 +15,7 @@ export class SessionService {
    * @param userRepository
    * @param sessionRepository
    */
-  constructor(
-    private userRepository: typeof UserRepository,
-    private sessionRepository: typeof SessionRepository,
-  ) {
-    this.userRepository = userRepository;
+  constructor(private sessionRepository: typeof SessionRepository) {
     this.sessionRepository = sessionRepository;
   }
 
@@ -50,14 +45,16 @@ export class SessionService {
    * @param session
    * @param email
    */
-  public async createSession(session: SessionData, email: string, ip?: string) {
-    const user = await this.userRepository.getUserByEmail(email);
-
+  public async createSession(
+    session: SessionData,
+    userId: number,
+    ip?: string,
+  ) {
     /**
      * curr sesssion set up entails setting the user.id
      * may expand later to handle, device, ip, createdAt etc..
      */
-    session.userId = user.id;
+    session.userId = userId;
     session.ip = ip;
   }
 

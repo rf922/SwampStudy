@@ -4,6 +4,8 @@ import useFormValidation from "./hooks/useFormValidation";
 import { useFileAPI } from "./hooks/useFileAPI";
 import Stars from "../stars/Stars";
 import Loading from "../loading/Loading";
+import { toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 const UserProfile = () => {
   const [editMode, setEditMode] = useState(false);
@@ -62,12 +64,30 @@ const UserProfile = () => {
         await updateProfile(updatedFormData);
         localStorage.setItem("userDetails", JSON.stringify(updatedFormData));
         setEditMode(false);
+        toast.success("Profile updated successfully!", {
+          position: "top-right",
+          autoClose: 5000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+        });
       } catch (error) {
         //setErrors to display optiona error message in comp
         setErrors((prevErrors) => ({
           ...prevErrors,
           form: "Failed to submit changes, please Try again later.",
         }));
+        toast.error("Error saving changes. Please try again.", {
+          position: "top-right",
+          autoClose: 5000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+        });
       } finally {
         setIsLoading(false);
       }
@@ -87,11 +107,11 @@ const UserProfile = () => {
             <Loading />
           </div>
         ) : (
-          <div>
+          <div className="max-w-[400px] max-h-[400px] ">
             <img
               src={imagePreviewUrl}
               alt={`${formData.first_name} ${formData.last_name}`}
-              className="object-cover object-center w-full max-h-auto"
+              className="object-cover object-center w-full max-h-full"
             />
             {editMode && (
               <input

@@ -20,7 +20,10 @@ export const UserRepository = myDataSource.getRepository(User).extend({
    * @returns the user found
    */
   async getUserById(id: number) {
-    return this.findOneBy({ id });
+    return await this.findOne({
+      where: { id },
+      relations: ["account"],
+    });
   },
 
   /**
@@ -81,6 +84,7 @@ export const UserRepository = myDataSource.getRepository(User).extend({
         id: Not(userId), //filter the user asking for the page
         account: {
           introvert: true, //specifically introverts
+          isHidden: false,
         },
       },
       skip: offSet,

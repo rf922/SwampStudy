@@ -3,7 +3,6 @@ import { useNavigate } from "react-router-dom";
 import { useAuth } from "../../../context/AuthContext";
 
 export const useUserAPI = () => {
-  //hook for login
   const navigate = useNavigate();
   const { setIsLoggedIn } = useAuth();
 

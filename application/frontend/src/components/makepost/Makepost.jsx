@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import PropTypes from "prop-types";
 import { useFormValidation } from "./hooks/useFormValidation";
 import { useForumAPI } from "./hooks/useForumAPI";
+import { toast } from "react-toastify";
 
 const Makepost = ({ close, setNewPost }) => {
   const { departmentClassesMap, postQuestion } = useForumAPI();
@@ -51,7 +52,14 @@ const Makepost = ({ close, setNewPost }) => {
       const { thread, _question } = await postQuestion(formData);
       setNewPost(thread);
     } else {
-      alert("Please correct the errors before submitting.");
+      toast.error("Please fix form errors before submitting,", {
+        position: "top-center",
+        autoClose: 5000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+      });
     }
   };
 

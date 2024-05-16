@@ -1,8 +1,6 @@
 import { AccountRepository } from "./../repositories/AccountRepository";
 import { hash } from "bcryptjs";
-import { UserRepository } from "./../repositories/UserRepository";
-import { RatingRepository } from "repositories/RatingRepository";
-
+import { validateFields } from "./../utils/validationUtils";
 /**
  * this class encapsulates acc related business logic,
  * it interfaces between the controller and the data access layer i.e our repositories
@@ -11,16 +9,9 @@ export class AccountService {
   /**
    * instantiate account service with its repository dependencies,
    * @param accountRepository
-   * @param userRepository
-   * @param ratingRepository
    */
-  constructor(
-    private accountRepository: typeof AccountRepository,
-    private userRepository: typeof UserRepository,
-    private ratingRepository: typeof RatingRepository,
-  ) {
+  constructor(private accountRepository: typeof AccountRepository) {
     this.accountRepository = accountRepository;
-    this.userRepository = userRepository;
   }
 
   /**
@@ -31,7 +22,7 @@ export class AccountService {
   public async getAccount(id: number) {
     const account = await this.accountRepository.getAccountById(id);
     if (!account) {
-      throw new Error("Account not found");
+      throw new Error("404");
     }
     return account;
   }
@@ -45,14 +36,12 @@ export class AccountService {
     if (!userId) {
       throw new Error("User not logged in.");
     }
-
-    try {
-      const message = await this.accountRepository.deleteAccount(userId);
-      return message;
-    } catch (error) {
-      console.error("Error deleting account:", error);
-      throw new Error("Error deleting account. : " + error.message);
+    const account = await this.accountRepository.getAccountById(userId);
+    if (!account) {
+      throw new Error("404");
     }
+    const message = await this.accountRepository.deleteAccount(userId);
+    return message;
   }
 
   /**
@@ -63,10 +52,9 @@ export class AccountService {
   public async getAccountDetails(id: number) {
     const account = await this.accountRepository.getAccountDetails(id);
     if (!account) {
-      throw new Error("Account not found");
+      throw new Error("404");
     }
-    const rating = await this.ratingRepository.getUserRatingById(id);
-    return { ...account, rating };
+    return account;
   }
 
   /**
@@ -81,6 +69,13 @@ export class AccountService {
     lastName: string,
     profilePicture: string,
   ) {
+    const user = await this.accountRepository.getAccountById(id);
+    if (!user) {
+      throw new Error("404");
+    }
+    if (!validateFields({ firstName, lastName })) {
+      throw new Error("400");
+    }
     this.accountRepository.updateAccountDetails(
       id,
       firstName,
@@ -108,31 +103,37 @@ export class AccountService {
     introvert?: boolean,
     isHidden?: boolean,
     biography?: string,
+    isEducator?: boolean,
   ) {
-    const existingUser = await this.userRepository.getUserById(userId);
-    if (!existingUser) {
-      throw new Error("User not found.");
-    }
-    try {
-      let hashedPassword: string;
-      if (newPassword) {
-        hashedPassword = await hash(newPassword, 10);
-      }
-      await this.accountRepository.updateAccountAndUserDetails(
-        userId,
+    if (
+      !validateFields({
         firstName,
         lastName,
         email,
-        hashedPassword,
-        profilePicture,
-        weekavailability,
-        introvert,
-        isHidden,
+        newPassword,
         biography,
-      );
-    } catch (error) {
-      console.error("Error updating account:", error.message);
-      throw new Error("Error updating account. : " + error.message);
+        weekavailability,
+      })
+    ) {
+      throw new Error("400");
     }
+    let hashedPassword: string;
+    if (newPassword) {
+      hashedPassword = await hash(newPassword, 10);
+    }
+
+    await this.accountRepository.updateAccountAndUserDetails(
+      userId,
+      firstName,
+      lastName,
+      email,
+      hashedPassword,
+      profilePicture,
+      weekavailability,
+      introvert,
+      isHidden,
+      biography,
+      isEducator,
+    );
   }
 }

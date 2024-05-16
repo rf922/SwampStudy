@@ -1,6 +1,7 @@
 import { Request, Response } from "express";
 import { StatusCodes } from "http-status-codes";
 import { RatingService } from "./../services/RatingService";
+import { UserService } from "./../services/UserService";
 
 /**
  * the rating controller, use services from within here
@@ -10,8 +11,12 @@ export class RatingController {
    * dependencies i.e other services go here
    * @param ratingService
    */
-  constructor(private ratingService: RatingService) {
+  constructor(
+    private ratingService: RatingService,
+    private userService: UserService,
+  ) {
     this.ratingService = ratingService;
+    this.userService = userService;
   }
 
   public async pingController(req: Request, res: Response) {
@@ -44,6 +49,11 @@ export class RatingController {
       } else if (parsedUserId < 1 || parsedRating < 0) {
         return res.status(StatusCodes.BAD_REQUEST).send("Invalid range");
       }
+      const user = await this.userService.getUserById(parsedUserId);
+      if (!user) {
+        throw new Error("404");
+      }
+
       const results = await this.ratingService.submitRating(
         parsedRating,
         parsedUserId,
@@ -71,6 +81,12 @@ export class RatingController {
           .status(StatusCodes.BAD_REQUEST)
           .json({ message: "Invalid Account ID" });
       }
+
+      const user = await this.userService.getUserById(parsedUserId);
+      if (!user) {
+        throw new Error("404");
+      }
+
       const avgRating = await this.ratingService.getRating(parsedUserId);
       if (avgRating === undefined) {
         return res

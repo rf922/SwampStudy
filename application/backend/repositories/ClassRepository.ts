@@ -13,6 +13,14 @@ export const ClassRepository = myDataSource.getRepository(Class).extend({
   async getAllClasses() {
     return this.find();
   },
+
+  /**
+   * function to return single class by classId
+   * @param classId
+   */
+  async getClassById(classId: number) {
+    return await this.findOneBy({ id: classId });
+  },
 });
 
 export default ClassRepository;

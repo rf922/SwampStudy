@@ -1,6 +1,7 @@
 import { validate } from "class-validator";
 import { myDataSource } from "./../app-data-source";
 import { Match } from "./../entities/match.entity";
+import { Class } from "./../entities/class.entity";
 
 /**
  * handles match entity db ops
@@ -9,11 +10,16 @@ export const MatchRepository = myDataSource.getRepository(Match).extend({
   /**
    * creates a match entry for user1 and user2
    */
-  async createMatch(userId1: number, userId2: number, meetingLink?: string) {
+  async createMatch(
+    userId1: number,
+    userId2: number,
+    meetingLink?: string,
+    courses?: Class[],
+  ) {
     const createdMatch = await this.create({
       userOne: { id: userId1 },
       userTwo: { id: userId2 },
-      classes: [],
+      classes: courses,
       meetingDateTime: null,
       meetingLink: meetingLink,
     });

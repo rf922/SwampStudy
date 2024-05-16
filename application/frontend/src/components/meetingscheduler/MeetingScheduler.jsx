@@ -1,42 +1,93 @@
-import React, { useState } from "react";
+import React, { useState, useEffect, useCallback } from "react";
 import PropTypes from "prop-types";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
+import { toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 import useMatchAPI from "./hooks/useMatchAPI";
 
-const MeetingScheduler = ({ match }) => {
-  const [meetingDateTime, setMeetingDateTime] = useState(new Date(match.date));
-  const [dateSubmitted, setDateSubmitted] = useState(match.date ? true : false);
+const MeetingScheduler = ({ match, onUpdateMatch }) => {
+  const getNearestAvailableDate = useCallback(() => {
+    const bitmask = [
+      0b1000000, 0b0000001, 0b0000010, 0b0000100, 0b0001000, 0b0010000,
+      0b0100000,
+    ];
+    let date = new Date();
+    while (!(match.weekavailability & bitmask[date.getDay()])) {
+      date.setDate(date.getDate() + 1);
+    }
+    return date;
+  }, [match.weekavailability]);
+
+  const [meetingDateTime, setMeetingDateTime] = useState(
+    match.date ? new Date(match.date) : getNearestAvailableDate(),
+  );
+  const [dateSubmitted, setDateSubmitted] = useState(!!match.date);
+  const [hasChanged, setHasChanged] = useState(false);
   const { setMatchDetails } = useMatchAPI();
+
+  useEffect(() => {
+    setMeetingDateTime(new Date(match.date || getNearestAvailableDate()));
+  }, [match, getNearestAvailableDate]);
+
+  const handleSuggestDifferentTime = () => {
+    setDateSubmitted(false);
+    setMeetingDateTime(getNearestAvailableDate());
+    setHasChanged(false); // reset change track when suggesting a new time
+  };
 
   const handleSubmit = () => {
     const currentTime = new Date();
     if (meetingDateTime > currentTime) {
-      alert(`Meeting time set for: ${meetingDateTime}`);
+      toast.success(`Meeting time set for: ${meetingDateTime}`, {
+        position: "top-right",
+        autoClose: 5000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+      });
       setDateSubmitted(true);
+      setHasChanged(true); // new submit, hasChanged to true
     } else {
-      alert("Please choose a future time.");
+      toast.error("Please choose a future time.", {
+        position: "top-right",
+        autoClose: 5000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+      });
     }
   };
 
   const handleAccept = () => {
-    alert("Meeting accepted!");
+    toast.info("Meeting accepted!", {
+      position: "top-right",
+      autoClose: 5000,
+      hideProgressBar: false,
+      closeOnClick: true,
+      pauseOnHover: true,
+      draggable: true,
+      progress: undefined,
+    });
     setMatchDetails(match.id, meetingDateTime.toISOString());
+    onUpdateMatch({
+      ...match,
+      date: meetingDateTime.toISOString(),
+    });
+    setDateSubmitted(true);
+    setHasChanged(false);
   };
 
-  // function to determine if a day is disabled
   const isDayDisabled = (date) => {
     const bitmask = [
       0b1000000, 0b0000001, 0b0000010, 0b0000100, 0b0001000, 0b0010000,
       0b0100000,
     ];
-    const dayOfWeek = date.getDay();
-    return match.weekavailability & bitmask[dayOfWeek];
-  };
-
-  const handleSuggestDifferentTime = () => {
-    setDateSubmitted(false); // re-enable date select
-    setMeetingDateTime(new Date()); // reset the date picker to current date
+    return !(match.weekavailability & bitmask[date.getDay()]);
   };
 
   return (
@@ -82,7 +133,14 @@ const MeetingScheduler = ({ match }) => {
               ) : (
                 <>
                   <div className="text-green-600 font-bold">
-                    {meetingDateTime.toLocaleString()}
+                    {meetingDateTime.toLocaleString("en-US", {
+                      year: "numeric",
+                      month: "long",
+                      day: "numeric",
+                      hour: "2-digit",
+                      minute: "2-digit",
+                      hour12: true,
+                    })}{" "}
                   </div>
                   <button
                     onClick={handleSuggestDifferentTime}
@@ -95,8 +153,12 @@ const MeetingScheduler = ({ match }) => {
             </div>
             <button
               onClick={handleAccept}
-              disabled={!dateSubmitted}
-              className={`mt-2 ${dateSubmitted ? "bg-green-500 hover:bg-green-700" : "bg-green-200 cursor-not-allowed"} text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline`}
+              disabled={!dateSubmitted && !hasChanged}
+              className={`mt-2 ${
+                dateSubmitted && hasChanged
+                  ? "bg-green-500 hover:bg-green-700"
+                  : "bg-green-200 cursor-not-allowed"
+              } text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline`}
             >
               Accept
             </button>
@@ -119,7 +181,7 @@ MeetingScheduler.propTypes = {
     biography: PropTypes.string,
     recent: PropTypes.bool,
     time: PropTypes.string,
-    date: PropTypes.string,
+    date: PropTypes.string, // might include created date also in the future
     location: PropTypes.string,
     courses: PropTypes.arrayOf(
       PropTypes.shape({
@@ -131,6 +193,7 @@ MeetingScheduler.propTypes = {
     ).isRequired,
     email: PropTypes.string,
   }).isRequired,
+  onUpdateMatch: PropTypes.func.isRequired,
 };
 
 export default MeetingScheduler;

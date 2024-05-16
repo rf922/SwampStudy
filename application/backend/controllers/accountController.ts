@@ -2,7 +2,8 @@ import { Request, Response } from "express";
 import { StatusCodes } from "http-status-codes";
 import { AccountService } from "./../services/AccountService";
 import { SessionService } from "./../services/SessionService";
-
+import { RatingService } from "./../services/RatingService";
+import { MailService } from "./../services/MailService";
 /**
  * account controller responsible for handling incoming requests,
  * encapsulates the request handling for account-rel actions
@@ -13,13 +14,18 @@ export class AccountController {
    * to be used throughout the classes methods
    * @param accountService
    * @param sessionService
+   * @param ratingService
    */
   constructor(
     private accountService: AccountService,
     private sessionService: SessionService,
+    private ratingService: RatingService,
+    private mailService: MailService,
   ) {
     this.accountService = accountService;
     this.sessionService = sessionService;
+    this.ratingService = ratingService;
+    this.mailService = mailService;
   }
 
   /**
@@ -29,15 +35,25 @@ export class AccountController {
    * @returns result // account
    */
   public async getAccount(req: Request, res: Response) {
-    const id = parseInt(req.params.id);
-    if (!id) {
-      res.status(StatusCodes.BAD_REQUEST).send("Missing Request Params");
-    }
-    const results = await this.accountService.getAccount(id);
-    if (results === null) {
-      res.status(StatusCodes.NOT_FOUND).send("Resource not Found");
-    } else {
-      return res.send(results);
+    const accountId = parseInt(req.params.id);
+    try {
+      if (!accountId) {
+        res.status(StatusCodes.BAD_REQUEST).send("Missing Request Params");
+      }
+      const account = await this.accountService.getAccount(accountId);
+      if (!account) {
+        res.status(StatusCodes.NOT_FOUND).send("Account not found");
+      }
+      return res.status(StatusCodes.ACCEPTED).send(account);
+    } catch (error) {
+      switch (error?.message) {
+        case "404":
+          return res.status(StatusCodes.NOT_FOUND).send("Account not found");
+        default:
+          return res
+            .status(StatusCodes.INTERNAL_SERVER_ERROR)
+            .send("Unable to get Account");
+      }
     }
   }
 
@@ -50,12 +66,18 @@ export class AccountController {
   public async getAccountDetails(req: Request, res: Response) {
     const userId = req.session.userId;
     try {
-      const result = await this.accountService.getAccountDetails(userId);
-      return res.status(StatusCodes.CREATED).send(result);
+      const account = await this.accountService.getAccountDetails(userId);
+      const rating = await this.ratingService.getRating(userId);
+      return res.status(StatusCodes.CREATED).send({ ...account, rating });
     } catch (error) {
-      return res
-        .status(StatusCodes.INTERNAL_SERVER_ERROR)
-        .send("Duplicate Request or DB Error : " + error.message);
+      switch (error?.message) {
+        case "404":
+          return res.status(StatusCodes.NOT_FOUND).send("Account not found");
+        default:
+          return res
+            .status(StatusCodes.INTERNAL_SERVER_ERROR)
+            .send("Unable to retrieve account details");
+      }
     }
   }
 
@@ -67,10 +89,6 @@ export class AccountController {
    */
   public async updateAccount(req: Request, res: Response) {
     const userId = req.session.userId;
-    if (!userId) {
-      return res.status(StatusCodes.UNAUTHORIZED).send("User not logged in.");
-    }
-
     /** account settings front end vars need to be changed to match this and the db */
     const {
       first_name,
@@ -81,10 +99,17 @@ export class AccountController {
       weekavailability,
       introvert,
       isHidden,
+      educator,
       biography,
     } = req.body;
 
     try {
+      if (educator) {
+        const user = await this.accountService.getAccount(userId);
+        if (!user.educator) {
+          this.mailService.sendPermissionsChangeEmail(user.user_FK.email);
+        }
+      }
       await this.accountService.updateAccount(
         userId,
         first_name,
@@ -96,13 +121,20 @@ export class AccountController {
         introvert,
         isHidden,
         biography,
+        educator,
       );
       res.status(StatusCodes.OK).send("Account updated successfully.");
     } catch (error) {
-      console.error("Error updating account:", error.message);
-      res
-        .status(StatusCodes.INTERNAL_SERVER_ERROR)
-        .send("Error updating account." + error.message);
+      switch (error?.message) {
+        case "404":
+          return res.status(StatusCodes.NOT_FOUND).send("Account not found");
+        case "400":
+          return res.status(StatusCodes.BAD_REQUEST).send("Invalid params");
+        default:
+          return res
+            .status(StatusCodes.INTERNAL_SERVER_ERROR)
+            .send("Unable to update account details");
+      }
     }
   }
 

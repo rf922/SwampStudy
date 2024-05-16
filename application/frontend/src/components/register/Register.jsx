@@ -7,6 +7,8 @@ import Availability from "../availability/Availability";
 import ClassSchedule from "../classschedule/ClassSchedule";
 import { useAuth } from "../../context/AuthContext";
 import { useNavigate } from "react-router-dom";
+import { ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 const Register = () => {
   const [view, setView] = useState(0);
@@ -25,23 +27,17 @@ const Register = () => {
   const { handleRegister } = useUserAPI(setView);
 
   useEffect(() => {
-    // effect for setting userDetails in local storage
     const getUserDetails = async () => {
       try {
         const localData = localStorage.getItem("userDetails");
         if (localData && isLoggedIn) {
-          // if it exits and usr logged in
-          console.log(localData);
           setView(1);
         } else if (isLoggedIn) {
-          // logged in try to get the acc detials
           const userDetailsResponse = await axios.get(
             `${process.env.REACT_APP_API_URL}/account/details`,
             { withCredentials: true },
           );
-          console.log(userDetailsResponse);
           localStorage.setItem(
-            //set the use detail obj,
             "userDetails",
             JSON.stringify(userDetailsResponse.data),
           );
@@ -92,19 +88,30 @@ const Register = () => {
   };
 
   return (
-    <div className="h-full flex flex-col justify-center">
-      {view === 0 ? (
-        <div className="flex justify-center">
+    <div className="h-full flex-1 flex-col justify-center">
+      <ToastContainer
+        position="top-right"
+        autoClose={5000}
+        hideProgressBar={false}
+        newestOnTop={false}
+        closeOnClick
+        rtl={false}
+        pauseOnFocusLoss
+        draggable
+        pauseOnHover
+      />
+      <div className="flex justify-center pt-8">
+        {view === 0 ? (
           <form
             onSubmit={handleSubmit}
-            className="w-full max-w-4xl border-2 border-gray-300 rounded-lg p-4 shadow-lg flex md:flex-row"
+            className="w-full max-w-md border-2 border-gray-300 rounded-lg p-4 shadow-lg"
           >
-            <div className="flex-1">
-              <h1>Register</h1>
-              {errors.form && (
-                <p className="text-red-500 text-xs italic">{errors.form}</p>
-              )}
-              <div className="mb-4">
+            <h1>Register</h1>
+            {errors.form && (
+              <p className="text-red-500 text-xs italic">{errors.form}</p>
+            )}
+            <div className="mb-4 flex flex-col sm:flex-row sm:space-x-4 space-y-4 sm:space-y-0">
+              <div className="w-full sm:w-1/2">
                 <input
                   required
                   name="first_name"
@@ -120,7 +127,7 @@ const Register = () => {
                   </p>
                 )}
               </div>
-              <div className="mb-4">
+              <div className="w-full sm:w-1/2">
                 <input
                   required
                   name="last_name"
@@ -136,115 +143,117 @@ const Register = () => {
                   </p>
                 )}
               </div>
-              <div className="mb-4">
+            </div>
+
+            <div className="mb-4">
+              <input
+                required
+                name="email"
+                type="email"
+                placeholder="Enter Email"
+                value={formData.email}
+                onChange={handleChange}
+                className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+              />
+              {errors.email && (
+                <p className="text-red-500 text-xs italic">{errors.email}</p>
+              )}
+            </div>
+            <div className="mb-4">
+              <input
+                required
+                name="password"
+                type="password"
+                placeholder="Enter Password"
+                value={formData.password}
+                onChange={handleChange}
+                className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+              />
+              {errors.password && (
+                <p className="text-red-500 text-xs italic">{errors.password}</p>
+              )}
+            </div>
+            <div className="mb-4">
+              <input
+                required
+                name="confirmPassword"
+                type="password"
+                placeholder="Confirm Password"
+                value={formData.confirmPassword}
+                onChange={handleChange}
+                className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+              />
+              {errors.confirmPassword && (
+                <p className="text-red-500 text-xs italic">
+                  {errors.confirmPassword}
+                </p>
+              )}
+            </div>
+            <div className="mb-4">
+              <label className="inline-flex items-center">
                 <input
-                  required
-                  name="email"
-                  type="email"
-                  placeholder="Enter Email"
-                  value={formData.email}
-                  onChange={handleChange}
-                  className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+                  type="checkbox"
+                  checked={termsAccepted}
+                  onChange={(e) => setTermsAccepted(e.target.checked)}
+                  className="form-checkbox text-purple-600"
                 />
-                {errors.email && (
-                  <p className="text-red-500 text-xs italic">{errors.email}</p>
-                )}
-              </div>
-              <div className="mb-4">
-                <input
-                  required
-                  name="password"
-                  type="password"
-                  placeholder="Enter Password"
-                  value={formData.password}
-                  onChange={handleChange}
-                  className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-                />
-                {errors.password && (
-                  <p className="text-red-500 text-xs italic">
-                    {errors.password}
-                  </p>
-                )}
-              </div>
-              <div className="mb-4">
-                <input
-                  required
-                  name="confirmPassword"
-                  type="password"
-                  placeholder="Confirm Password"
-                  value={formData.confirmPassword}
-                  onChange={handleChange}
-                  className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-                />
-                {errors.confirmPassword && (
-                  <p className="text-red-500 text-xs italic">
-                    {errors.confirmPassword}
-                  </p>
-                )}
-              </div>
-              <div className="mb-4">
-                <label className="inline-flex items-center">
-                  <input
-                    type="checkbox"
-                    checked={termsAccepted}
-                    onChange={(e) => setTermsAccepted(e.target.checked)}
-                    className="form-checkbox text-purple-600"
-                  />
-                  <span className="ml-2 text-sm text-gray-600">
-                    I have read and accept the{" "}
-                    <a
-                      href="terms-and-conditions"
-                      className="text-purple-500 hover:text-purple-800"
-                    >
-                      terms and conditions
-                    </a>
-                  </span>
-                </label>
-                {errors.terms && (
-                  <p className="text-red-500 text-xs italic">{errors.terms}</p>
-                )}
-              </div>
-              {/** where the button is*/}
-              <div className="flex items-center justify-between">
-                <button
-                  type="submit"
-                  onClick={handleSubmit}
-                  className="bg-purple-500 hover:bg-purple-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
-                >
-                  Register
-                </button>
-                <a
-                  href="/login"
-                  className="inline-block align-baseline font-bold text-sm text-purple-500 hover:text-purple-800"
-                >
-                  Have an account? Login
-                </a>
-              </div>
+                <span className="ml-2 text-sm text-gray-600">
+                  I have read and accept the{" "}
+                  <a
+                    href="terms-and-conditions"
+                    className="text-purple-500 hover:text-purple-800"
+                  >
+                    terms and conditions
+                  </a>
+                </span>
+              </label>
+              {errors.terms && (
+                <p className="text-red-500 text-xs italic">{errors.terms}</p>
+              )}
+            </div>
+            <div className="text-xs text-gray-600 mb-4 italic font-semibold">
+              After registering, you will be logged in and redirected to the
+              profile setup page to enhance the matching experience.
+            </div>
+            <div className="flex items-center justify-between">
+              <button
+                type="submit"
+                onClick={handleSubmit}
+                className="bg-purple-500 hover:bg-purple-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
+              >
+                Register
+              </button>
+              <a
+                href="/login"
+                className="inline-block align-baseline font-bold text-sm text-purple-500 hover:text-purple-800"
+              >
+                Have an account? Login
+              </a>
             </div>
           </form>
-        </div>
-      ) : (
-        <div className="flex-2 md:flex-[3] ">
-          <div className="overflow-auto  bg-violet-200 scrollbar-hide max-h-[620px]">
-            <div className="bg-violet-200 mx-4 text-gray-800">
-              <UserProfile />
-            </div>
-            <div className="bg-violet-200 mx-4 text-gray-800">
-              <Availability />
-            </div>
-            <div className="bg-violet-200 mx-4 text-gray-800">
-              <ClassSchedule />
+        ) : (
+          <div className="flex-2 md:flex-[3] ">
+            <div className="overflow-auto bg-violet-200 scrollbar-hide max-h-[620px]">
+              <div className="bg-violet-200 mx-4 text-gray-800">
+                <UserProfile />
+              </div>
+              <div className="bg-violet-200 mx-4 text-gray-800">
+                <Availability />
+              </div>
+              <div className="bg-violet-200 mx-4 text-gray-800">
+                <ClassSchedule />
+              </div>
             </div>
           </div>
-        </div>
-      )}
+        )}
+      </div>
       {view === 1 && (
         <div className="flex w-full justify-center items-center my-4">
           <button
             onClick={handleClick}
             className="bg-yellow-500 hover:bg-yellow-700 text-white font-bold py-2 px-4 rounded-full w-full sm:w-auto transition duration-300 ease-in-out transform hover:-translate-y-1 hover:scale-110"
           >
-            Finish Registration
+            Submit
           </button>
         </div>
       )}

@@ -1,3 +1,4 @@
+import { validateFields } from "./../utils/validationUtils";
 import { QuestionRepository } from "./../repositories/QuestionRepository";
 
 /**
@@ -28,6 +29,10 @@ export class QuestionService {
     questionText: string,
     threadTitle: string,
   ) {
+    if (!validateFields({ threadTitle, questionText })) {
+      throw new Error("400");
+    }
+
     return await this.questionRepository.createQuestion(
       userId,
       classId,

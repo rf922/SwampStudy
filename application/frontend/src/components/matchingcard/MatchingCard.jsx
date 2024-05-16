@@ -5,20 +5,20 @@ import WeekAvailabilityCard from "./../weekavailabilitycard/WeekAvailabilityCard
 import ClassScheduleCard from "./../classschedulecard/ClassScheduleCard";
 
 /**
- * matching card for showing a summary of a potential match !
+ * Matching card for showing a summary of a potential match!
  */
 export const MatchingCard = ({ user }) => {
   return (
-    <div className="flex justify-center ">
+    <div className="flex justify-center p-4">
       <div className="flex flex-col max-w-4xl rounded-lg overflow-hidden shadow-lg bg-gray-100 border border-purple-200">
         <ProfilePictureCard user={user} />
-        <div className="flex flex-1">
-          <div className=" w-1/2 flex flex-col">
+        <div className="flex flex-col md:flex-row">
+          <div className="w-full md:w-1/2 flex flex-col">
             <div className="flex-1 flex flex-col bg-gray-100 p-4">
               <WeekAvailabilityCard availability={user.weekavailability} />
             </div>
           </div>
-          <div className="w-1/2 flex flex-col">
+          <div className="w-full md:w-1/2 flex flex-col">
             <div className="flex-1 flex flex-col bg-gray-100 p-4">
               <ClassScheduleCard selectedClasses={user.courses} />
             </div>

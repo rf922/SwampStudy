@@ -12,6 +12,8 @@ import { Question } from "./question.entity";
 import { IsDefined, IsString } from "class-validator";
 import { ClassSchedule } from "./classschedule.entity";
 import { Rating } from "./rating.entity";
+import { Match } from "./match.entity";
+
 @Entity()
 export class Account extends BaseEntity {
   @PrimaryGeneratedColumn()
@@ -44,8 +46,25 @@ export class Account extends BaseEntity {
     cascade: true,
     onDelete: "CASCADE",
   })
-  @OneToMany(() => Rating, (rating) => rating.account)
   ratings: Rating[];
+
+  @OneToMany(() => Match, (match) => match.userOne, {
+    cascade: true,
+    onDelete: "CASCADE",
+  })
+  matchesAsUserOne: Match[];
+
+  @OneToMany(() => Match, (match) => match.userTwo, {
+    cascade: true,
+    onDelete: "CASCADE",
+  })
+  matchesAsUserTwo: Match[];
+
+  @OneToMany(() => ClassSchedule, (classSchedule) => classSchedule.account, {
+    cascade: true,
+    onDelete: "CASCADE",
+  })
+  classSchedule: ClassSchedule[];
 
   @Column("smallint", { default: 0 })
   weekavailability: number;
@@ -61,10 +80,4 @@ export class Account extends BaseEntity {
 
   @Column("varchar", { length: 500, default: "" })
   biography: string;
-
-  @OneToMany(() => ClassSchedule, (classSchedule) => classSchedule.account, {
-    cascade: true,
-    onDelete: "CASCADE",
-  })
-  classSchedule: ClassSchedule[];
 }

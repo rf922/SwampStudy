@@ -32,12 +32,9 @@ export const useForumAPI = () => {
         },
         { withCredentials: true },
       );
-      alert("Post Created!");
       return response.data;
-
-      //      navigate("/forum");
     } catch (error) {
-      console.error("Error creating post:", error);
+      console.error("Error creating post:");
     }
   };
 

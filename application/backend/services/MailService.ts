@@ -1,3 +1,4 @@
+import { permissionsChange } from "./../utils/emailTemplates";
 /**
  * mail service handles sending automated emails to main swampstudy mail address
  */
@@ -34,5 +35,14 @@ export class MailService {
     } catch (error) {
       console.error("Error sending email:", error);
     }
+  }
+
+  /**
+   * method for sending account permission type verification email.
+   * @param to
+   */
+  public async sendPermissionsChangeEmail(to: string) {
+    const { subject, text } = permissionsChange;
+    await this.sendEmail(to, subject, text);
   }
 }

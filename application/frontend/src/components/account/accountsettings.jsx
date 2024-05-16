@@ -1,9 +1,11 @@
 import React, { useEffect, useState } from "react";
 import { useFormValidation } from "./hooks/useFormValidation";
 import { useAccountAPI } from "./hooks/useAccountAPI";
+import { useUserDetails } from "../../context/UserContext";
+import { toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 const UpdateAccount = () => {
-  //component for accountmanagement / update
   const { formData, setFormData, handleChange, validate, errors } =
     useFormValidation({
       email: "",
@@ -11,66 +13,111 @@ const UpdateAccount = () => {
       confirmPassword: "",
       introvert: false,
       isHidden: false,
+      educator: false,
     });
+  const { userDetails, setUserDetails } = useUserDetails();
   const [options, setOptions] = useState({
-    //figure out where to put those fields
     introvert: false,
     isHidden: false,
+    educator: false,
   });
 
   const handleToggle = (option) => {
     setOptions((prev) => ({
-      //update the ui switch
       ...prev,
       [option]: !prev[option],
     }));
 
     setFormData((prevForm) => ({
-      //update the corresponding value in form
       ...prevForm,
       [option]: !prevForm[option],
     }));
   };
 
   useEffect(() => {
-    const localData = localStorage.getItem("userDetails");
-    if (localData) {
-      const savedDetails = JSON.parse(localData);
+    if (userDetails) {
       setOptions({
-        //use the users existing settings as init state
-        introvert: savedDetails.introvert ?? false,
-        isHidden: savedDetails.isHidden ?? false,
+        introvert: userDetails.introvert ?? false,
+        isHidden: userDetails.isHidden ?? false,
+        educator: userDetails.educator ?? false,
       });
       setFormData((prevForm) => ({
-        //init formData with the same values
         ...prevForm,
-        introvert: savedDetails.introvert ?? false,
-        isHidden: savedDetails.isHidden ?? false,
+        introvert: userDetails.introvert ?? false,
+        isHidden: userDetails.isHidden ?? false,
+        educator: userDetails.educator ?? false,
+        email: userDetails.email ?? "",
       }));
     }
-  }, [setOptions, setFormData]);
+  }, [userDetails, setFormData]);
 
   const { updateAccount, deleteAccount } = useAccountAPI();
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     if (validate(formData)) {
-      await updateAccount(formData, (errors) => console.log(errors));
-      const localData = localStorage.getItem("userDetails");
-      const userDetails = localData ? JSON.parse(localData) : {};
+      try {
+        await updateAccount(formData);
 
-      // updat local storage
-      localStorage.setItem(
-        "userDetails",
-        JSON.stringify({
+        const updatedDetails = {
           ...userDetails,
           introvert: options.introvert,
           isHidden: options.isHidden,
-        }),
-      );
+          educator: options.educator,
+          email: formData.email,
+        };
+        if (
+          !userDetails.educator &&
+          userDetails.educator !== updatedDetails.educator
+        ) {
+          toast.info(
+            "You requested to update your account type to educator, please check your email for verification",
+            {
+              position: "top-right",
+              autoClose: 5000,
+              hideProgressBar: false,
+              closeOnClick: true,
+              pauseOnHover: true,
+              draggable: true,
+              progress: undefined,
+            },
+          );
+        }
+        setUserDetails(updatedDetails);
+        localStorage.setItem("userDetails", JSON.stringify(updatedDetails));
+        toast.success("Account Updated !", {
+          position: "top-right",
+          autoClose: 5000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+        });
+      } catch (error) {
+        toast.error(
+          "Problem updating account information, please try again later",
+          {
+            position: "top-right",
+            autoClose: 5000,
+            hideProgressBar: false,
+            closeOnClick: true,
+            pauseOnHover: true,
+            draggable: true,
+            progress: undefined,
+          },
+        );
+      }
     } else {
-      console.error("Please Try again");
-      alert("Please Try Again");
+      toast.error("Please correct any form errors before submitting", {
+        position: "top-right",
+        autoClose: 5000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+      });
     }
   };
 
@@ -106,7 +153,7 @@ const UpdateAccount = () => {
           )}
         </div>
 
-        {/* new passwrd */}
+        {/* new password */}
         <div className="mb-4">
           <label
             htmlFor="password"
@@ -128,7 +175,7 @@ const UpdateAccount = () => {
           )}
         </div>
 
-        {/* confm passwrd*/}
+        {/* confirm password */}
         <div className="mb-4">
           <label
             htmlFor="confirmPassword"
@@ -151,7 +198,8 @@ const UpdateAccount = () => {
             </p>
           )}
         </div>
-        {/* opt toggle switchs */}
+
+        {/* option toggle switches */}
         <div className="w-full flex flex-col my-4 mx-2 p-4 bg-purple-100">
           <div className="grid grid-cols-2 sm:grid-cols-1 gap-4 px-4 py-2">
             {Object.entries(options).map(([option, isSet], index) => (
@@ -179,7 +227,7 @@ const UpdateAccount = () => {
           <p className="text-red-500 text-xs italic mb-4">{errors.form}</p>
         )}
 
-        {/* update acc & del ac buttn */}
+        {/* update account & delete account buttons */}
         <div className="flex flex-col w-full space-y-4 mb-6">
           <button
             type="submit"

@@ -36,12 +36,16 @@ export class ForumController {
   public async createQuestion(req: Request, res: Response) {
     const userId = req.session.userId;
     const { classId, questionText, threadTitle } = req.body;
-    if (!threadTitle || !questionText) {
+    if (!classId || !threadTitle || !questionText) {
       //ensure validity of params
       return res.status(StatusCodes.BAD_REQUEST).json({
         message:
           "Missing required parameters: thread title and/or question text.",
       });
+    }
+    const foundClass = await this.classService.getClassById(classId);
+    if (!foundClass) {
+      return res.status(StatusCodes.NOT_FOUND).send("class not found");
     }
     try {
       const { thread, question } = await this.questionService.createQuestion(
@@ -118,10 +122,8 @@ export class ForumController {
     const userId = req.session.userId;
     const questionId = parseInt(req.params.questionId); // question they are postinh answer to
     const { answer } = req.body; //answers content
-    if (!answer) {
-      return res
-        .status(StatusCodes.BAD_REQUEST)
-        .json({ message: "Answer content is required" });
+    if (!answer || !questionId) {
+      return res.status(StatusCodes.BAD_REQUEST).send("Invalid Params");
     }
     try {
       const newAnswer = await this.threadService.createAnswer(

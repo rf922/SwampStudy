@@ -2,7 +2,7 @@ import { User } from "./../entities/user.entity";
 import { UserRepository } from "./../repositories/UserRepository";
 import { hash, compare } from "bcryptjs";
 import { Rating } from "./../entities/rating.entity";
-
+import { countSetBits } from "./../utils/availabilityUtils";
 /**
  * user service class responsible for handlig business logic rel.
  * to user, uses user repo to handle the db ops
@@ -132,8 +132,27 @@ export class UserService {
     } else {
       userPage = await this.userRepository.getUserPage(userId, page);
     }
-
+    const currentUser = await this.userRepository.getUserById(userId);
+    userPage.sort((userX, userY) => {
+      const overlapX = this.getAvailabilityOverlap(
+        currentUser.account.weekavailability,
+        userX.account.weekavailability,
+      );
+      const overlapY = this.getAvailabilityOverlap(
+        currentUser.account.weekavailability,
+        userY.account.weekavailability,
+      );
+      return overlapY - overlapX;
+    });
     return this.formatUserProfiles(userPage);
+  }
+
+  private getAvailabilityOverlap(
+    user1Availability: number,
+    user2Availability: number,
+  ): number {
+    const overlap = user1Availability & user2Availability;
+    return countSetBits(overlap);
   }
 
   /**
