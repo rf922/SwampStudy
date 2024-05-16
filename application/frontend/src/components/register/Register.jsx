@@ -51,6 +51,12 @@ const Register = () => {
     getUserDetails();
   }, [isLoggedIn, view]);
 
+  useEffect(() => {
+    if (!isLoggedIn && view !== 0) {
+      navigate("/");
+    }
+  }, [isLoggedIn]);
+
   const handleClick = async (e) => {
     e.preventDefault();
     if (view === 1) {
