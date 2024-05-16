@@ -1,6 +1,6 @@
 import axios from "axios";
 
-export const useUserAPI = (setView) => {
+export const useUserAPI = (setView, setIsLoggedIn) => {
   const handleRegister = async (formData, setErrors) => {
     try {
       const result = await axios.post(
@@ -10,6 +10,15 @@ export const useUserAPI = (setView) => {
       );
 
       if (result.status === 201) {
+        localStorage.setItem(
+          "userDetails",
+          JSON.stringify({
+            first_name: formData.first_name,
+            last_name: formData.last_name,
+            rating: 5,
+          }),
+        );
+        setIsLoggedIn(true);
         console.log("success");
         setView(1);
       }
