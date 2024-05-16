@@ -24,7 +24,7 @@ const Register = () => {
       profilePicture: null,
     });
   const [termsAccepted, setTermsAccepted] = useState(false);
-  const { handleRegister } = useUserAPI(setView);
+  const { handleRegister } = useUserAPI(setView, setIsLoggedIn);
 
   useEffect(() => {
     const getUserDetails = async () => {
@@ -47,15 +47,11 @@ const Register = () => {
         console.error("Error fetching user details", error);
       }
     };
-
-    getUserDetails();
-  }, [isLoggedIn, view]);
-
-  useEffect(() => {
     if (!isLoggedIn && view !== 0) {
       navigate("/");
     }
-  }, [isLoggedIn]);
+    getUserDetails();
+  }, [isLoggedIn, view, navigate]);
 
   const handleClick = async (e) => {
     e.preventDefault();
@@ -75,22 +71,7 @@ const Register = () => {
       return;
     }
 
-    try {
-      await handleRegister(formData, setErrors);
-      localStorage.setItem(
-        "userDetails",
-        JSON.stringify({
-          first_name: formData.first_name,
-          last_name: formData.last_name,
-          rating: 5,
-        }),
-      );
-      setIsLoggedIn(true);
-
-      console.log("Registration successful");
-    } catch (error) {
-      console.error("registration failed: ", error);
-    }
+    await handleRegister(formData, setErrors);
   };
 
   return (
