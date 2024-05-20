@@ -21,4 +21,16 @@ userRouter.post("/report/:userId", isAuthenticated, (req, _res) =>
   req.userController.reportUserProfile(req, _res),
 );
 
+userRouter.post("/recoverPassword", (req, _res) =>
+  req.userController.recoverPassword(req, _res),
+);
+
+userRouter.post("/resetPassword", (req, _res) =>
+  req.userController.resetPassword(req, _res),
+);
+
+userRouter.post("/verifyToken", (req, _res) =>
+  req.userController.verifyToken(req, _res),
+);
+
 export default userRouter;

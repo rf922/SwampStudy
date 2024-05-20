@@ -32,4 +32,10 @@ export class User extends BaseEntity {
 
   @OneToOne(() => Account, (account) => account.user_FK)
   account: Account;
+
+  @Column({ nullable: true })
+  resetPasswordToken?: string;
+
+  @Column({ nullable: true, type: "timestamp" })
+  resetPasswordExpires?: Date;
 }
