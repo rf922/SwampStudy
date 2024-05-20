@@ -1,4 +1,4 @@
-# Ignore build, scripts and dist directories
+# Ignore build, scripts, and dist directories
 build/
 dist/
 scripts/

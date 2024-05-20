@@ -37,6 +37,33 @@ export const UserRepository = myDataSource.getRepository(User).extend({
   },
 
   /**
+   * sets the password reset token for a user by userId and sets the
+   * token expiration
+   * @param reportedUserId The id of the user whose token is to be set .
+   */
+  async setResetPasswordToken(userId: number, token: string) {
+    const user = await this.findOneBy({ id: userId });
+    user.resetPasswordToken = token;
+    user.resetPasswordExpires = new Date(Date.now() + 3600000); // 1 hour
+    return await this.save(user);
+  },
+
+  /**
+   * resets the users password and clears the users
+   * reset password token and its expiration
+   * @param userId
+   * @param password
+   * @returns
+   */
+  async resetPassword(userId: number, password: string) {
+    const user = await this.findOneBy({ id: userId });
+    user.resetPasswordToken = null;
+    user.resetPasswordExpires = null;
+    user.password = password;
+    return await this.save(user);
+  },
+
+  /**
    * function to return a list of users , their schedules and classes
    * @param page
    * @returns

@@ -1,4 +1,4 @@
-import { permissionsChange } from "./../utils/emailTemplates";
+import { emailTemplates } from "../utils/emailTemplates";
 /**
  * mail service handles sending automated emails to main swampstudy mail address
  */
@@ -42,7 +42,19 @@ export class MailService {
    * @param to
    */
   public async sendPermissionsChangeEmail(to: string) {
-    const { subject, text } = permissionsChange;
-    await this.sendEmail(to, subject, text);
+    const template = emailTemplates["permissionChange"];
+    const text = template.text;
+    await this.sendEmail(to, template.subject, text);
+  }
+
+  /**
+   * method for sending recovery email with recovery link
+   * @param to
+   * @param link
+   */
+  public async sendRecoveryEmail(to: string, link: string) {
+    const template = emailTemplates["passwordRecovery"];
+    const text = template.text(link);
+    await this.sendEmail(to, template.subject, text);
   }
 }

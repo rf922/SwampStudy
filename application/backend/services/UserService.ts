@@ -3,6 +3,8 @@ import { UserRepository } from "./../repositories/UserRepository";
 import { hash, compare } from "bcryptjs";
 import { Rating } from "./../entities/rating.entity";
 import { countSetBits } from "./../utils/availabilityUtils";
+import { generateResetToken } from "./../utils/token";
+import { validateFields } from "./../utils/validationUtils";
 /**
  * user service class responsible for handlig business logic rel.
  * to user, uses user repo to handle the db ops
@@ -34,7 +36,7 @@ export class UserService {
     return await this.userRepository.getUserById(id);
   }
 
-  public async submitReport(reportingUserId: number, reportedUserId: number) {
+  public async submitReport(_reportingUserId: number, reportedUserId: number) {
     const reports = await this.userRepository.reportUser(reportedUserId);
     return reports;
   }
@@ -117,6 +119,74 @@ export class UserService {
   }
 
   /**
+   * method to handle password recovery for user whose account
+   * is associated with the given email, generates a reset token for the user, stores it
+   * then forms the reset link for the user
+   * @param email
+   * @returns
+   */
+  public async recoverPassword(email: string) {
+    if (!validateFields({ email: email })) {
+      throw new Error("400");
+    }
+    const user = await this.userRepository.getUserByEmail(email);
+    if (!user) {
+      throw new Error("404");
+    }
+
+    const resetToken = generateResetToken();
+    const hashedToken = await hash(resetToken, 10);
+    await this.userRepository.setResetPasswordToken(user.id, hashedToken);
+    return this.getResetLink(user.id, resetToken);
+  }
+
+  /**
+   * paasswd reset
+   */
+  public async resetPassword(
+    userId: number,
+    token: string,
+    newPassword: string,
+  ) {
+    const user = await this.userRepository.getUserById(userId);
+    if (!user) {
+      throw new Error("404");
+    }
+    await this.verifyToken(user.id, token);
+
+    if (validateFields({ newPassword })) {
+      const hashedPassword = await hash(newPassword, 10);
+      await this.userRepository.resetPassword(user.id, hashedPassword);
+    } else {
+      throw new Error("400");
+    }
+  }
+
+  /**
+   * handles token verification by checking if it is expired and if it
+   * matches what it stored in the db
+   * @param userId
+   * @param token
+   * @returns
+   */
+  public async verifyToken(userId: number, token: string) {
+    const user = await this.userRepository.getUserById(userId);
+    if (!user) {
+      throw new Error("404");
+    }
+    const now = new Date();
+    if (user.resetPasswordExpires < now) {
+      throw new Error("401");
+    }
+    const isTokenMatch = await compare(token, user.resetPasswordToken);
+    if (isTokenMatch) {
+      return true;
+    } else {
+      throw new Error("401");
+    }
+  }
+
+  /**
    * function to get a page of user profiles
    * @param page
    * @returns
@@ -194,5 +264,16 @@ export class UserService {
     const total = ratings.reduce((acc, { rating }) => acc + rating, 0);
     const average = total / ratings.length;
     return average;
+  }
+
+  /**
+   * private helper to form the reset link
+   * @param userId
+   * @param token
+   * @returns
+   */
+  private getResetLink(userId: string, token: string) {
+    const resetLink = `${process.env.ORIGIN}/reset-password?userId=${userId}&token=${token}`;
+    return resetLink;
   }
 }

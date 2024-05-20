@@ -87,7 +87,6 @@ export class UserController {
       await this.sessionService.createSession(req.session, userId, ip);
       return res.status(StatusCodes.OK).send(`Login successful `);
     } catch (error) {
-      console.error(error);
       if (error.message) {
         switch (error.message) {
           case "401":
@@ -99,7 +98,7 @@ export class UserController {
           default:
             return res
               .status(StatusCodes.INTERNAL_SERVER_ERROR)
-              .send("Unknown error" + error);
+              .send("Unknown error");
         }
       }
     }
@@ -170,8 +169,111 @@ export class UserController {
       await this.sessionService.destroySession(req);
       res.status(StatusCodes.OK).send("Logged out successfully");
     } catch (error) {
-      console.error("Error deleting session from DB:", error);
+      console.error("Error deleting session from DB:");
       res.status(StatusCodes.INTERNAL_SERVER_ERROR).send("Error during logout");
+    }
+  }
+
+  /**
+   * end point to verify that a password reset token is valid
+   * @param req
+   * @param res
+   * @returns
+   */
+  public async verifyToken(req: Request, res: Response) {
+    try {
+      const { userId, token } = req.body;
+      if (!token || !userId) {
+        res.status(StatusCodes.BAD_REQUEST).send();
+      }
+      const parsedId = parseInt(userId);
+      const result = await this.userService.verifyToken(parsedId, token);
+      res.status(StatusCodes.ACCEPTED).send(result);
+    } catch (error) {
+      if (error.message) {
+        switch (error.message) {
+          case "401":
+            return res.status(StatusCodes.NOT_FOUND).send("Invalid Token");
+          case "404":
+            return res
+              .status(StatusCodes.NOT_FOUND)
+              .send("User Not Found" + error);
+          default:
+            return res
+              .status(StatusCodes.INTERNAL_SERVER_ERROR)
+              .send("Unknown error");
+        }
+      }
+    }
+  }
+
+  /**
+   * handles pasword recovery by generating a token and url
+   * for a user by email, then sends the url via email
+   * @param req
+   * @param res
+   * @returns
+   */
+  public async recoverPassword(req: Request, res: Response) {
+    try {
+      const { email } = req.body;
+      if (!email) {
+        res.status(StatusCodes.BAD_REQUEST).send();
+      }
+      const recoverPasswordLink = await this.userService.recoverPassword(email);
+      this.mailService.sendRecoveryEmail(email, recoverPasswordLink);
+      res.status(StatusCodes.OK).send("Recovery email sent");
+    } catch (error) {
+      if (error.message) {
+        switch (error.message) {
+          case "400":
+            return res.status(StatusCodes.BAD_REQUEST).send("Malformed Email");
+          case "401":
+            return res.status(StatusCodes.NOT_FOUND).send("Invalid Token");
+          case "404":
+            return res.status(StatusCodes.NOT_FOUND).send("User Not Found");
+          default:
+            return res
+              .status(StatusCodes.INTERNAL_SERVER_ERROR)
+              .send("Unknown error");
+        }
+      }
+    }
+  }
+
+  /**
+   * end point to handle password resets
+   * @param req
+   * @param res
+   * @returns
+   */
+  public async resetPassword(req: Request, res: Response) {
+    try {
+      const { userId, token, newPassword } = req.body;
+      if (!userId || !token || !newPassword) {
+        res.status(StatusCodes.BAD_REQUEST).send("Missing params");
+      }
+      const parsedId = parseInt(userId);
+      if (isNaN(parsedId)) {
+        res.status(StatusCodes.BAD_REQUEST).send();
+      }
+      await this.userService.resetPassword(userId, token, newPassword);
+      res.status(StatusCodes.OK).send("Success");
+    } catch (error) {
+      if (error.message) {
+        switch (error.message) {
+          case "400":
+            return res.status(StatusCodes.NOT_FOUND).send("Invalid password");
+          case "401":
+            return res.status(StatusCodes.NOT_FOUND).send("Invalid Token");
+          case "404":
+            return res.status(StatusCodes.NOT_FOUND).send("User Not Found");
+          default:
+            return res
+              .status(StatusCodes.INTERNAL_SERVER_ERROR)
+              .send("Unknown error");
+        }
+      }
     }
   }
 }
