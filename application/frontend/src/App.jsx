@@ -18,6 +18,9 @@ import PrivacyPolicy from "./components/privacypolicy/PrivacyPolicy";
 import Contact from "./components/contact/contact";
 import Licensing from "./components/licensing/licensing";
 
+import ResetPassword from "./components/resetpassword/ResetPassword";
+import TokenProtectedRoute from "./components/tokenprotectedroute/TokenProtectedRoute";
+
 function App() {
   return (
     <Auth>
@@ -34,6 +37,14 @@ function App() {
                 <Route path="/about/:name" element={<Profile />} />
                 <Route path="/about/" element={<About />} />
                 <Route path="/register" element={<Register />} />
+                <Route
+                  path="/reset-password"
+                  element={
+                    <TokenProtectedRoute>
+                      <ResetPassword />
+                    </TokenProtectedRoute>
+                  }
+                />
                 <Route path="/login" element={<Login />} />
                 <Route
                   path="/terms-and-conditions"
