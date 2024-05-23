@@ -87,7 +87,7 @@ const MeetingScheduler = ({ match, onUpdateMatch }) => {
       0b1000000, 0b0000001, 0b0000010, 0b0000100, 0b0001000, 0b0010000,
       0b0100000,
     ];
-    return (match.weekavailability & bitmask[date.getDay()]);
+    return match.weekavailability & bitmask[date.getDay()];
   };
 
   return (
