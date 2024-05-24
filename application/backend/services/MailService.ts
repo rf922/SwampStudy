@@ -42,7 +42,7 @@ export class MailService {
    * @param to
    */
   public async sendPermissionsChangeEmail(to: string) {
-    const template = emailTemplates["permissionChange"];
+    const template = emailTemplates["permissionsChange"];
     const text = template.text;
     await this.sendEmail(to, template.subject, text);
   }
