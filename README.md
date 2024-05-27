@@ -11,11 +11,7 @@ This repository store the contents of the swampstudy web application I created a
 |      #5      |Julio Reyes Tena              |julio-reyes-tena                 |       Docs-editor        |
 
 
-4. All the team's members ***MUST*** sign the follwing [team's contract](https://forms.gle/dxATAsa9isXKbcBn7). Missing signatures from students will result in these students being dropped from the course. 
-
-4. Please when ready, add your application's name and URL or IP to the following table. It is the responsibility of the team lead to keep this up to date during the whole semester because we'll use this URL to test all your prototypes and final version of your project. 
-
-|             Name of the Project               |                            URL of the Project                          | 
+|             Name of the Project               |                            Former URL of the Project                          | 
 |                    :---:                      |                                 :---:                                  |
 |   SwampStudy  |              [URL](https://swamp-study.global.ssl.fastly.net/)       |                                                        
  
