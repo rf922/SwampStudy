@@ -3,8 +3,7 @@
 ## Purpose
 The purpose of this folder is to store all the source code and related files for the application.
 
-## Please use the rest of the README.md to store important information for your team's application. 
-To Install and run application
+## To Install and run application
 1. Clone GitHub Repo
 2. Make sure you have Node installed, easy way to check is to run "node -v" in a terminal
 2. In a terminal navigate into the application folder
