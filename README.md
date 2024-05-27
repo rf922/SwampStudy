@@ -1,26 +1,14 @@
-[![Review Assignment Due Date](https://classroom.github.com/assets/deadline-readme-button-24ddc0f5d75046c5622901739e7c5dd533143b0c8e959d652212380cedb1ea36.svg)](https://classroom.github.com/a/1Ql2EhFc)
-[![Open in Visual Studio Code](https://classroom.github.com/assets/open-in-vscode-718a45dd9cf7e7f842a935f5ebbe5719a5e09af4491e668f4dbf3b35d5cca122.svg)](https://classroom.github.com/online_ide?assignment_repo_id=13784548&assignment_repo_type=AssignmentRepo)
-# CSC648-848 Repository
+# SwampStudy Repository
+This repository store the contents of the swampstudy web application I created alongside a team of developers while attending San Francisco State University for CSC-648 Software Engineering. The premise behind swampstudy was to create a platform toward the intent of connecting new and continuing university students via a matching feature along with an open forum which allowed users to post and respond to questions made on a thread corresponding to a class and its department. The application is built upon a MERN stack which uses MySQL for the relational database, express, react and node. The backend architecture for said applicatio implements an N-tiered approach toward the familiar modell-view-controller architecture commonly used with MERN stack applications coupled with dependency injection via a DIContainer which manages and centralizes instantiation of resources with their associated dependencies. 
+# Team Members
 
-## Please do the following steps right after this repository is created.
-
-1. The following steps must be done by the team lead or the Github master. 
-
-2. Replace the username of this repository by your team number. Use the following format TNN where NN is the two digits of your team number. For instance, T03 for team 3. 
-
-2. Add ***ALL members*** of your team to this repository. For it to count, they must ACCEPT the invite. The team lead or/and Github master are the only members of the team that can have admin permissions for this repository. 
-
-3. Fill this table out with all your team's members info. Note that roles are only representative of the main responsability that students will perform in their teams. However, every students ***MUST*** contribute to ***ALL*** the aspects of the project and docs for this course. 
-
-
-| Student      | Student Full Name |Student SFSU Email | GitHub Username |  Discord Username  |           Role           |
-|    :---:     |   :---:           |       :---:       |     :---:       |        :---:       |          :---:           | 
-|      #1      |Lennart Richter                  |lrichter@sfsu.edu                   |len898                 |lenni_r                    |       Team-lead          |
-|      #2      |Edmund Huang                  |ehuang6@mail.sfsu.edu                   |EdmUUUndo                 |edmuuundo                    |       Frontend-lead      |
-|      #3      |Rafael Fabiani                  |rfabiani@sfsu.edu                   |rf922                 |OrangeTree3340                    |       Backend-lead       |
-|      #4      |Vacant                   |                   |                 |                    |       Database-admin     |
-|      #5      |Conrad Choi                  |cchoi5@sfsu.edu                   |ChoiConrad                 |choiconrad                    |       Github-master      |
-|      #6      |Julio Reyes Tena                  |jreyestena@sfsu.edu                     |julio-reyes-tena                 |churro1813                    |       Docs-editor        |
+| Student      | Student Full Name | GitHub Username |           Role           |
+|    :---:     |   :---:           |     :---:       |        :---:       | 
+|      #1      |Lennart Richter                  |len898                 |       Team-lead          |
+|      #2      |Edmund Huang                  |EdmUUUndo                 |       Frontend-lead      |
+|      #3      |Rafael Fabiani                |rf922                 |       Backend-lead       |
+|      #4      |Conrad Choi                  |ChoiConrad                |       Github-master      |
+|      #5      |Julio Reyes Tena              |julio-reyes-tena                 |       Docs-editor        |
 
 
 4. All the team's members ***MUST*** sign the follwing [team's contract](https://forms.gle/dxATAsa9isXKbcBn7). Missing signatures from students will result in these students being dropped from the course. 
@@ -32,4 +20,3 @@
 |   SwampStudy  |              [URL](https://swamp-study.global.ssl.fastly.net/)       |                                                        
  
 
-## NO code needs to be stored in the root of your repository. You may rename the application folder if you like to your team's application name. But all source code related to your team's application should be stored inside the application folder.
